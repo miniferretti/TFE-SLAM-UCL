@@ -1,4 +1,4 @@
 <launch>
-    <include file= "/src/raspicam_node/launch/camerav2_410x308_30fps.launch"/>
-    <include file= "/src/rplidar_ros/launch/rplidar_a3.launch"/>
+    <include file= "$(find raspicam_node)launch/camerav2_410x308_30fps.launch"/>
+    <include file= "$(find rplidar_ros)/launch/rplidar_a3.launch"/>
 </launch>
