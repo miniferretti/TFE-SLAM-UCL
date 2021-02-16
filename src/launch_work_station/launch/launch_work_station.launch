@@ -1,0 +1,4 @@
+<launch>
+    <node type="rviz" name="rviz" args="-d $(find package_name)/rviz/config_file.rviz"/>
+    <node type="rqt_image_view" name="rqt_image_view" args="-d $(find package_name)/rqt_image_view/config_file.rqt_image_view"/>
+</launch>
