@@ -1,4 +1,4 @@
 <launch>
     <node type="rviz" name="rviz" pkg="rviz" args="-d $(find rviz)/rviz/config_file.rviz"/>
-    <node type="rqt_image_view" name="rqt_image_view" pkg="rqt_image_view" args="--force-discover $(find rqt_image_view)/rqt_image_view/config_file.rqt_image_view"/>
+    <node pkg="rqt_image_view" type="rqt_image_view" name="image_view_debug" args="/image/compressed"/>
 </launch>
