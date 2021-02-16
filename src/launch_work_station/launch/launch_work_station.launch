@@ -1,4 +1,4 @@
 <launch>
-    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find rviz)/rviz/rplidar_a3.rviz"/>
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find rplidar_ros)/rviz/rplidar.rviz"/>
     <node pkg="rqt_image_view" type="rqt_image_view" name="image_view_debug" args="/raspicam_node/image/compressed"/>
 </launch>
