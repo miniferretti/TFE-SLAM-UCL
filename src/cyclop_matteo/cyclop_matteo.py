@@ -1,4 +1,4 @@
-!/usr/bin/env python
+#!/usr/bin/env python
    2 """OpenCV feature detectors with ros CompressedImage Topics in python.
    3 
    4 This example subscribes to a ros topic containing sensor_msgs 
