@@ -36,21 +36,19 @@ class image_feature:
    def __init__(self):
        '''Initialize ros publisher, ros subscriber'''
        # topic where we publish
-       self.image_pub = rospy.Publisher("/output/image_raw/compressed",
-           CompressedImage)
+       self.image_pub = rospy.Publisher("/output/image_raw/compressed",CompressedImage)
        # self.bridge = CvBridge()
 
           # subscribed Topic
-       self.subscriber = rospy.Subscriber("/raspicam_node/image/compressed_image",
-               CompressedImage, self.callback,  queue_size=1)
+       self.subscriber = rospy.Subscriber("/raspicam_node/image/compressed_image",CompressedImage, self.callback,  queue_size=1)
        if VERBOSE:
-           print "/raspicam_node/image/compressed_image"
+           print("/raspicam_node/image/compressed_image")
 
     def callback(self, ros_data):
            '''Callback function of subscribed topic.
            Here images get converted and features detected'''
        if VERBOSE:
-           print 'received image of type: "%s"' % ros_data.format
+           print ('received image of type: "%s"' % ros_data.format)
 
            #### direct conversion to CV2 ####
        np_arr = np.fromstring(ros_data.data, np.uint8)
@@ -69,8 +67,8 @@ class image_feature:
             cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY))
         time2 = time.time()
         if VERBOSE:
-            print '%s detector found: %s points in: %s sec.' % (method,
-                len(featPoints), time2-time1)
+            print('%s detector found: %s points in: %s sec.' % (method,
+                len(featPoints), time2-time1))
 
         for featpoint in featPoints:
             x, y = featpoint.pt
@@ -96,7 +94,7 @@ def main(args):
     try:
         rospy.spin()
     except KeyboardInterrupt:
-        print "Shutting down ROS Image feature detector module"
+        print ("Shutting down ROS Image feature detector module")
     cv2.destroyAllWindows()
 
 if __name__ == '__main__':
