@@ -2,7 +2,6 @@
 
 import sys
 import time
-
 import cv2
 import numpy as np
 import roslib
@@ -69,7 +68,7 @@ def main(args):
 
     ic = image_feature()
     rospy.init_node('cyclop_matteo', anonymous=True)
-    
+
     try:
         rospy.spin()
     except KeyboardInterrupt:
