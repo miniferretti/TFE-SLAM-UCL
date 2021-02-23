@@ -81,9 +81,8 @@ class image_feature:
 
 def main(args):
 
-    rospy.init_node('cyclop_matteo', anonymous=True)
     ic = image_feature()
-
+    rospy.init_node('cyclop_matteo', anonymous=True)
     try:
         rospy.spin()
     except KeyboardInterrupt:
