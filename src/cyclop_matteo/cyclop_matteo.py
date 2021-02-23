@@ -28,13 +28,13 @@ class image_feature:
         #    "/raspicam_node/image/compressed", CompressedImage, self.callback,  queue_size=1)
 
         ts = message_filters.ApproximateTimeSynchronizer(
-            [self.image_sub, self.scan_sub], 10, allow_headerless=True)
+            [self.image_sub, self.scan_sub], 1, 0.1, allow_headerless=True)
         ts.registerCallback(self.callback)
 
         if VERBOSE:
             print("/raspicam_node/image/compressed")
 
-    def callback(self, image_sync,scan_sync):
+    def callback(self, image_sync, scan_sync):
 
         if VERBOSE:
             print('received image of type: "%s"' % image_sync.format)
