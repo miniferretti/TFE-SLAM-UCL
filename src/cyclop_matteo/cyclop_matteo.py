@@ -28,7 +28,7 @@ class image_feature:
         #    "/raspicam_node/image/compressed", CompressedImage, self.callback,  queue_size=1)
 
         ts = message_filters.ApproximateTimeSynchronizer(
-            [self.image_sub, self.scan_sub], 10, 0.05, allow_headerless=True)
+            [self.image_sub, self.scan_sub], 1, 0.05, allow_headerless=True)
         ts.registerCallback(self.callback)
 
         if VERBOSE:
