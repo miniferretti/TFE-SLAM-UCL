@@ -81,8 +81,8 @@ class image_feature:
 
 def main(args):
 
-    ic = image_feature()
     rospy.init_node('cyclop_matteo', anonymous=True)
+    ic = image_feature()
 
     try:
         rospy.spin()
