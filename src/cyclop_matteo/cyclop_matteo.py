@@ -38,7 +38,7 @@ class image_feature:
         #### Feature detectors using CV2 ####
         # "","Grid","Pyramid" +
         # "FAST","GFTT","HARRIS","MSER","ORB","SIFT","STAR","SURF"
-        # method = "GridFAST"
+        method = "GridFAST"
         feat_det = cv2.FastFeatureDetector_create()
         time1 = time.time()
 
