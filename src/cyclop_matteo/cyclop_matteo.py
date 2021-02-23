@@ -20,27 +20,27 @@ class image_feature:
         self.image_pub = rospy.Publisher(
             "/output/image_raw/compressed", CompressedImage, queue_size=1)
 
-        self.image_sub = message_filters.Subscriber(
-            "/raspicam_node/image/compressed", CompressedImage)
-        self.scan_sub = message_filters.Subscriber("/scan", LaserScan)
+        # self.image_sub = message_filters.Subscriber(
+        #   "/raspicam_node/image/compressed", CompressedImage)
+        #self.scan_sub = message_filters.Subscriber("/scan", LaserScan)
 
-       # self.subscriber = rospy.Subscriber(
-        #    "/raspicam_node/image/compressed", CompressedImage, self.callback,  queue_size=1)
+        self.subscriber = rospy.Subscriber(
+            "/raspicam_node/image/compressed", CompressedImage, self.callback,  queue_size=1)
 
-        ts = message_filters.TimeSynchronizer(
-            [self.image_sub, self.scan_sub], 10)
-        ts.registerCallback(self.callback)
+        # ts = message_filters.TimeSynchronizer(
+        #   [self.image_sub, self.scan_sub], 10)
+        # ts.registerCallback(self.callback)
 
         if VERBOSE:
             print("/raspicam_node/image/compressed")
 
-    def callback(self, image_sync, scan_sync):
+    def callback(self, ROS_info):
 
         if VERBOSE:
-            print('received image of type: "%s"' % image_sync.format)
+            print('received image of type: "%s"' % ROS_info.format)
 
            #### direct conversion to CV2 ####
-        np_arr = np.fromstring(image_sync.data, np.uint8)
+        np_arr = np.fromstring(ROS_info.data, np.uint8)
        # image_np = cv2.imdecode(np_arr, cv2.CV_LOAD_IMAGE_COLOR)
         image_np = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)  # OpenCV >= 3.0:
         image_np = cv2.rotate(image_np, cv2.ROTATE_180)
