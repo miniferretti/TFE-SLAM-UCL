@@ -40,7 +40,7 @@ class image_feature:
         # "FAST","GFTT","HARRIS","MSER","ORB","SIFT","STAR","SURF"
         method = "GridFAST"
         #feat_det = cv2.FastFeatureDetector_create()
-        feat_det = cv2.xfeatures2d.SURF_create()
+        feat_det = cv2.xfeatures2d_SURF.create()
         time1 = time.time()
 
         # convert np image to grayscale
