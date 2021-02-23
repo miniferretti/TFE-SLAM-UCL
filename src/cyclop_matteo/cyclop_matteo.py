@@ -38,6 +38,7 @@ class image_feature:
 
         if VERBOSE:
             print('received image of type: "%s"' % image_sync.format)
+            print('Recieved scan of type: "%s"' % scan_sync.format)
 
            #### direct conversion to CV2 ####
         np_arr = np.fromstring(image_sync.data, np.uint8)
