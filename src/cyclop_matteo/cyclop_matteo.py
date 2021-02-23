@@ -20,10 +20,10 @@ class image_feature:
             "/output/image_raw/compressed", CompressedImage, queue_size=1)
 
         self.subscriber = rospy.Subscriber(
-            "/raspicam_node/image/compressed_image", CompressedImage, self.callback,  queue_size=1)
+            "/raspicam_node/image/compressed", CompressedImage, self.callback,  queue_size=1)
 
         if VERBOSE:
-            print("/raspicam_node/image/compressed_image")
+            print("/raspicam_node/image/compressed")
 
     def callback(self, ros_data):
 
