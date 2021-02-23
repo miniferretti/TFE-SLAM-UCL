@@ -9,7 +9,7 @@ import rospy
 from scipy.ndimage import filters
 from sensor_msgs.msg import CompressedImage
 
-VERBOSE = False
+VERBOSE = True
 
 
 class image_feature:
