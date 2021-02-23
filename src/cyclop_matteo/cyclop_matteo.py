@@ -37,7 +37,7 @@ class image_feature:
     def callback(self, image_sync, scan_sync):
 
         if VERBOSE:
-            print('Received image of type: "%s"' % image_sync.format)
+            print('Received image of type: "%s" and number "%s"' % (image_sync.format,image.header.seq))
             print('Received scan number "%s"' % scan_sync.header.seq)
 
            #### direct conversion to CV2 ####
