@@ -34,6 +34,7 @@ class image_feature:
         np_arr = np.fromstring(ros_data.data, np.uint8)
        # image_np = cv2.imdecode(np_arr, cv2.CV_LOAD_IMAGE_COLOR)
         image_np = cv2.imdecode(np_arr, cv2.IMREAD_COLOR) # OpenCV >= 3.0:
+        image_np = cv2.rotate(image_np,cv2.ROTATE_180)
 
         #### Feature detectors using CV2 ####
         # "","Grid","Pyramid" +
