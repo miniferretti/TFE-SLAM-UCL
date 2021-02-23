@@ -16,9 +16,11 @@ class image_feature:
 
     def __init__(self):
 
-        self.image_pub = rospy.Publisher("/output/image_raw/compressed", CompressedImage)
-        
-        self.subscriber = rospy.Subscriber("/raspicam_node/image/compressed_image", CompressedImage, self.callback,  queue_size=1)
+        self.image_pub = rospy.Publisher(
+            "/output/image_raw/compressed", CompressedImage, queue_size=1)
+
+        self.subscriber = rospy.Subscriber(
+            "/raspicam_node/image/compressed_image", CompressedImage, self.callback,  queue_size=1)
 
         if VERBOSE:
             print("/raspicam_node/image/compressed_image")
@@ -31,21 +33,22 @@ class image_feature:
            #### direct conversion to CV2 ####
         np_arr = np.fromstring(ros_data.data, np.uint8)
         image_np = cv2.imdecode(np_arr, cv2.CV_LOAD_IMAGE_COLOR)
-           # image_np = cv2.imdecode(np_arr, cv2.IMREAD_COLOR) # OpenCV >= 3.0:
+        # image_np = cv2.imdecode(np_arr, cv2.IMREAD_COLOR) # OpenCV >= 3.0:
 
-           #### Feature detectors using CV2 ####
-           # "","Grid","Pyramid" +
-           # "FAST","GFTT","HARRIS","MSER","ORB","SIFT","STAR","SURF"
+        #### Feature detectors using CV2 ####
+        # "","Grid","Pyramid" +
+        # "FAST","GFTT","HARRIS","MSER","ORB","SIFT","STAR","SURF"
         method = "GridFAST"
         feat_det = cv2.FeatureDetector_create(method)
         time1 = time.time()
 
-           # convert np image to grayscale
-        featPoints = feat_det.detect(cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY))
+        # convert np image to grayscale
+        featPoints = feat_det.detect(
+            cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY))
         time2 = time.time()
         if VERBOSE:
             print('%s detector found: %s points in: %s sec.' % (method,
-                len(featPoints), time2-time1))
+                                                                len(featPoints), time2-time1))
 
         for featpoint in featPoints:
             x, y = featpoint.pt
@@ -64,6 +67,7 @@ class image_feature:
 
         # self.subscriber.unregister()
 
+
 def main(args):
 
     ic = image_feature()
@@ -74,6 +78,7 @@ def main(args):
     except KeyboardInterrupt:
         print("Shutting down ROS Image feature detector module")
     cv2.destroyAllWindows()
+
 
 if __name__ == '__main__':
     main(sys.argv)
