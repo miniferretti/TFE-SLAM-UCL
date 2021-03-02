@@ -56,16 +56,16 @@ class image_feature:
         time1 = time.time()
 
         # convert np image to grayscale
-      '''  featPoints = feat_det.detect(
-            cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY))
-        time2 = time.time()
-        if VERBOSE:
-            print('%s detector found: %s points in: %s sec.' % (method,
-                                                                len(featPoints), time2-time1))
+    #    featPoints = feat_det.detect(
+    #        cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY))
+    #    time2 = time.time()
+    #    if VERBOSE:
+    #        print('%s detector found: %s points in: %s sec.' % (method,
+    #                                                            len(featPoints), time2-time1))
 
-        for featpoint in featPoints:
-            x, y = featpoint.pt
-            cv2.circle(image_np, (int(x), int(y)), 3, (0, 0, 255), -1) '''
+     #   for featpoint in featPoints:
+     #       x, y = featpoint.pt
+     #       cv2.circle(image_np, (int(x), int(y)), 3, (0, 0, 255), -1)
 
         ################################################################
         ###          Adding lidar data to the image                 ####
