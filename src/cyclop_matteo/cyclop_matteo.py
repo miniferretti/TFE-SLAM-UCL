@@ -108,6 +108,9 @@ class image_feature:
         ranges[0, ranges[0, :] > range_max] = range_max
         ranges[0, ranges[0, :] < range_min] = range_min
 
+        for i in range(len(ranges[0, :])):
+            print((ranges[0, i], ranges[1, i]))
+
         return ranges
 
     # Converts lidar range data to XYZ coordinates and then projects it to the camera image plane
@@ -135,7 +138,7 @@ class image_feature:
         for i in range(len(UV[0, :])):
             u = UV[0, i]
             v = UV[1, i]
-            print("Vertical Pixel %s and Horizontal pixel number %s", (v, u))
+            #print("Vertical Pixel %s and Horizontal pixel number %s", (v, u))
 
             if (u <= len(image_np[1, :])) and (v <= len(image_np[1, :])):
                 if (u >= 0) and (v >= 0):
