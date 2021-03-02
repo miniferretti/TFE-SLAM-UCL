@@ -9,6 +9,7 @@ import rospy
 import message_filters
 from scipy.ndimage import filters
 from sensor_msgs.msg import CompressedImage, LaserScan
+import math
 
 VERBOSE = False
 
@@ -99,7 +100,7 @@ class image_feature:
         range_max = scan_sync.range_max
         angle_increment = scan_sync.angle_increment
         N = (angle_max-angle_min)/angle_increment
-        angle_data = np.linspace(angle_min, angle_max, num=(N+1))
+        angle_data = np.linspace(angle_min, angle_max, num=(N+1)) + math.pi
        # print(len(angle_data))
        # print(len(range_data))
 
