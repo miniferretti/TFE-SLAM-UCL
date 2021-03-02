@@ -132,7 +132,7 @@ class image_feature:
 
        # print(UV.shape)
 
-        for i in len(UV[0,:]):
+        for i in range(len(UV[0,:])):
             u = UV[0,i]
             v = UV[1,i]
             if (u <= len(image_np[1, :])) and (v <= len(image_np[1, :])):
