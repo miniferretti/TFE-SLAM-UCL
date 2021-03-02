@@ -100,6 +100,8 @@ class image_feature:
         angle_increment = scan_sync.angle_increment
         N = (angle_max-angle_min)/angle_increment
         angle_data = np.linspace(angle_min, angle_max, num=N)
+        print(len(angle_data))
+        print(len(range_data))
 
         ranges = np.array([range_data, angle_data], np.float32)
 
