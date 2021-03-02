@@ -129,7 +129,7 @@ class image_feature:
         P = H.dot(Pc)
         UV = np.array([np.divide(P[0, :], P[2, :]),
                        np.divide(P[1, :], P[2, :])], np.uint32)
-        print(len(UV))
+        print(UV.shape)
 
         for u, v in UV:
             if (u <= len(image_np[1, :])) and (v <= len(image_np[1, :])):
