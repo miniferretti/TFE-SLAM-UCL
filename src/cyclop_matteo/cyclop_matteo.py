@@ -100,8 +100,8 @@ class image_feature:
         angle_increment = scan_sync.angle_increment
         N = (angle_max-angle_min)/angle_increment
         angle_data = np.linspace(angle_min, angle_max, num=(N+1))
-        print(len(angle_data))
-        print(len(range_data))
+       # print(len(angle_data))
+       # print(len(range_data))
 
         ranges = np.array([range_data, angle_data], np.float32)
 
@@ -113,7 +113,7 @@ class image_feature:
     # Converts lidar range data to XYZ coordinates and then projects it to the camera image plane
     def lidar_data_to_img(self, ranges, image_np):
 
-        Pl = np.array([np.multiply(np.sin(ranges[1, :]), ranges[0, :]), 0, np.multiply(
+        Pl = np.array([np.multiply(np.sin(ranges[1, :]), ranges[0, :]), np.zeros(len(ranges[0, :])), np.multiply(
             np.cos(ranges[1, :]), ranges[0, :])], np.float32)
         # Translation matrix between the camera and the lidar (lidar --> Camera translation) everything in millimeters
         t = np.array([[0, 50, 52]], np.float32).T
