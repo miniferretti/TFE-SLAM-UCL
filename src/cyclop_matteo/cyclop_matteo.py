@@ -131,7 +131,7 @@ class image_feature:
         for u, v in UV:
             if (u <= len(image_np[1, :])) and (v <= len(image_np[1, :])):
                 if (u >= 0) and (v >= 0):
-                cv2.circle(image_np, (int(u), int(v)), 3, (255, 0, 0), -1)
+                    cv2.circle(image_np, (int(u), int(v)), 3, (255, 0, 0), -1)
 
         return image_np
 
