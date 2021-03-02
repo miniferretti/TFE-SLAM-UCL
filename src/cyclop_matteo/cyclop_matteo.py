@@ -130,11 +130,11 @@ class image_feature:
         UV = np.array([np.divide(P[0, :], P[2, :]),
                        np.divide(P[1, :], P[2, :])], np.uint32)
 
-        print(UV.shape)
+       # print(UV.shape)
 
-        for point in UV:
-            u = point[0]
-            v = point[1]
+        for i in len(UV[0,:]):
+            u = UV[0,i]
+            v = UV[1,i]
             if (u <= len(image_np[1, :])) and (v <= len(image_np[1, :])):
                 if (u >= 0) and (v >= 0):
                     cv2.circle(image_np, (int(u), int(v)), 3, (255, 0, 0), -1)
