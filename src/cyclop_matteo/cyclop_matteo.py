@@ -10,7 +10,7 @@ import message_filters
 from scipy.ndimage import filters
 from sensor_msgs.msg import CompressedImage, LaserScan
 
-VERBOSE = True
+VERBOSE = False
 
 
 class image_feature:
@@ -131,17 +131,15 @@ class image_feature:
                        np.divide(P[1, :], P[2, :])], np.uint32)
 
        # print(UV.shape)
-        number = 0
 
         for i in range(len(UV[0, :])):
             u = UV[0, i]
             v = UV[1, i]
+            print("Vertical Pixel %s and Horizontal pixel number %s", (v, u))
+
             if (u <= len(image_np[1, :])) and (v <= len(image_np[1, :])):
                 if (u >= 0) and (v >= 0):
                     cv2.circle(image_np, (int(u), int(v)), 3, (255, 0, 0), -1)
-            number = number+1
-
-        print(number)
 
         return image_np
 
