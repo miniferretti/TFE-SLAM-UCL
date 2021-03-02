@@ -105,8 +105,8 @@ class image_feature:
 
         ranges = np.array([range_data, angle_data], np.float32)
 
-        ranges[ranges[0, :] > range_max] = range_max
-        ranges[ranges[0, :] < range_min] = range_min
+        ranges[0, ranges[0, :] > range_max] = range_max
+        ranges[0, ranges[0, :] < range_min] = range_min
 
         return ranges
 
