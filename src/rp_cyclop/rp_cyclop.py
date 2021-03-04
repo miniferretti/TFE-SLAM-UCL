@@ -122,7 +122,7 @@ class image_feature:
 
         print(image_np.shape)
 
-        Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :]))+0.05,
+        Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :]))+0.07,
                        np.zeros(len(ranges[0, :])),
                        np.multiply(np.cos(ranges[1, :]), ranges[0, :])], np.float32)
 
