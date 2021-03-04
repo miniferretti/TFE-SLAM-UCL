@@ -109,8 +109,8 @@ class image_feature:
         ranges[0, ranges[0, :] > range_max] = range_max
         ranges[0, ranges[0, :] < range_min] = range_min
 
-        for i in range(len(ranges[0, :])):
-            print((ranges[0, i], ranges[1, i]))
+       # for i in range(len(ranges[0, :])):
+       #    print((ranges[0, i], ranges[1, i]))
 
         return ranges
 
@@ -120,7 +120,16 @@ class image_feature:
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+        Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :]))+0.07,
+=======
+=======
+>>>>>>> 1301711a862b94ca326890b4fda36073825820ac
+        print(image_np.shape)
+
         Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :]))+0.05,
+>>>>>>> 1301711a862b94ca326890b4fda36073825820ac
                        np.zeros(len(ranges[0, :])),
                        np.multiply(np.cos(ranges[1, :]), ranges[0, :])], np.float32)
 
