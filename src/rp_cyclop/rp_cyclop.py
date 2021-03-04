@@ -158,7 +158,7 @@ class image_feature:
                     u_real = self.valmap(u, 0, U, 0, 1280)
                     v_real = self.valmap(v, 0, V, 0, 720)
                     cv2.circle(image_np, (int(u_real), int(v_real)),
-                               3, (255, 0, 0), -1)
+                               3, (0, 0, 255), -1)
 
         return image_np
 
