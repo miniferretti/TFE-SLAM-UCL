@@ -130,9 +130,11 @@ class image_feature:
         t = np.array([[0, -0.048, -0.052]], np.float32).T
 
         # Rotation matrix of the lidar regarding the camera position
-        R = np.array([[1, 0, 0],
-                      [0, 1.5, 0],
-                      [0, 0, 1]], np.float32)
+        rotationAngle = 10
+
+        R = np.array([[math.cos(rotationAngle), 0, math.sin(rotationAngle)],
+                      [0, 1, 0],
+                      [-math.sin(rotationAngle), 0, math.cos(rotationAngle)]], np.float32)
 
         Pc = R.dot(Pl)+t
         a = 2714.2857  # Focal length in meters
