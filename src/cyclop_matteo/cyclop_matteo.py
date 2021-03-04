@@ -129,8 +129,8 @@ class image_feature:
         Pc = R.dot(Pl)+t
         a = 2714.2857  # Focal length in meters
         s = 0  # Skew constant of the camera, here 0 'cause the distortion of the camera is already corrected in the raspicam_node
-        u0 = int(len(image_np[1, :])/2) #U/2  # int(len(image_np[1, :])/2)
-        v0 = int(len(image_np[0, :])/2) #V/2  # int(len(image_np[0, :])/2)
+        u0 = 640 #U/2  # int(len(image_np[1, :])/2)
+        v0 = 360 #V/2  # int(len(image_np[0, :])/2)
         # Camera plane conversion matrix H
         H = np.array([[a, s, u0], [0, a, v0], [0, 0, 1]], np.float32)
         P = H.dot(Pc)
