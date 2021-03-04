@@ -120,19 +120,28 @@ class image_feature:
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
 
-        Pl = np.array([np.multiply(-np.sin(ranges[1, :]), ranges[0, :]), np.zeros(len(ranges[0, :])), np.multiply(
-            np.cos(ranges[1, :]), ranges[0, :])], np.float32)
-        # Translation matrix between the camera and the lidar (lidar --> Camera translation) everything in meters
+        Pl = np.array([np.multiply(-np.sin(ranges[1, :]), ranges[0, :]),
+                       np.zeros(len(ranges[0, :])),
+                       np.multiply(np.cos(ranges[1, :]), ranges[0, :])], np.float32)
+
+        # Translation vector between the camera and the lidar (lidar --> Camera translation) everything in meters
         t = np.array([[0, -0.048, -0.055]], np.float32).T
+
         # Rotation matrix of the lidar regarding the camera position
-        R = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]], np.float32)
+        R = np.array([[1, 0, 0],
+                      [0, 1, 0],
+                      [0, 0, 1]], np.float32)
+
         Pc = R.dot(Pl)+t
         a = 2714.2857  # Focal length in meters
         s = 0  # Skew constant of the camera, here 0 'cause the distortion of the camera is already corrected in the raspicam_node
         u0 = U/2  # int(len(image_np[1, :])/2)
         v0 = V/2  # int(len(image_np[0, :])/2)
         # Camera plane conversion matrix H
-        H = np.array([[a, s, u0], [0, a, v0], [0, 0, 1]], np.float32)
+        H = np.array([[a, s, u0],
+                      [0, a, v0],
+                      [0, 0, 1]], np.float32)
+
         P = H.dot(Pc)
         UV = np.array([np.divide(P[0, :], P[2, :]),
                        np.divide(P[1, :], P[2, :])], np.float32)
