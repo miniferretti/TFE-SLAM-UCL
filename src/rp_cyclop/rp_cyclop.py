@@ -168,7 +168,7 @@ class image_feature:
 
 def main(args):
 
-    rospy.init_node('cyclop_matteo', anonymous=True)
+    rospy.init_node('rp_cyclop', anonymous=True)
     ic = image_feature()
 
     try:
