@@ -109,8 +109,8 @@ class image_feature:
         ranges[0, ranges[0, :] > range_max] = range_max
         ranges[0, ranges[0, :] < range_min] = range_min
 
-        for i in range(len(ranges[0, :])):
-            print((ranges[0, i], ranges[1, i]))
+    #    for i in range(len(ranges[0, :])):
+    #        print((ranges[0, i], ranges[1, i]))
 
         return ranges
 
@@ -119,6 +119,8 @@ class image_feature:
 
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
+
+        print(image_np.shape)
 
         Pl = np.array([np.multiply(-np.sin(ranges[1, :]), ranges[0, :]),
                        np.zeros(len(ranges[0, :])),
@@ -133,7 +135,7 @@ class image_feature:
                       [0, 0, 1]], np.float32)
 
         Pc = R.dot(Pl)+t
-        a = 2714.2857  # Focal length in meters
+        a = 2714.2857  # Focal length in pixels (3040 um / 1.12 um)
         s = 0  # Skew constant of the camera, here 0 'cause the distortion of the camera is already corrected in the raspicam_node
         u0 = U/2  # int(len(image_np[1, :])/2)
         v0 = V/2  # int(len(image_np[0, :])/2)
