@@ -146,8 +146,8 @@ class image_feature:
 
             if (u <= U) and (v <= V):
                 if (u >= 0) and (v >= 0) and (P[2, i] >= 0):
-                    u_real = self.valmap(u, 0, U, 0, 640)
-                    v_real = self.valmap(v, 0, V, 0, 360)
+                    u_real = self.valmap(u, 0, U, 0, 1280)
+                    v_real = self.valmap(v, 0, V, 0, 720)
                     cv2.circle(image_np, (int(u_real), int(v_real)),
                                3, (255, 0, 0), -1)
 
