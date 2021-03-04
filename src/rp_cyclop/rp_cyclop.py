@@ -120,7 +120,7 @@ class image_feature:
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
 
-        Pl = np.array([np.multiply(-np.sin(ranges[1, :]), ranges[0, :]),
+        Pl = np.array([np.multiply(-np.sin(ranges[1, :]), ranges[0, :] + 0.4),
                        np.zeros(len(ranges[0, :])),
                        np.multiply(np.cos(ranges[1, :]), ranges[0, :])], np.float32)
 
@@ -128,7 +128,7 @@ class image_feature:
         t = np.array([[0, -0.048, -0.055]], np.float32).T
 
         # Rotation matrix of the lidar regarding the camera position
-        R = np.array([[.5, 0, 0],
+        R = np.array([[1, 0, 0],
                       [0, 1, 0],
                       [0, 0, 1]], np.float32)
 
