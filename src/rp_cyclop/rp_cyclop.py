@@ -122,7 +122,7 @@ class image_feature:
 
         image_height, image_width, rgb = image_np.shape
 
-        Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :]))+0.05,
+        Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :])),
                        np.zeros(len(ranges[0, :])),
                        np.multiply(np.cos(ranges[1, :]), ranges[0, :])], np.float32)
 
@@ -130,7 +130,7 @@ class image_feature:
         t = np.array([[0, -0.048, -0.055]], np.float32).T
 
         # Rotation matrix of the lidar regarding the camera position
-        R = np.array([[1, 0, 0],
+        R = np.array([[0.9, 0, 0],
                       [0, 1, 0],
                       [0, 0, 1]], np.float32)
 
