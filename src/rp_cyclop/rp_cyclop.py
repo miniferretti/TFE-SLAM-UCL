@@ -120,7 +120,7 @@ class image_feature:
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
 
-        print(image_np.shape)
+        image_height, image_width, rgb = image_np.shape
 
         Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :]))+0.05,
                        np.zeros(len(ranges[0, :])),
@@ -157,8 +157,8 @@ class image_feature:
 
             if (u <= U) and (v <= V):
                 if (u >= 0) and (v >= 0) and (P[2, i] >= 0):
-                    u_real = self.valmap(u, 0, U, 0, 1280)
-                    v_real = self.valmap(v, 0, V, 0, 720)
+                    u_real = self.valmap(u, 0, U, 0, image_width)
+                    v_real = self.valmap(v, 0, V, 0, image_height)
                     cv2.circle(image_np, (int(u_real), int(v_real)),
                                3, (0, 0, 255), -1)
 
