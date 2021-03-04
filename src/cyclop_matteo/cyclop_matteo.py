@@ -80,7 +80,7 @@ class image_feature:
         ################################################################
         ###                 Color detection                         ####
         ################################################################
-
+"""
          # Not to forget, in OpenCV we have BGR color 
 
         #cap = cv2.VideoCapture(1)
@@ -204,7 +204,7 @@ class image_feature:
                     cv2.circle(image_np, (int(u), int(v)), 3, (255, 0, 0), -1)
 
         return image_np
-"""
+
 
 
 def main(args):
