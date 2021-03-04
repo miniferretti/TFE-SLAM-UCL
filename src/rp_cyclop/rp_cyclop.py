@@ -130,7 +130,7 @@ class image_feature:
         t = np.array([[0, -0.048, -0.055]], np.float32).T
 
         # Rotation matrix of the lidar regarding the camera position
-        R = np.array([[1.01, 0, 0],
+        R = np.array([[1.1, 0, 0],
                       [0, 1, 0],
                       [0, 0, 1]], np.float32)
 
