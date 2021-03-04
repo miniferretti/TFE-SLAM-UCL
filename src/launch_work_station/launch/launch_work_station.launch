@@ -1,5 +1,5 @@
 <launch>
     <node type="rviz" name="rviz" pkg="rviz" args="-d $(find rplidar_ros)/rviz/rplidar.rviz" />
     <!--   <node pkg="rqt_image_view" type="rqt_image_view" name="image_view_debug" args="/output/image_raw/compressed" /> -->
-    <node pkg="cyclop_matteo" name="cyclop_matteo" type="cyclop_matteo.py" output="screen" />
+    <node pkg="rp_cyclop" name="rp_cyclop" type="rp_cyclop.py" output="screen" />
 </launch>
