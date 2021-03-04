@@ -146,15 +146,14 @@ class image_feature:
 
             if (u <= U) and (v <= V):
                 if (u >= 0) and (v >= 0):
-                    u_real = valmap(u, 0, U, 0, len(image_np[1, :]))
-                    v_real = valmap(v, 0, V, 0, len(image_np[0, :]))
+                    u_real = self.valmap(u, 0, U, 0, len(image_np[1, :]))
+                    v_real = self.valmap(v, 0, V, 0, len(image_np[0, :]))
                     cv2.circle(image_np, (int(u_real), int(v_real)),
                                3, (255, 0, 0), -1)
 
         return image_np
 
-    def valmap(self,value, istart, istop, ostart, ostop):
-
+    def valmap(self, value, istart, istop, ostart, ostop):
         return ostart + (ostop - ostart) * ((value - istart) / (istop - istart))
 
 
