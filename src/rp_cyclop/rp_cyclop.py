@@ -120,16 +120,9 @@ class image_feature:
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-        Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :]))+0.07,
-=======
-=======
->>>>>>> 1301711a862b94ca326890b4fda36073825820ac
         print(image_np.shape)
 
         Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :]))+0.05,
->>>>>>> 1301711a862b94ca326890b4fda36073825820ac
                        np.zeros(len(ranges[0, :])),
                        np.multiply(np.cos(ranges[1, :]), ranges[0, :])], np.float32)
 
