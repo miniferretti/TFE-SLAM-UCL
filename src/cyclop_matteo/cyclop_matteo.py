@@ -58,7 +58,7 @@ class image_feature:
         # "FAST","GFTT","HARRIS","MSER","ORB","SIFT","STAR","SURF"
         method = "GridFAST"
         feat_det = cv2.FastFeatureDetector_create()
-        #feat_det = cv2.ORB_create()
+        # feat_det = cv2.ORB_create()
         time1 = time.time()
 
         # convert np image to grayscale
@@ -69,22 +69,23 @@ class image_feature:
         if VERBOSE:
             print('%s detector found: %s points in: %s sec.' % (method,
                                                                 len(featPoints), time2-time1))
-                                                            
+
 
                 for featpoint in featPoints:
             x, y = featpoint.pt
             cv2.circle(image_np, (int(x), int(y)), 3, (0, 0, 255), -1)
 
-         """  
+         """
+
 
         ################################################################
         ###                 Color detection                         ####
         ################################################################
 """
-         # Not to forget, in OpenCV we have BGR color 
+         # Not to forget, in OpenCV we have BGR color
 
-        #cap = cv2.VideoCapture(1)
-        #_,frame = cap.read()
+        # cap = cv2.VideoCapture(1)
+        # _,frame = cap.read()
 
         lower_range = np.array([0, 50, 120])
         upper_range = np.array([10,255,255])
@@ -94,7 +95,7 @@ class image_feature:
         cnts = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
 
-        for c in cnts: 
+        for c in cnts:
             areal = cv2.contourArea(c)
             if areal > 5000 :
                 cv2.drawContours(image_np, [c], -1, (0,255,0), 3)
@@ -105,7 +106,8 @@ class image_feature:
                 cy = int(M["m01"]/M["m00"])
 
                 cv2.circle(image_np, (cx, cy), 7, (255, 255, 255), -1)
-                cv2.putText(image_np, "Red", (cx-20, cy-20), cv2.FONT_HERSHEY_SIMPLEX, 2.5, (255,255,255), 3)
+                cv2.putText(image_np, "Red", (cx-20, cy-20),
+                            cv2.FONT_HERSHEY_SIMPLEX, 2.5, (255,255,255), 3)
 
         cv2.imshow("result", image_np)
 
@@ -183,14 +185,14 @@ class image_feature:
         s = 0  # Skew constant of the camera, here 0 'cause the distortion of the camera is already corrected in the raspicam_node
         u0 = 640 #int(len(image_np[1, :])/2)
         v0 = 360 #int(len(image_np[0, :])/2)
-        #print('u0 "%s" and v0 "%s" ' % (u0 , v0) )
+        # print('u0 "%s" and v0 "%s" ' % (u0 , v0) )
         # Camera plane conversion matrix H
         H = np.array([[a, s, u0], [0, a, v0], [0, 0, 1]], np.float32)
         P = H.dot(Pc)
         UV = np.array([np.divide(P[0, :], P[2, :]),
                        np.divide(P[1, :], P[2, :])], np.uint32)
 
-        #print(UV.shape)
+        # print(UV.shape)
 
         for i in range(len(UV[0, :])):
             u = UV[0, i]
@@ -204,7 +206,6 @@ class image_feature:
                     cv2.circle(image_np, (int(u), int(v)), 3, (255, 0, 0), -1)
 
         return image_np
-
 
 
 def main(args):
