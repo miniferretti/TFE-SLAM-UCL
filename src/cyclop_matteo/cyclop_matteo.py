@@ -100,7 +100,7 @@ class image_feature:
         range_max = scan_sync.range_max
         angle_increment = scan_sync.angle_increment
         N = (angle_max-angle_min)/angle_increment
-        angle_data = np.linspace(angle_min, angle_max, num=(N+1)) #+ math.pi
+        angle_data = np.linspace(angle_min, angle_max, num=(N+1)) + math.pi
        # print(len(angle_data))
        # print(len(range_data))
 
@@ -135,7 +135,7 @@ class image_feature:
         H = np.array([[a, s, u0], [0, a, v0], [0, 0, 1]], np.float32)
         P = H.dot(Pc)
         UV = np.array([np.divide(P[0, :], P[2, :]),
-                       np.divide(P[1, :], P[2, :])], np.uint32)
+                       np.divide(P[1, :], P[2, :])], np.int32)
 
        # print(UV.shape)
 
