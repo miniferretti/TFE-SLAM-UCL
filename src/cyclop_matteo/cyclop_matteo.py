@@ -100,7 +100,7 @@ class image_feature:
         range_max = scan_sync.range_max
         angle_increment = scan_sync.angle_increment
         N = (angle_max-angle_min)/angle_increment
-        angle_data = np.linspace(angle_min, angle_max, num=(N+1)) #+ math.pi
+        angle_data = np.linspace(angle_min, angle_max, num=(N+1))  # + math.pi
        # print(len(angle_data))
        # print(len(range_data))
 
@@ -145,7 +145,7 @@ class image_feature:
             # print("Vertical Pixel %s and Horizontal pixel number %s", (v, u))
 
             if (u <= U) and (v <= V):
-                if (u >= 0) and (v >= 0):
+                if (u >= 0) and (v >= 0) and (P[2,i]>=0):
                     u_real = self.valmap(u, 0, U, 0, len(image_np[0, :]))
                     v_real = self.valmap(v, 0, V, 0, len(image_np[1, :]))
                     cv2.circle(image_np, (int(u_real), int(v_real)),
