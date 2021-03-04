@@ -135,7 +135,7 @@ class image_feature:
         H = np.array([[a, s, u0], [0, a, v0], [0, 0, 1]], np.float32)
         P = H.dot(Pc)
         UV = np.array([np.divide(P[0, :], P[2, :]),
-                       np.divide(P[1, :], P[2, :])], np.int32)
+                       np.divide(P[1, :], P[2, :])], np.float32)
 
        # print(UV.shape)
 
