@@ -100,7 +100,7 @@ class image_feature:
         range_max = scan_sync.range_max
         angle_increment = scan_sync.angle_increment
         N = (angle_max-angle_min)/angle_increment
-        angle_data = np.linspace(angle_min, angle_max, num=(N+1))  + math.pi
+        angle_data = np.linspace(angle_min, angle_max, num=(N+1)) + math.pi
        # print(len(angle_data))
        # print(len(range_data))
 
@@ -129,8 +129,8 @@ class image_feature:
         Pc = R.dot(Pl)+t
         a = 2714.2857  # Focal length in meters
         s = 0  # Skew constant of the camera, here 0 'cause the distortion of the camera is already corrected in the raspicam_node
-        u0 = U/2  # int(len(image_np[1, :])/2)
-        v0 = V/2  # int(len(image_np[0, :])/2)
+        u0 = int(len(image_np[1, :])/2) #U/2  # int(len(image_np[1, :])/2)
+        v0 = int(len(image_np[0, :])/2) #V/2  # int(len(image_np[0, :])/2)
         # Camera plane conversion matrix H
         H = np.array([[a, s, u0], [0, a, v0], [0, 0, 1]], np.float32)
         P = H.dot(Pc)
@@ -145,10 +145,12 @@ class image_feature:
             # print("Vertical Pixel %s and Horizontal pixel number %s", (v, u))
 
             if (u <= U) and (v <= V):
-                if (u >= 0) and (v >= 0) and (P[2,i]>=0):
-                    u_real = self.valmap(u, 0, U, 0, len(image_np[0, :]))
-                    v_real = self.valmap(v, 0, V, 0, len(image_np[1, :]))
-                    cv2.circle(image_np, (int(u_real), int(v_real)),
+                if (u >= 0) and (v >= 0) and (P[2, i] >= 0):
+                   # u_real = self.valmap(u, 0, U, 0, len(image_np[0, :]))
+                   # v_real = self.valmap(v, 0, V, 0, len(image_np[1, :]))
+                   # cv2.circle(image_np, (int(u_real), int(v_real)),
+                    # 3, (255, 0, 0), -1)
+                    cv2.circle(image_np, (int(u), int(v)),
                                3, (255, 0, 0), -1)
 
         return image_np
