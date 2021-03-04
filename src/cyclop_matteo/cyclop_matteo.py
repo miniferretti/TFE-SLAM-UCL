@@ -123,7 +123,7 @@ class image_feature:
         Pl = np.array([np.multiply(-np.sin(ranges[1, :]), ranges[0, :]), np.zeros(len(ranges[0, :])), np.multiply(
             np.cos(ranges[1, :]), ranges[0, :])], np.float32)
         # Translation matrix between the camera and the lidar (lidar --> Camera translation) everything in meters
-        t = np.array([[0, 0.048, -0.055]], np.float32).T
+        t = np.array([[0, -0.048, -0.055]], np.float32).T
         # Rotation matrix of the lidar regarding the camera position
         R = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]], np.float32)
         Pc = R.dot(Pl)+t
