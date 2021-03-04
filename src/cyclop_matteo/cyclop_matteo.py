@@ -53,7 +53,7 @@ class image_feature:
         # "FAST","GFTT","HARRIS","MSER","ORB","SIFT","STAR","SURF"
         method = "GridFAST"
         feat_det = cv2.FastFeatureDetector_create()
-        #feat_det = cv2.ORB_create()
+        # feat_det = cv2.ORB_create()
         time1 = time.time()
 
         # convert np image to grayscale
@@ -117,6 +117,9 @@ class image_feature:
     # Converts lidar range data to XYZ coordinates and then projects it to the camera image plane
     def lidar_data_to_img(self, ranges, image_np):
 
+        U = 3280  # Horizontal number of pixels
+        V = 2464  # Vertical number of pixels of the camera sensor
+
         Pl = np.array([np.multiply(np.sin(ranges[1, :]), ranges[0, :]), np.zeros(len(ranges[0, :])), np.multiply(
             np.cos(ranges[1, :]), ranges[0, :])], np.float32)
         # Translation matrix between the camera and the lidar (lidar --> Camera translation) everything in meters
@@ -124,10 +127,10 @@ class image_feature:
         # Rotation matrix of the lidar regarding the camera position
         R = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]], np.float32)
         Pc = R.dot(Pl)+t
-        a = 0.00304  # Focal length in meters
+        a = 2714.2857  # Focal length in meters
         s = 0  # Skew constant of the camera, here 0 'cause the distortion of the camera is already corrected in the raspicam_node
-        u0 = int(len(image_np[1, :])/2)
-        v0 = int(len(image_np[0, :])/2)
+        u0 = U/2  # int(len(image_np[1, :])/2)
+        v0 = V/2  # int(len(image_np[0, :])/2)
         # Camera plane conversion matrix H
         H = np.array([[a, s, u0], [0, a, v0], [0, 0, 1]], np.float32)
         P = H.dot(Pc)
@@ -139,13 +142,20 @@ class image_feature:
         for i in range(len(UV[0, :])):
             u = UV[0, i]
             v = UV[1, i]
-            #print("Vertical Pixel %s and Horizontal pixel number %s", (v, u))
+            # print("Vertical Pixel %s and Horizontal pixel number %s", (v, u))
 
-            if (u <= len(image_np[1, :])) and (v <= len(image_np[1, :])):
+            if (u <= U) and (v <= V):
                 if (u >= 0) and (v >= 0):
-                    cv2.circle(image_np, (int(u), int(v)), 3, (255, 0, 0), -1)
+                    u_real = valmap(u, 0, U, 0, len(image_np[1, :]))
+                    v_real = valmap(v, 0, V, 0, len(image_np[0, :]))
+                    cv2.circle(image_np, (int(u_real), int(v_real)),
+                               3, (255, 0, 0), -1)
 
         return image_np
+
+    def valmap(self,value, istart, istop, ostart, ostop):
+
+        return ostart + (ostop - ostart) * ((value - istart) / (istop - istart))
 
 
 def main(args):
