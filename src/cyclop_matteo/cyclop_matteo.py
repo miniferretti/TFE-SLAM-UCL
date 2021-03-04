@@ -11,7 +11,7 @@ from scipy.ndimage import filters
 from sensor_msgs.msg import CompressedImage, LaserScan
 import math
 
-VERBOSE = True
+VERBOSE = False
 
 
 class image_feature:
