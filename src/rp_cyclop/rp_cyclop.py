@@ -43,7 +43,7 @@ class image_feature:
             print('Received scan number "%s"' % scan_sync.header.seq)
 
            #### direct conversion to CV2 ####
-        np_arr = np.fromstring(image_sync.data, np.uint8)
+        np_arr = np.frombuffer(image_sync.data, np.uint8)
        # image_np = cv2.imdecode(np_arr, cv2.CV_LOAD_IMAGE_COLOR)
         image_np = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)  # OpenCV >= 3.0:
         image_np = cv2.rotate(image_np, cv2.ROTATE_180)
