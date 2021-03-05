@@ -127,7 +127,7 @@ class image_feature:
                        np.multiply(np.cos(ranges[1, :]), ranges[0, :])], np.float32)
 
         # Translation vector between the camera and the lidar (lidar --> Camera translation) everything in meters
-        t = np.array([[0, -0.048, -0.05]], np.float32).T
+        t = np.array([[0, -0.048, -0.03]], np.float32).T
 
         # Rotation matrix of the lidar regarding the camera position
         rotationAngle = math.radians(4)
