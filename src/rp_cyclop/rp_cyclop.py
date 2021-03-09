@@ -164,7 +164,7 @@ class image_feature:
                     cv2.circle(image_np, (int(u_real), int(v_real)),
                                3, (0, 0, 255), -1)
                     # Stores the LiDar pixels kept on the image
-                    P_real[:,i] = P[:,i]
+                    P_real = np.append(P_real,P[:,i])
 
         return image_np, P_real
 
