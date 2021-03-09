@@ -8,7 +8,7 @@ import roslib
 import rospy
 import message_filters
 from scipy.ndimage import filters
-from sensor_msgs.msg import CompressedImage, LaserScan
+from sensor_msgs.msg import CompressedImage, LaserScan, PointCloud2
 import math
 
 VERBOSE = False
@@ -19,7 +19,9 @@ class image_feature:
     def __init__(self):
 
         self.image_pub = rospy.Publisher(
-            "/output/image_raw/compressed", CompressedImage, queue_size=1)
+            "/cyclop_node/image_raw/compressed", CompressedImage, queue_size=1)
+        self.PointCloud2_pub = rospy.Publisher(
+            "/cyclop_node/PointCloud", PointCloud2, queue_size=1)
 
         self.image_sub = message_filters.Subscriber(
             "/raspicam_node/image/compressed", CompressedImage)
@@ -44,8 +46,7 @@ class image_feature:
 
            #### direct conversion to CV2 ####
         np_arr = np.frombuffer(image_sync.data, np.uint8)
-       # image_np = cv2.imdecode(np_arr, cv2.CV_LOAD_IMAGE_COLOR)
-        image_np = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)  # OpenCV >= 3.0:
+        image_np = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
         image_np = cv2.rotate(image_np, cv2.ROTATE_180)
 
         #### Feature detectors using CV2 ####
@@ -73,7 +74,7 @@ class image_feature:
         ################################################################
 
         ranges = self.range_filter(scan_sync)
-        image_np = self.lidar_data_to_img(ranges, image_np)
+        image_np, img_points = self.lidar_data_to_img(ranges, image_np)
 
         ################################################################
 
@@ -150,12 +151,11 @@ class image_feature:
         UV = np.array([np.divide(P[0, :], P[2, :]),
                        np.divide(P[1, :], P[2, :])], np.float32)
 
-       # print(UV.shape)
+        P_real = np.empty(shape=(3,0))
 
         for i in range(len(UV[0, :])):
             u = UV[0, i]
             v = UV[1, i]
-            # print("Vertical Pixel %s and Horizontal pixel number %s", (v, u))
 
             if (u <= U) and (v <= V):
                 if (u >= 0) and (v >= 0) and (P[2, i] >= 0):
@@ -163,8 +163,10 @@ class image_feature:
                     v_real = self.valmap(v, 0, V, 0, image_height)
                     cv2.circle(image_np, (int(u_real), int(v_real)),
                                3, (0, 0, 255), -1)
+                    # Stores the LiDar pixels kept on the image
+                    P_real[:,i] = P[:,i]
 
-        return image_np
+        return image_np, P_real
 
     def valmap(self, value, istart, istop, ostart, ostop):
         return ostart + (ostop - ostart) * ((value - istart) / (istop - istart))
