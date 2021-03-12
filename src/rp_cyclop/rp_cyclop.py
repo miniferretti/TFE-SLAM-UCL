@@ -19,9 +19,9 @@ class image_feature:
     def __init__(self):
 
         self.image_pub = rospy.Publisher(
-            "/cyclop_node/image_raw/compressed", CompressedImage, queue_size=1)
+            "/rp_cyclop_node/image_raw/compressed", CompressedImage, queue_size=1)
         self.PointCloud2_pub = rospy.Publisher(
-            "/cyclop_node/PointCloud", PointCloud2, queue_size=1)
+            "/rp_cyclop_node/PointCloud", PointCloud2, queue_size=1)
 
         self.image_sub = message_filters.Subscriber(
             "/raspicam_node/image/compressed", CompressedImage)
