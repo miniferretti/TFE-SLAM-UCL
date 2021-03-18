@@ -70,6 +70,16 @@ class image_feature:
      #       x, y = featpoint.pt
      #       cv2.circle(image_np, (int(x), int(y)), 3, (0, 0, 255), -1)
 
+        
+        ################################################################
+        ###          Detection of lines in the camera image         ####
+        ################################################################
+
+        edges = self.line_detect(image_np)
+
+        #################################################################
+        
+        
         ################################################################
         ###          Adding lidar data to the image                 ####
         ################################################################
@@ -79,17 +89,9 @@ class image_feature:
 
         ################################################################
 
-        ################################################################
-        ###          Detection of lines in the camera image         ####
-        ################################################################
-
-        edges = self.line_detect(image_np)
-
-        #################################################################
-
         cv2.imshow('cv_img', image_np)
         cv2.imshow('edges_img', edges)
-        cv2.createTrackbar('Canny Threshold', 'cv_img', 0, 300, self.change)
+        cv2.createTrackbar('Canny Threshold', 'edges_img', 0, 300, self.change)
         cv2.waitKey(2)
 
         #### Create CompressedIamge ####
