@@ -188,7 +188,7 @@ class image_feature:
         edges = cv2.Canny(gray, 50, threshold,
                           apertureSize=3, L2gradient=True)
         lines = cv2.HoughLines(edges, 1, np.pi/180, 1, 200)
-        for rho, theta in lines[0]:
+        for rho, theta in lines:
             a = np.cos(theta)
             b = np.sin(theta)
             x0 = a*rho
