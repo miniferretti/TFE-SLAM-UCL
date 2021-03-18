@@ -93,7 +93,7 @@ class image_feature:
         #################################################################
 
         cv2.imshow('cv_img', image_np)
-        cv2.createTrackbar('Canny Threshold', 'cv_img', 0, 100, change)
+        cv2.createTrackbar('Canny Threshold', 'cv_img', 0, 300, change)
         cv2.waitKey(2)
 
         #### Create CompressedIamge ####
@@ -188,7 +188,7 @@ class image_feature:
 
     def line_detect(self, image_np):
         gray = cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY)
-        edges = cv2.Canny(gray, 0, threshold, apertureSize=3, L2gradient=False)
+        edges = cv2.Canny(gray, 50, threshold, apertureSize=3, L2gradient=False)
         minLineLength = 1000
         maxLineGap = 10
         lines = cv2.HoughLinesP(edges, 1, np.pi/180, 100,
