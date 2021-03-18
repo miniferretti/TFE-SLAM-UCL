@@ -12,7 +12,7 @@ from sensor_msgs.msg import CompressedImage, LaserScan, PointCloud2
 import math
 
 VERBOSE = False
-threshold = 0
+threshold = 56
 
 
 class image_feature:
@@ -189,7 +189,7 @@ class image_feature:
         gray = cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY)
         edges = cv2.Canny(gray, 50, threshold,
                           apertureSize=3, L2gradient=False)
-        minLineLength = 1000
+        minLineLength = 30
         maxLineGap = 10
         lines = cv2.HoughLinesP(edges, 1, np.pi/180, 100,
                                 minLineLength, maxLineGap)
