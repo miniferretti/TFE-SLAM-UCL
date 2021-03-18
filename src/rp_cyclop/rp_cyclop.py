@@ -181,14 +181,13 @@ class image_feature:
 
     def line_detect(self, image_np):
         gray = cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY)
-        edges = cv2.Canny(gray, 50, 150, apertureSize=3)
-        minLineLength = 100
+        edges = cv2.Canny(gray, 33, 100, apertureSize=3,L2gradient=True)
+        minLineLength = 1000
         maxLineGap = 10
         lines = cv2.HoughLinesP(edges, 1, np.pi/180, 100,
                                 minLineLength, maxLineGap)
         for x1, y1, x2, y2 in lines[0]:
             cv2.line(image_np, (x1, y1), (x2, y2), (0, 255, 0), 2)
-        return lines
 
 
 def main(args):
