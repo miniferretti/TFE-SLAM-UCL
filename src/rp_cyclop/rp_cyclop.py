@@ -83,11 +83,12 @@ class image_feature:
         ###          Detection of lines in the camera image         ####
         ################################################################
 
-        self.line_detect(image_np)
+        edges = self.line_detect(image_np)
 
         #################################################################
 
         cv2.imshow('cv_img', image_np)
+        cv2.imshow('edges_img', edges)
         cv2.createTrackbar('Canny Threshold', 'cv_img', 0, 300, self.change)
         cv2.waitKey(2)
 
@@ -192,8 +193,9 @@ class image_feature:
                                 minLineLength, maxLineGap)
         for x1, y1, x2, y2 in lines[0]:
             cv2.line(image_np, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        return edges
 
-    def change(self,val):
+    def change(self, val):
         global threshold
         threshold = val
 
