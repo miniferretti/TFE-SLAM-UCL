@@ -12,6 +12,12 @@ from sensor_msgs.msg import CompressedImage, LaserScan, PointCloud2
 import math
 
 VERBOSE = False
+threshold = 0
+
+
+def change(val):
+   global threshold
+   threshold = val
 
 
 class image_feature:
@@ -82,11 +88,12 @@ class image_feature:
         ###          Detection of lines in the camera image         ####
         ################################################################
 
-        lines = self.line_detect(image_np)
+        self.line_detect(image_np)
 
         #################################################################
 
         cv2.imshow('cv_img', image_np)
+        cv2.createTrackbar('Canny Threshold', 'cv_img', 0, 100, change)
         cv2.waitKey(2)
 
         #### Create CompressedIamge ####
@@ -181,7 +188,7 @@ class image_feature:
 
     def line_detect(self, image_np):
         gray = cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY)
-        edges = cv2.Canny(gray, 20, 60, apertureSize=3,L2gradient=True)
+        edges = cv2.Canny(gray, 0, threshold, apertureSize=3, L2gradient=False)
         minLineLength = 1000
         maxLineGap = 10
         lines = cv2.HoughLinesP(edges, 1, np.pi/180, 100,
