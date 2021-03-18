@@ -187,7 +187,7 @@ class image_feature:
     def line_detect(self, image_np):
         global threshold
         gray = cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY)
-        edges = cv2.Canny(gray, 50, threshold,
+        edges = cv2.Canny(gray, 25, threshold,
                           apertureSize=3, L2gradient=False)
         minLineLength = 30
         maxLineGap = 5
