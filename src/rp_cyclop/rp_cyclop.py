@@ -189,8 +189,8 @@ class image_feature:
         gray = cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY)
         edges = cv2.Canny(gray, 25, threshold,
                           apertureSize=3, L2gradient=False)
-        minLineLength = 30
-        maxLineGap = 1
+        minLineLength = 50
+        maxLineGap = 20
         lines = cv2.HoughLinesP(edges, 1, np.pi/180, 100,
                                 minLineLength, maxLineGap)
         for x1, y1, x2, y2 in lines[0]:
