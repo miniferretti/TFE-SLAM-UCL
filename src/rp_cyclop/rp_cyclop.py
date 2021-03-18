@@ -151,7 +151,7 @@ class image_feature:
         UV = np.array([np.divide(P[0, :], P[2, :]),
                        np.divide(P[1, :], P[2, :])], np.float32)
 
-        P_real = np.empty(shape=(3,0))
+        P_real = np.empty(shape=(3, 0))
 
         for i in range(len(UV[0, :])):
             u = UV[0, i]
@@ -164,7 +164,7 @@ class image_feature:
                     cv2.circle(image_np, (int(u_real), int(v_real)),
                                3, (0, 0, 255), -1)
                     # Stores the LiDar pixels kept on the image
-                    P_real = np.append(P_real,P[:,i])
+                    P_real = np.append(P_real, P[:, i])
 
         return image_np, P_real
 
