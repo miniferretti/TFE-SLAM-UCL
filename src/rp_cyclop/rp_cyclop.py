@@ -188,7 +188,7 @@ class image_feature:
         global threshold
         gray = cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY)
         edges = cv2.Canny(gray, 25, threshold,
-                          apertureSize=3, L2gradient=False)
+                          apertureSize=3, L2gradient=True)
         minLineLength = 50
         maxLineGap = 20
         lines = cv2.HoughLinesP(edges, 1, np.pi/180, 100,
