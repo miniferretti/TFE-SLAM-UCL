@@ -188,7 +188,7 @@ class image_feature:
         edges = cv2.Canny(gray, 50, threshold,
                           apertureSize=3, L2gradient=True)
         minLineLength = 1
-        maxLineGap = 100
+        maxLineGap = 50
         lines = cv2.HoughLinesP(edges, 1, np.pi/180, 1,
                                 minLineLength, maxLineGap)
         line_image = np.zeros_like(image_np)
