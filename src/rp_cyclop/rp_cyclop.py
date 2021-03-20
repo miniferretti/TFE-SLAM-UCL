@@ -192,6 +192,7 @@ class image_feature:
         lines = cv2.HoughLinesP(edges, 1, np.pi/180, 1,
                                 minLineLength, maxLineGap)
         line_image = np.zeros_like(image_np)
+        
         for line in lines:
             for x1, y1, x2, y2 in line:
                 cv2.line(line_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
