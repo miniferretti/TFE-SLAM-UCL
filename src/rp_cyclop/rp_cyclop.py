@@ -74,7 +74,7 @@ class image_feature:
         ###          Detection of lines in the camera image         ####
         ################################################################
 
-       # edges, image_np = self.line_detect(image_np)
+        edges, image_np = self.line_detect(image_np)
 
         #################################################################
 
@@ -88,8 +88,8 @@ class image_feature:
         ################################################################
 
         cv2.imshow('cv_img', image_np)
-       # cv2.imshow('edges_img', edges)
-       # cv2.createTrackbar('Canny Threshold', 'edges_img', 0, 300, self.change)
+        cv2.imshow('edges_img', edges)
+        cv2.createTrackbar('Canny Threshold', 'edges_img', 0, 300, self.change)
         cv2.waitKey(2)
 
         #### Create CompressedIamge ####
