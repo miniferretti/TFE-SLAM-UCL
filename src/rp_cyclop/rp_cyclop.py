@@ -12,7 +12,7 @@ from sensor_msgs.msg import CompressedImage, LaserScan, PointCloud2
 import math
 
 VERBOSE = False
-threshold = 56
+threshold = 100
 
 
 class image_feature:
