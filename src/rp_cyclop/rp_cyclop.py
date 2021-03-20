@@ -187,10 +187,10 @@ class image_feature:
         gray = cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY)
         edges = cv2.Canny(gray, 50, threshold,
                           apertureSize=3, L2gradient=True)
-        minLineLength = 30
+        minLineLength = 20
         maxLineGap = 50
-        lines = cv2.HoughLinesP(edges, 1, np.pi/180, 1,
-                                minLineLength, maxLineGap)
+        lines = cv2.HoughLinesP(edges, 1, np.pi/180, threshold=20,
+                                minLineLength=minLineLength, maxLineGap=maxLineGap)
 
         line_image = np.zeros_like(image_np)
 
@@ -198,8 +198,9 @@ class image_feature:
             for line in lines:
                 if line is not None:
                     for x1, y1, x2, y2 in line:
-                        cv2.line(line_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                        
+                        cv2.line(line_image, (x1, y1),
+                                 (x2, y2), (0, 255, 0), 2)
+
         return edges, cv2.addWeighted(image_np, 1.0, line_image, 1.0, 0.0)
 
     def change(self, val):
