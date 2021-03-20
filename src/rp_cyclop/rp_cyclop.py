@@ -193,7 +193,7 @@ class image_feature:
                                 minLineLength, maxLineGap)
         print(lines)
         for x1, y1, x2, y2 in lines[0]:
-            cv2.line(image_np, (x1, y1), (x2, y2), (0, 255, 0), -1)
+            cv2.line(image_np, (x1, y1), (x2, y2), (0, 255, 0), 2)
         return edges, image_np
 
     def change(self, val):
