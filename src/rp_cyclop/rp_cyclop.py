@@ -192,9 +192,10 @@ class image_feature:
         lines = cv2.HoughLinesP(edges, 1, np.pi/180, 1,
                                 minLineLength, maxLineGap)
         print(lines)
+        line_image = np.zeros_like(image_np)
         for x1, y1, x2, y2 in lines[0]:
-            image_np = cv2.line(image_np, (x1, y1), (x2, y2), (0, 255, 0), 2)
-        return edges, image_np
+            cv2.line(line_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        return edges, cv2.addWeighted(image_np, 1.0, line_image, 1.0, 0.0)
 
     def change(self, val):
         global threshold
