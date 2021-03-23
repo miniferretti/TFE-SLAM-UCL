@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import time
-import panda
 import numpy as np
 import cv2
 import rospkg
