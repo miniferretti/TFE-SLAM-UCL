@@ -192,7 +192,7 @@ class MonoDepth():
         self.counter += 1
 
 
-def main(args):
+def main():
     rospy.init_node("monodepth")
 
     depth = MonoDepth()
@@ -204,4 +204,4 @@ def main(args):
 
 
 if __name__ == "__main__":
-    main(sys.args)
+    main()
