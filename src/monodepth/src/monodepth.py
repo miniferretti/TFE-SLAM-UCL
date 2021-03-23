@@ -23,7 +23,7 @@ class MonoDepth():
         self.session.run(self.init)
 
         # Get parameters
-        self.debug = rospy.get_param("~debug", False)
+        self.debug = rospy.get_param("~debug", True)
         self.frame_id = rospy.get_param("~frame_id", "map")
 
         self.topic_color = rospy.get_param("~topic_color", "/camera/image_raw")
