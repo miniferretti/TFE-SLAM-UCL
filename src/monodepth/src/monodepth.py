@@ -7,6 +7,7 @@ import rospkg
 import rospy
 import keras
 import tensorflow as tf
+import sys
 
 from sensor_msgs.msg import Image, PointCloud2, PointField
 from cv_bridge import CvBridge, CvBridgeError
@@ -17,9 +18,9 @@ from layers import BilinearUpSampling2D
 
 class MonoDepth():
     def __init__(self):
-        
+
         print("Hello world")
-         
+
         # Setup tensorflow session
         self.session = keras.backend.get_session()
         self.init = tf.global_variables_initializer()
@@ -30,8 +31,10 @@ class MonoDepth():
         self.frame_id = rospy.get_param("~frame_id", "map")
 
         self.topic_color = rospy.get_param("~topic_color", "/camera/image_raw")
-        self.topic_depth = rospy.get_param("~topic_depth", "/camera/image_depth")
-        self.topic_pointcloud = rospy.get_param("~topic_pointcloud", "/pointcloud")
+        self.topic_depth = rospy.get_param(
+            "~topic_depth", "/camera/image_depth")
+        self.topic_pointcloud = rospy.get_param(
+            "~topic_pointcloud", "/pointcloud")
 
         self.min_depth = rospy.get_param("~min_depth", 10)
         self.max_depth = rospy.get_param("~max_depth", 1000)
@@ -44,20 +47,25 @@ class MonoDepth():
 
         # Custom object needed for inference and training
         self.start = time.time()
-        self.custom_objects = {"BilinearUpSampling2D": BilinearUpSampling2D, "depth_loss_function": self.depth_loss_function}
+        self.custom_objects = {"BilinearUpSampling2D": BilinearUpSampling2D,
+                               "depth_loss_function": self.depth_loss_function}
 
         # Load model into GPU / CPU
-        self.model = keras.models.load_model(self.model_path, custom_objects=self.custom_objects, compile=False)
+        self.model = keras.models.load_model(
+            self.model_path, custom_objects=self.custom_objects, compile=False)
         self.model._make_predict_function()
 
         # Publishers
-        self.pub_image_depth = rospy.Publisher(self.topic_depth, Image, queue_size=1)
-        self.pub_pointcloud = rospy.Publisher(self.topic_pointcloud, PointCloud2, queue_size=1)
+        self.pub_image_depth = rospy.Publisher(
+            self.topic_depth, Image, queue_size=1)
+        self.pub_pointcloud = rospy.Publisher(
+            self.topic_pointcloud, PointCloud2, queue_size=1)
         self.counter = 0
 
         # Subscribers
         self.bridge = CvBridge()
-        self.sub_image_raw = rospy.Subscriber(self.topic_color, Image, self.image_callback)
+        self.sub_image_raw = rospy.Subscriber(
+            self.topic_color, Image, self.image_callback)
 
     # Loss function for the depth map
     def depth_loss_function(self, y_true, y_pred):
@@ -65,15 +73,18 @@ class MonoDepth():
         max_depth_val = self.max_depth / self.min_depth
 
         # Point-wise depth
-        l_depth = keras.backend.mean(keras.backend.abs(y_pred - y_true), axis = -1)
+        l_depth = keras.backend.mean(
+            keras.backend.abs(y_pred - y_true), axis=-1)
 
         # Edges
         dy_true, dx_true = tf.image.image_gradients(y_true)
         dy_pred, dx_pred = tf.image.image_gradients(y_pred)
-        l_edges = keras.backend.mean(keras.backend.abs(dy_pred - dy_true) + keras.backend.abs(dx_pred - dx_true), axis = -1)
+        l_edges = keras.backend.mean(keras.backend.abs(
+            dy_pred - dy_true) + keras.backend.abs(dx_pred - dx_true), axis=-1)
 
         # Structural similarity (SSIM) index
-        l_ssim = keras.backend.clip((1 - tf.image.ssim(y_true, y_pred, max_depth_val)) * 0.5, 0, 1)
+        l_ssim = keras.backend.clip(
+            (1 - tf.image.ssim(y_true, y_pred, max_depth_val)) * 0.5, 0, 1)
 
         # Weights
         w1 = 1.0
@@ -107,7 +118,7 @@ class MonoDepth():
         # Iterate images and build point cloud
         for y in range(height):
             for x in range(width):
-                data[i] = (x - (width / 2))  / 100.0
+                data[i] = (x - (width / 2)) / 100.0
                 data[i + 1] = (-y + (height / 2)) / 100.0
                 data[i + 2] = depth[y, x] / 25
                 data[i + 3] = float(img[y, x, 0]) / 255.0
@@ -156,7 +167,8 @@ class MonoDepth():
         # Predict depth image
         with self.session.as_default():
             with self.session.graph.as_default():
-                result = predict(self.model, arr, self.min_depth, self.max_depth, self.batch_size)
+                result = predict(self.model, arr, self.min_depth,
+                                 self.max_depth, self.batch_size)
 
         # Resize and reshape output
         depth = result.reshape(result.shape[1], result.shape[2], 1)
@@ -168,7 +180,8 @@ class MonoDepth():
 
         # Publish depth image
         depth = 255 * depth
-        self.pub_image_depth.publish(self.bridge.cv2_to_imgmsg(depth.astype(np.uint8), "mono8"))
+        self.pub_image_depth.publish(
+            self.bridge.cv2_to_imgmsg(depth.astype(np.uint8), "mono8"))
 
         # Generate Point cloud
         cloud_msg = self.create_pointcloud_msg(depth, image)
@@ -177,12 +190,17 @@ class MonoDepth():
         # Increment counter
         self.counter += 1
 
-def main():
+
+def main(args):
     rospy.init_node("monodepth")
 
     depth = MonoDepth()
+    try:
+        rospy.spin()
+    except KeyboardInterrupt:
+        print("Shutting down ROS Image depth sensing module")
+    cv2.destroyAllWindows()
 
-    rospy.spin()
 
 if __name__ == "__main__":
-    main()
+    main(sys.args)
