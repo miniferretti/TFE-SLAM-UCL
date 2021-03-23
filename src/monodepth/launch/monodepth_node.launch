@@ -1,5 +1,5 @@
 <node pkg="monodepth" type="monodepth.py" name="monodepth" output="screen" respawn="true">
-    <param name="topic_color" value="/image"/>
-    <param name="topic_depth" value="/image/depth"/>
+    <param name="topic_color" value="raspicam_node/image"/>
+    <param name="topic_depth" value="monodepth_node/image/depth"/>
     <param name="debug" type="bool" value="true"/>
 </node>
