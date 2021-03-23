@@ -4,4 +4,4 @@
         <param name="topic_depth" value="monodepth_node/image/depth" />
         <param name="debug" type="bool" value="true" />
     </node>
-</launch>>
+</launch>
