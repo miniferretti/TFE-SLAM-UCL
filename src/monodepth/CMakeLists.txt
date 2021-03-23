@@ -11,7 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
     std_msgs
 )
 
-catkin_python_setup()
+#catkin_python_setup()
 
 generate_messages(DEPENDENCIES geometry_msgs nav_msgs sensor_msgs std_msgs)
 catkin_package(CATKIN_DEPENDS cv_bridge geometry_msgs image_transport message_runtime nav_msgs rospy sensor_msgs std_msgs)
