@@ -17,6 +17,9 @@ from layers import BilinearUpSampling2D
 
 class MonoDepth():
     def __init__(self):
+        
+        print("Hello world")
+         
         # Setup tensorflow session
         self.session = keras.backend.get_session()
         self.init = tf.global_variables_initializer()
