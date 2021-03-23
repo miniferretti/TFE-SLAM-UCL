@@ -1,10 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import time
 import numpy as np
 import cv2
 import rospkg
 import rospy
+import roslib
 import keras
 import tensorflow as tf
 import sys
@@ -30,7 +31,7 @@ class MonoDepth():
         self.debug = rospy.get_param("~debug", True)
         self.frame_id = rospy.get_param("~frame_id", "map")
 
-        self.topic_color = rospy.get_param("~topic_color", "/camera/image_raw")
+        self.topic_color = rospy.get_param("~topic_color", "/raspicam_node/image")
         self.topic_depth = rospy.get_param(
             "~topic_depth", "/camera/image_depth")
         self.topic_pointcloud = rospy.get_param(
