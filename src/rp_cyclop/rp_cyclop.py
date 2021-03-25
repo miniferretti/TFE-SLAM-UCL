@@ -96,7 +96,7 @@ class image_feature:
         msg = CompressedImage()
         msg.header.stamp = rospy.Time.now()
         msg.format = "jpeg"
-        msg.data = np.array(cv2.imencode('.jpg', image_np)[1]).tostring()
+        msg.data = np.array(cv2.imencode('.jpg', image_np)[1]).tobytes()
         # Publish new image
         self.image_pub.publish(msg)
 
