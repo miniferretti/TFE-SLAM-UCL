@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 import time
 import numpy as np
@@ -6,8 +6,9 @@ import cv2
 import rospkg
 import rospy
 print("Hello world")
-import keras
+#import keras
 import tensorflow as tf
+#from tensorflow import keras
 import sys
 
 from sensor_msgs.msg import Image, PointCloud2, PointField
@@ -24,7 +25,7 @@ class MonoDepth:
         print("Hello world")
 
         # Setup tensorflow session
-        self.session = keras.backend.get_session()
+        self.session = tf.keras.backend.get_session()
         self.init = tf.global_variables_initializer()
         self.session.run(self.init)
 
@@ -54,7 +55,7 @@ class MonoDepth:
                                "depth_loss_function": self.depth_loss_function}
 
         # Load model into GPU / CPU
-        self.model = keras.models.load_model(
+        self.model = tf.keras.models.load_model(
             self.model_path, custom_objects=self.custom_objects, compile=False)
         self.model._make_predict_function()
 
@@ -76,17 +77,17 @@ class MonoDepth:
         max_depth_val = self.max_depth / self.min_depth
 
         # Point-wise depth
-        l_depth = keras.backend.mean(
-            keras.backend.abs(y_pred - y_true), axis=-1)
+        l_depth = tf.keras.backend.mean(
+            tf.keras.backend.abs(y_pred - y_true), axis=-1)
 
         # Edges
         dy_true, dx_true = tf.image.image_gradients(y_true)
         dy_pred, dx_pred = tf.image.image_gradients(y_pred)
-        l_edges = keras.backend.mean(keras.backend.abs(
-            dy_pred - dy_true) + keras.backend.abs(dx_pred - dx_true), axis=-1)
+        l_edges = tf.keras.backend.mean(tf.keras.backend.abs(
+            dy_pred - dy_true) + tf.keras.backend.abs(dx_pred - dx_true), axis=-1)
 
         # Structural similarity (SSIM) index
-        l_ssim = keras.backend.clip(
+        l_ssim = tf.keras.backend.clip(
             (1 - tf.image.ssim(y_true, y_pred, max_depth_val)) * 0.5, 0, 1)
 
         # Weights
@@ -94,7 +95,7 @@ class MonoDepth:
         w2 = 1.0
         w3 = theta
 
-        return (w1 * l_ssim) + (w2 * keras.backend.mean(l_edges)) + (w3 * keras.backend.mean(l_depth))
+        return (w1 * l_ssim) + (w2 * tf.keras.backend.mean(l_edges)) + (w3 * tf.keras.backend.mean(l_depth))
 
     # Create a sensor_msgs.PointCloud2 from the depth and color images provided
     #
