@@ -1,22 +1,21 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
+from layers import BilinearUpSampling2D
+from predict import predict
+from cv_bridge import CvBridge, CvBridgeError
+from sensor_msgs.msg import Image, PointCloud2, PointField
+import sys
 import time
 import numpy as np
 import cv2
 import rospkg
 import rospy
 
-#import keras
+# import keras
 import tensorflow as tf
 print("Hello world")
-#from tensorflow import keras
-import sys
+# from tensorflow import keras
 
-from sensor_msgs.msg import Image, PointCloud2, PointField
-from cv_bridge import CvBridge, CvBridgeError
-
-from predict import predict
-from layers import BilinearUpSampling2D
 
 print("Hello world")
 tf.compat.v1.disable_eager_execution()
@@ -147,7 +146,7 @@ class MonoDepth:
         msg.point_step = 24
         msg.row_step = msg.point_step * height * width
         msg.is_dense = True
-        msg.data = data.tostring()
+        msg.data = data.tobytes()
 
         return msg
 
@@ -162,6 +161,7 @@ class MonoDepth:
             print(e)
 
         # Display image
+        image = cv2.rotate(image, cv2.ROTATE_180)
         if self.debug:
             cv2.imshow("Image", image)
             cv2.waitKey(1)
@@ -179,7 +179,7 @@ class MonoDepth:
 
         # Resize and reshape output
         depth = result.reshape(result.shape[1], result.shape[2], 1)
-
+        #depth = cv2.resize(depth, (1280, 960))
         # Display depth
         if self.debug:
             cv2.imshow("Result", depth)
