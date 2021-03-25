@@ -5,7 +5,6 @@ import numpy as np
 import cv2
 import rospkg
 import rospy
-import roslib
 import keras
 import tensorflow as tf
 import sys
