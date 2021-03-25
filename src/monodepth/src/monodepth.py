@@ -16,7 +16,7 @@ from predict import predict
 from layers import BilinearUpSampling2D
 
 
-class MonoDepth():
+class MonoDepth:
     def __init__(self):
 
         # Setup tensorflow session
@@ -190,10 +190,10 @@ class MonoDepth():
         self.counter += 1
 
 
-def main():
+def main(args):
     print("Hello world")
 
-    rospy.init_node("monodepth")
+    rospy.init_node('monodepth', anonymous=True)
 
     depth = MonoDepth()
     try:
@@ -204,4 +204,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv)
