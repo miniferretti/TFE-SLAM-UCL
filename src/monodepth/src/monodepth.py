@@ -5,7 +5,6 @@ import numpy as np
 import cv2
 import rospkg
 import rospy
-import roslib
 import keras
 import tensorflow as tf
 import sys
@@ -16,8 +15,9 @@ from cv_bridge import CvBridge, CvBridgeError
 from predict import predict
 from layers import BilinearUpSampling2D
 
+print("Hello world")
 
-class MonoDepth():
+class MonoDepth:
     def __init__(self):
 
         print("Hello world")
@@ -31,7 +31,8 @@ class MonoDepth():
         self.debug = rospy.get_param("~debug", True)
         self.frame_id = rospy.get_param("~frame_id", "map")
 
-        self.topic_color = rospy.get_param("~topic_color", "/raspicam_node/image")
+        self.topic_color = rospy.get_param(
+            "~topic_color", "/raspicam_node/image")
         self.topic_depth = rospy.get_param(
             "~topic_depth", "/camera/image_depth")
         self.topic_pointcloud = rospy.get_param(
@@ -192,7 +193,7 @@ class MonoDepth():
         self.counter += 1
 
 
-def main():
+def main(args):
     rospy.init_node("monodepth")
 
     depth = MonoDepth()
@@ -204,4 +205,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv)
