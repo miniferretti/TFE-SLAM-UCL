@@ -7,15 +7,7 @@ project(monodepth)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-    cv_bridge
-    geometry_msgs
-    image_transport
-    nav_msgs
-    rospy
-    sensor_msgs
-    std_msgs
-)
+find_package(catkin REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -106,8 +98,12 @@ find_package(catkin REQUIRED COMPONENTS
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-#generate_messages(DEPENDENCIES geometry_msgs nav_msgs sensor_msgs std_msgs)
-catkin_package(CATKIN_DEPENDS cv_bridge geometry_msgs image_transport message_runtime nav_msgs rospy sensor_msgs std_msgs)
+catkin_package(
+#  INCLUDE_DIRS include
+#  LIBRARIES monodepth
+#  CATKIN_DEPENDS other_catkin_pkg
+#  DEPENDS system_lib
+)
 
 ###########
 ## Build ##
@@ -117,7 +113,7 @@ catkin_package(CATKIN_DEPENDS cv_bridge geometry_msgs image_transport message_ru
 ## Your package locations should be listed before other locations
 include_directories(
 # include
- ${catkin_INCLUDE_DIRS}
+# ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -159,10 +155,10 @@ include_directories(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
- catkin_install_python(PROGRAMS
-   src/monodepth.py
-   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
- )
+# catkin_install_python(PROGRAMS
+#   scripts/my_python_script
+#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html

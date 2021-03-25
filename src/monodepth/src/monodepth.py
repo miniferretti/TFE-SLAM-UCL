@@ -5,6 +5,7 @@ import numpy as np
 import cv2
 import rospkg
 import rospy
+import roslib
 import keras
 import tensorflow as tf
 import sys
@@ -16,8 +17,10 @@ from predict import predict
 from layers import BilinearUpSampling2D
 
 
-class MonoDepth:
+class MonoDepth():
     def __init__(self):
+
+        print("Hello world")
 
         # Setup tensorflow session
         self.session = keras.backend.get_session()
@@ -28,8 +31,7 @@ class MonoDepth:
         self.debug = rospy.get_param("~debug", True)
         self.frame_id = rospy.get_param("~frame_id", "map")
 
-        self.topic_color = rospy.get_param(
-            "~topic_color", "/raspicam_node/image")
+        self.topic_color = rospy.get_param("~topic_color", "/raspicam_node/image")
         self.topic_depth = rospy.get_param(
             "~topic_depth", "/camera/image_depth")
         self.topic_pointcloud = rospy.get_param(
@@ -190,10 +192,8 @@ class MonoDepth:
         self.counter += 1
 
 
-def main(args):
-    print("Hello world")
-
-    rospy.init_node('monodepth', anonymous=True)
+def main():
+    rospy.init_node("monodepth")
 
     depth = MonoDepth()
     try:
@@ -204,4 +204,4 @@ def main(args):
 
 
 if __name__ == "__main__":
-    main(sys.argv)
+    main()
