@@ -18,6 +18,8 @@ from predict import predict
 from layers import BilinearUpSampling2D
 
 print("Hello world")
+tf.compat.v1.disable_eager_execution()
+
 
 class MonoDepth:
     def __init__(self):
@@ -25,8 +27,8 @@ class MonoDepth:
         print("Hello world")
 
         # Setup tensorflow session
-        self.session = tf.keras.backend.get_session()
-        self.init = tf.global_variables_initializer()
+        self.session = tf.compat.v1.keras.backend.get_session()
+        self.init = tf.compat.v1.global_variables_initializer()
         self.session.run(self.init)
 
         # Get parameters
