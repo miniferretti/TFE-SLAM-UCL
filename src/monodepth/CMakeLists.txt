@@ -106,7 +106,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-generate_messages(DEPENDENCIES geometry_msgs nav_msgs sensor_msgs std_msgs)
+#generate_messages(DEPENDENCIES geometry_msgs nav_msgs sensor_msgs std_msgs)
 catkin_package(CATKIN_DEPENDS cv_bridge geometry_msgs image_transport message_runtime nav_msgs rospy sensor_msgs std_msgs)
 
 ###########
