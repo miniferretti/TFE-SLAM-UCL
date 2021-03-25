@@ -44,7 +44,7 @@ class BilinearUpSampling2D(Layer):
             width = self.size[1] * \
                 input_shape[2] if input_shape[2] is not None else None
 
-        return tf.image.resize(inputs, [height, width], method=tf.image.ResizeMethod.BILINEAR, align_corners=True)
+        return tf.compat.v1.image.resize(inputs, [height, width], method=tf.image.ResizeMethod.BILINEAR, align_corners=True)
 
     def get_config(self):
         config = {"size": self.size, "data_format": self.data_format}
