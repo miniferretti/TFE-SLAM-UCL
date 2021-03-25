@@ -5,8 +5,8 @@ import numpy as np
 import cv2
 import rospkg
 import rospy
-print("Hello world")
 import keras
+print("Hello world")
 import tensorflow as tf
 import sys
 
