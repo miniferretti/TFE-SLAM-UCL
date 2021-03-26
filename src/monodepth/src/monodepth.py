@@ -182,7 +182,8 @@ class MonoDepth:
         #depth = cv2.resize(depth, (1280, 960))
         # Display depth
         if self.debug:
-            cv2.imshow("Result", depth)
+            depthc = cv2.applyColorMap(depth, cv2.COLORMAP_PLASMA)
+            cv2.imshow("Result", depthc)
             cv2.waitKey(1)
 
         # Publish depth image
