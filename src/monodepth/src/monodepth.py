@@ -179,10 +179,10 @@ class MonoDepth:
 
         # Resize and reshape output
         depth = result.reshape(result.shape[1], result.shape[2], 1)
-        #depth = cv2.resize(depth, (1280, 960))
         # Display depth
         if self.debug:
-            depthc = cv2.applyColorMap((depth/256).astype(np.uint8), cv2.COLORMAP_PLASMA)
+           #depthc = depth*255
+            #depthc = cv2.applyColorMap(depthc.astype(int), cv2.COLORMAP_PLASMA)
             cv2.imshow("Result", depth)
             cv2.waitKey(1)
 
