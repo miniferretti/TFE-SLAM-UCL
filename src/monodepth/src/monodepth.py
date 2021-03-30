@@ -38,9 +38,9 @@ class MonoDepth:
         self.topic_color = rospy.get_param(
             "~topic_color", "/raspicam_node/image")
         self.topic_depth = rospy.get_param(
-            "~topic_depth", "/camera/image_depth")
+            "~topic_depth", "/monodepth/image_depth")
         self.topic_pointcloud = rospy.get_param(
-            "~topic_pointcloud", "/pointcloud")
+            "~topic_pointcloud", "/monodepth/pointcloud")
 
         self.min_depth = rospy.get_param("~min_depth", 10)
         self.max_depth = rospy.get_param("~max_depth", 1000)
