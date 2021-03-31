@@ -95,8 +95,15 @@ class Lidepth:
         UV = np.array([np.divide(P[0, :], P[2, :]),
                        np.divide(P[1, :], P[2, :])], np.float32)
 
-        # Get the prixel position on the camera sensor associated to the corresponding lidar depth
+        # Get the pixel position on the camera sensor associated to the corresponding lidar depth
         UVZ = np.vstack((UV, P[2, :]))
+
+        for i in range(len(UVZ[0, :])):
+            u = UVZ[0, i]
+            v = UVZ[1, i]
+            z = UVZ[2, i]
+            if (u <= U) and (v <= V):
+                if (u >= 0) and (v >= 0) and (z >= 0):
 
     def valmap(self, value, istart, istop, ostart, ostop):
         return ostart + (ostop - ostart) * ((value - istart) / (istop - istart))
