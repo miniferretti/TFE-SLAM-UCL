@@ -168,7 +168,11 @@ class MonoDepth:
 
         # Get image data as a numpy array to be passed for processing.
         img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+        # Cropping the Image
+        img = img[(2464/4):((2464*3)/2), 0:3280]   # Image : 3280 * 2464
         img = cv2.resize(img, (640, 480))
+
         arr = np.clip(np.asarray(img, dtype=np.float32) / 255, 0, 1)
 
         # Predict depth image
