@@ -98,16 +98,33 @@ class Lidepth:
         # Get the pixel position on the camera sensor associated to the corresponding lidar depth
         UVZ = np.vstack((UV, P[2, :]))
 
-        for i in range(len(UVZ[0, :])):
+        UVZ_trim = same_mean(UVZ)
+
+        for i in range(len(UVZ_trim[0, :])):
             u = UVZ[0, i]
             v = UVZ[1, i]
             z = UVZ[2, i]
+
             if (u <= U) and (v <= V):
                 if (u >= 0) and (v >= 0) and (z >= 0):
                     
-    
+
     def valmap(self, value, istart, istop, ostart, ostop):
         return ostart + (ostop - ostart) * ((value - istart) / (istop - istart))
+
+    def same_mean(self, UVZ):
+        output = UVZ[:, 0]
+        output_index = 0
+        for i in range(1, len(UVZ[0, :])):
+            u = UVZ[0, i]
+            v = UVZ[1, i]
+            z = UVZ[2, i]
+            if (u == output[0, output_index]) and (v == output[1, output_index]):
+                output[2, output_index] = math.mean(output[2, output_index], z)
+            else:
+                output = np.append(output, UVZ[:, i])
+                output_index += 1
+        return output
 
 
 def main(args):
