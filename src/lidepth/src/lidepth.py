@@ -104,7 +104,8 @@ class Lidepth:
             z = UVZ[2, i]
             if (u <= U) and (v <= V):
                 if (u >= 0) and (v >= 0) and (z >= 0):
-
+                    
+    
     def valmap(self, value, istart, istop, ostart, ostop):
         return ostart + (ostop - ostart) * ((value - istart) / (istop - istart))
 
