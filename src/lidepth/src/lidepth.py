@@ -107,6 +107,7 @@ class Lidepth:
 
             if (u <= U) and (v <= V):
                 if (u >= 0) and (v >= 0) and (z >= 0):
+        #A continuer            
                     
 
     def valmap(self, value, istart, istop, ostart, ostop):

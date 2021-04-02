@@ -3,13 +3,15 @@
 from layers import BilinearUpSampling2D
 from predict import predict
 from cv_bridge import CvBridge, CvBridgeError
-from sensor_msgs.msg import Image, PointCloud2, PointField
+from sensor_msgs.msg import Image, PointCloud2, PointField, CameraInfo
 import sys
 import time
 import numpy as np
 import cv2
 import rospkg
 import rospy
+from scipy.ndimage import filters
+import message_filters
 
 # import keras
 import tensorflow as tf
@@ -41,6 +43,12 @@ class MonoDepth:
             "~topic_depth", "/monodepth/image_depth")
         self.topic_pointcloud = rospy.get_param(
             "~topic_pointcloud", "/monodepth/pointcloud")
+        self.topic_camera_info = rospy.get_param(
+            "~topic_camera_info", "/raspicam_node/camera_info")
+        self.topic_camera_info_pub = rospy.get_param(
+            "~topic_camera_info_pub", "/monodepth/camera_info")
+        self.topic_color_pub = rospy.get_param(
+            "~topic_color_pub", "/monodepth/image")
 
         self.min_depth = rospy.get_param("~min_depth", 10)
         self.max_depth = rospy.get_param("~max_depth", 1000)
@@ -66,12 +74,22 @@ class MonoDepth:
             self.topic_depth, Image, queue_size=1)
         self.pub_pointcloud = rospy.Publisher(
             self.topic_pointcloud, PointCloud2, queue_size=1)
+        self.pub_camera_info = rospy.Publisher(
+            self.topic_camera_info_pub, CameraInfo, queue_size=1)
+        self.pub_imag_raw = rospy.Publisher(
+            self.topic_color_pub, Image, queue_size=1)
         self.counter = 0
 
         # Subscribers
         self.bridge = CvBridge()
-        self.sub_image_raw = rospy.Subscriber(
-            self.topic_color, Image, self.image_callback)
+        self.sub_image_raw = message_filters.Subscriber(
+            self.topic_color, Image)
+        self.sub_camera_info = message_filters.Subscriber(
+            self.topic_camera_info, CameraInfo)
+
+        ts = message_filters.ApproximateTimeSynchronizer(
+            [self.sub_camera_info, self.sub_image_raw], 10, 0.1)
+        ts.registerCallback(self.image_callback)
 
     # Loss function for the depth map
     def depth_loss_function(self, y_true, y_pred):
@@ -153,7 +171,7 @@ class MonoDepth:
     # Callback to receive and process image published.
     #
     # After processing it publishes back the estimated depth result
-    def image_callback(self, data):
+    def image_callback(self, camera_info, data):
         # Convert message to opencv image
         try:
             image = self.bridge.imgmsg_to_cv2(data, "bgr8")
@@ -171,7 +189,7 @@ class MonoDepth:
 
         # Cropping the Image
         img = img[(616):(1848), 0:3280]   # Image : 3280 * 2464
-        #img = img[(2464/4):((2464*3)/4), 0:3280]   # Image : 3280 * 2464
+        # img = img[(2464/4):((2464*3)/4), 0:3280]   # Image : 3280 * 2464
         img = cv2.resize(img, (640, 480))
 
         arr = np.clip(np.asarray(img, dtype=np.float32) / 255, 0, 1)
@@ -197,8 +215,12 @@ class MonoDepth:
             self.bridge.cv2_to_imgmsg(depth.astype(np.uint8), "mono8"))
 
         # Generate Point cloud
-        cloud_msg = self.create_pointcloud_msg(depth, image)
-        self.pub_pointcloud.publish(cloud_msg)
+        #cloud_msg = self.create_pointcloud_msg(depth, image)
+        # self.pub_pointcloud.publish(cloud_msg)
+
+        # Publishes the related camera_info for the creation of the PointCloud2 node
+        self.pub_camera_info.publish(camera_info)
+        self.pub_imag_raw.publish(data)
 
         # Increment counter
         self.counter += 1
