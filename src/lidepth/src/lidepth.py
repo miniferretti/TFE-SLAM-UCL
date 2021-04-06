@@ -9,6 +9,8 @@ import message_filters
 import numpy as np
 import math
 
+#from monodepth import monodepth
+
 
 class Lidepth:
     def __init__(self):
@@ -58,12 +60,14 @@ class Lidepth:
 
         return ranges
 
-    def correction(self, ranges, pointCloud_sync):
+    def correction(self, ranges, pointCloud2_sync):
+
+
 
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
 
-        pointCloud_height = pointCloud_sync.height
+        pointCloud_height = pointCloud2_sync.height
         pointCloud_width = pointCloud_sync.width
 
         # Projection of the lidar data to the 2D pointCloud plane
@@ -91,20 +95,69 @@ class Lidepth:
         H = np.array([[a, s, u0],
                       [0, a, v0],
                       [0, 0, 1]], np.float32)
-        P = H.dot(Pc)
+        P = H.dot(Pc) 
         UV = np.array([np.divide(P[0, :], P[2, :]),
                        np.divide(P[1, :], P[2, :])], np.float32)
 
         # Get the pixel position on the camera sensor associated to the corresponding lidar depth
         UVZ = np.vstack((UV, P[2, :]))
 
-        for i in range(len(UVZ[0, :])):
-            u = UVZ[0, i]
-            v = UVZ[1, i]
-            z = UVZ[2, i]
+        #for i in range(len(UVZ[0, :])):
+            #u = UVZ[0, i]
+            #v = UVZ[1, i]
+            #z = UVZ[2, i]
+            #if (u <= U) and (v <= V):
+                #if (u >= 0) and (v >= 0) and (z >= 0):
+
+
+
+        # Get the pointCloud2_sync
+
+        u = pointCloud2_sync.width
+        v = pointCloud2_sync.height
+
+
+        ###################################################
+        # If someone wants to reorder information 
+        #in pointcould in [z,x,y,R,G,B]
+        ###################################################
+
+        #data = pointCloud2_sync.data
+
+        #pointCloudArray = np.zeros((len(data),6))
+        #for i in range(len(data)):
+            #pointCloudArray[i ; 1] = data[i]        // x
+            #pointCloudArray[i ; 2] = data[i + 1]    // y
+            #pointCloudArray[i ; 0] = data[i + 2]    // z
+            #pointCloudArray[i ; 5] = data[i + 3]    // R
+            #pointCloudArray[i ; 4] = data[i + 4]    // G             
+            #pointCloudArray[i ; 3] = data[i + 5]    // B
+            #i += 6
+        ###################################################
+
+        # Correction with LiDAR Data
+
+        ###################################################
+        # Matrice Pixels 
+        ###################################################
+
+
+        for i in range(len(UV[0, :])):
             if (u <= U) and (v <= V):
-                if (u >= 0) and (v >= 0) and (z >= 0):
-                    
+                if (u >= 0) and (v >= 0) and (P[2, i] >= 0):
+                    u_pointCloud = self.valmap(u, 0, U, 0, image_width)
+                    v_pointCloud = self.valmap(v, 0, V, 0, image_height)
+                    ipixel = (v_pointCloud * u) + u_pointCloud
+                    pointCloud2_sync.data[(ipixel+2);0] = P[2, i]
+
+                    # Stores the LiDar pixels kept on the image
+                    P_real = np.append(P_real, P[:, i])
+
+        ###################################################
+
+
+
+
     
     def valmap(self, value, istart, istop, ostart, ostop):
         return ostart + (ostop - ostart) * ((value - istart) / (istop - istart))

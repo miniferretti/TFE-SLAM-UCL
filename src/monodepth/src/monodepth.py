@@ -11,6 +11,9 @@ import cv2
 import rospkg
 import rospy
 
+#from lidepth import lidepth
+
+
 # import keras
 import tensorflow as tf
 print("Hello world")
@@ -102,6 +105,8 @@ class MonoDepth:
     # Create a sensor_msgs.PointCloud2 from the depth and color images provided
     #
     # It ignores are camera parameters and assumes the images to be rectified
+
+
     def create_pointcloud_msg(self, depth, color):
         msg = PointCloud2()
         msg.header.stamp = rospy.Time.now()
@@ -118,8 +123,11 @@ class MonoDepth:
         data = np.zeros((height * width * 6), dtype=np.float32)
 
         # Message data size
-        msg.height = 1
-        msg.width = width * height
+        #msg.height = 1
+        #msg.width = width * height
+
+        msg.height = height
+        msg.width = width
 
         # Iterate images and build point cloud
         for y in range(height):
