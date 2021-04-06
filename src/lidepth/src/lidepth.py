@@ -148,7 +148,7 @@ class Lidepth:
                     u_pointCloud = self.valmap(u, 0, U, 0, image_width)
                     v_pointCloud = self.valmap(v, 0, V, 0, image_height)
                     ipixel = (v_pointCloud * u) + u_pointCloud
-                    pointCloud2_sync.data[(ipixel+2);0] = P[2, i]
+                    pointCloud2_sync.data[(ipixel*6)+2] = P[2, i]
 
                     # Stores the LiDar pixels kept on the image
                     P_real = np.append(P_real, P[:, i])
