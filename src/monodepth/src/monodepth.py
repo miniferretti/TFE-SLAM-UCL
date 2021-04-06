@@ -11,7 +11,7 @@ import cv2
 import rospkg
 import rospy
 
-#from lidepth import lidepth
+#from lidepth.source.lidepth import lidepth
 
 
 # import keras

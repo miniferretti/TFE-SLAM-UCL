@@ -153,6 +153,8 @@ class Lidepth:
                     # Stores the LiDar pixels kept on the image
                     P_real = np.append(P_real, P[:, i])
 
+        print("Point cloud adjusted with Lidar Data")
+
         ###################################################
 
 
