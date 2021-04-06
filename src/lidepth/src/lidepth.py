@@ -25,7 +25,7 @@ class Lidepth:
         # Creation of the subscribers
         self.scan_sub = message_filters.Subscriber("/scan", LaserScan)
         self.pointCloud2_sub = message_filters.Subscriber(
-            "/monodepth/pointcloud")
+            "/monodepth/pointcloud",PointCloud2)
 
         ts = message_filters.ApproximateTimeSynchronizer(
             [self.pointCloud2_sub, self.scan_sub], 10, 0.1)
