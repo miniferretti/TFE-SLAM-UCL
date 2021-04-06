@@ -139,7 +139,7 @@ class Lidepth:
         # Correction with LiDAR Data
 
         ###################################################
-        # Matrice Pixels 
+        # Matrice Pixels : inclusion des données LiDAR
         ###################################################
 
 
@@ -156,7 +156,16 @@ class Lidepth:
 
         print("Point cloud adjusted with Lidar Data")
 
+
         ###################################################
+        # Correction des données des lignes
+        ###################################################
+
+
+        ###################################################
+
+
+
 
 
 
