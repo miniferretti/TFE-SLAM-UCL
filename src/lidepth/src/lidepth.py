@@ -201,7 +201,7 @@ class Lidepth:
 
    
         #Creation of correctedPointCloud
-        print('Here we are!' \n )
+        print('Here we are! \n ')
 
         msg = PointCloud2()
 
@@ -212,14 +212,14 @@ class Lidepth:
         msg.width = pointCloud2_sync.width
         msg.height = pointCloud2_sync.height
 
-        print('pointCloud2_sync.width is %s ', pointCloud2_sync.width )
-        print('pointCloud2_sync.height is %s ', pointCloud2_sync.height )
+        print('pointCloud2_sync.width is %s \n', pointCloud2_sync.width )
+        print('pointCloud2_sync.height is %s \n', pointCloud2_sync.height )
 
         data = np.zeros((pointCloud2_sync.width * pointCloud2_sync.height * 6), dtype=np.float32)
         #data = pointCloud2_sync.data
         data = self.pointcloud2_to_array(pointCloud2_sync)
 
-        print('data shape is %s ', data.shape)
+        print('data shape is %s \n', data.shape)
         
 
         # Correction with LiDAR Data
