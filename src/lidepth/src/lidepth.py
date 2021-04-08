@@ -31,14 +31,20 @@ class Lidepth:
             [self.pointCloud2_sub, self.scan_sub], 10, 0.1)
         ts.registerCallback(self.callback)
 
+        
+
     def callback(self, pointCloud2_sync, scan_sync):
 
         # Process of the lidar data
         ranges = self.range_filter(scan_sync)
 
+        # Generate Corrected Point cloud 
+        cloudCorrected_msg = self.correction(ranges,pointCloud2_sync)
+        self.pub_pointcloud.publish(cloudCorected_msg)
+    
         return 1
 
-    def range_filter(self, scan_sync):
+    def range_filter(self, ranges, pointCloud2_sync):
 
         range_data = np.array(scan_sync.ranges, np.float32)
         angle_min = scan_sync.angle_min
@@ -64,12 +70,9 @@ class Lidepth:
     def correction(self, ranges, pointCloud2_sync):
 
 
-
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
 
-        pointCloud_height = pointCloud2_sync.height
-        pointCloud_width = pointCloud_sync.width
 
         # Projection of the lidar data to the 2D pointCloud plane
 
@@ -149,12 +152,21 @@ class Lidepth:
                     u_pointCloud = self.valmap(u, 0, U, 0, image_width)
                     v_pointCloud = self.valmap(v, 0, V, 0, image_height)
                     ipixel = (v_pointCloud * u) + u_pointCloud
+
+                    differenceIpixel = pointCloud2_sync.data[(ipixel*6)+2] - P[2, i]
+                    print('difference in pixel at [ "%s" ; "%s" ] is : "%s" ', pointCloud2_sync.data[(ipixel*6)], pointCloud2_sync.data[(ipixel*6)+1],differenceIpixel )
+                    
                     pointCloud2_sync.data[(ipixel*6)+2] = P[2, i]
 
                     # Stores the LiDar pixels kept on the image
                     P_real = np.append(P_real, P[:, i])
 
         print("Point cloud adjusted with Lidar Data")
+
+        correctedCloud = PointCloud2()
+        correctedCloud = pointCloud2_sync
+
+        return correctedCloud
 
 
         ###################################################
@@ -166,13 +178,11 @@ class Lidepth:
 
 
 
-
-
-
-
     
     def valmap(self, value, istart, istop, ostart, ostop):
+
         return ostart + (ostop - ostart) * ((value - istart) / (istop - istart))
+
 
 
 def main(args):
