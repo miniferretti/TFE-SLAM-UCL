@@ -153,7 +153,7 @@ class Lidepth:
                 if (u >= 0) and (v >= 0) and (P[2, i] >= 0):
                     u_pointCloud = self.valmap(u, 0, U, 0, pointCloud2_sync.width)
                     v_pointCloud = self.valmap(v, 0, V, 0, pointCloud2_sync.height)
-                    ipixel = (v_pointCloud * u) + u_pointCloud
+                    (int) ipixel = (v_pointCloud * u) + u_pointCloud
 
                     differenceIpixel = pointCloud2_sync.data[(ipixel*6)+2] - P[2, i]
                     print('difference in pixel at [ "%s" ; "%s" ] is : "%s" ', pointCloud2_sync.data[(ipixel*6)], pointCloud2_sync.data[(ipixel*6)+1],differenceIpixel )
