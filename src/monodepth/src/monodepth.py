@@ -130,6 +130,7 @@ class MonoDepth:
         msg.width = width
 
         # Iterate images and build point cloud
+
         for y in range(height):
             for x in range(width):
                 data[i] = (x - (width / 2)) / 100.0
@@ -154,7 +155,7 @@ class MonoDepth:
         msg.point_step = 24
         msg.row_step = msg.point_step * height * width
         msg.is_dense = True
-        #msg.data = data.tobytes()
+        msg.data = data.tobytes()
 
         return msg
 
