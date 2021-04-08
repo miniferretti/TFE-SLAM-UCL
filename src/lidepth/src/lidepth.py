@@ -119,18 +119,18 @@ class Lidepth:
         dtype_list = self.fields_to_dtype(cloud_msg.fields, cloud_msg.point_step) 
 
         # parse the cloud into an array
-        cloud_arr = np.fromstring(cloud_msg.data, dtype_list)
+        #cloud_arr = np.fromstring(cloud_msg.data, dtype_list)
 
         # remove the dummy fields that were added
-        cloud_arr = cloud_arr[
-            [fname for fname, _type in dtype_list if not (fname[:len(DUMMY_FIELD_PREFIX)] == DUMMY_FIELD_PREFIX)]]
+        #cloud_arr = cloud_arr[
+            #[fname for fname, _type in dtype_list if not (fname[:len(DUMMY_FIELD_PREFIX)] == DUMMY_FIELD_PREFIX)]]
 
         #if squeeze and cloud_msg.height == 1:
             #return np.reshape(cloud_arr, (cloud_msg.width,))
         #else:
             #return np.reshape(cloud_arr, (cloud_msg.height, cloud_msg.width))
 
-        return cloud_arr
+        return dtype_list
     #####################################################
     #####################################################
 
@@ -217,6 +217,8 @@ class Lidepth:
 
         data = np.zeros((pointCloud2_sync.width * pointCloud2_sync.height * 6), dtype=np.float32)
         #data = pointCloud2_sync.data
+        print('data shape is %s \n', data.shape)
+
         data = self.pointcloud2_to_array(pointCloud2_sync)
 
         print('data shape is %s \n', data.shape)
