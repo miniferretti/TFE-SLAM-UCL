@@ -145,12 +145,14 @@ class Lidepth:
         # Matrice Pixels : inclusion des données LiDAR
         ###################################################
 
-
+   
         for i in range(len(UV[0, :])):
+            u = UV[0, i]
+            v = UV[1, i]
             if (u <= U) and (v <= V):
                 if (u >= 0) and (v >= 0) and (P[2, i] >= 0):
-                    u_pointCloud = self.valmap(u, 0, U, 0, image_width)
-                    v_pointCloud = self.valmap(v, 0, V, 0, image_height)
+                    u_pointCloud = self.valmap(u, 0, U, 0, pointCloud2_sync.width)
+                    v_pointCloud = self.valmap(v, 0, V, 0, pointCloud2_sync.height)
                     ipixel = (v_pointCloud * u) + u_pointCloud
 
                     differenceIpixel = pointCloud2_sync.data[(ipixel*6)+2] - P[2, i]
