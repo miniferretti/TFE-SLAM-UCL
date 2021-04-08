@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-from layers import BilinearUpSampling2D
-from predict import predict
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image, PointCloud2, PointField, CameraInfo
 import sys
@@ -12,26 +10,29 @@ import rospkg
 import rospy
 from scipy.ndimage import filters
 import message_filters
+from models import UnetAdaptiveBins
+import models_io
+from infer import InferenceHelper
+from predict import depth_norm
 
-# import keras
-import tensorflow as tf
+MIN_DEPTH = 1e-3
+MAX_DEPTH_NYU = 10
+MAX_DEPTH_KITTI = 80
+
+N_BINS = 256
+
+
 print("Hello world")
 # from tensorflow import keras
 
 
 print("Hello world")
-tf.compat.v1.disable_eager_execution()
 
 
 class MonoDepth:
     def __init__(self):
 
         print("Hello world")
-
-        # Setup tensorflow session
-        self.session = tf.compat.v1.keras.backend.get_session()
-        self.init = tf.compat.v1.global_variables_initializer()
-        self.session.run(self.init)
 
         # Get parameters
         self.debug = rospy.get_param("~debug", True)
@@ -53,19 +54,8 @@ class MonoDepth:
         self.batch_size = rospy.get_param("~batch_size", 1)
         self.model_file = rospy.get_param("~model_file", "/models/nyu.h5")
 
-        # Read keras model
-        self.rospack = rospkg.RosPack()
-        self.model_path = self.rospack.get_path("monodepth") + self.model_file
-
-        # Custom object needed for inference and training
-        self.start = time.time()
-        self.custom_objects = {"BilinearUpSampling2D": BilinearUpSampling2D,
-                               "depth_loss_function": self.depth_loss_function}
-
         # Load model into GPU / CPU
-        self.model = tf.keras.models.load_model(
-            self.model_path, custom_objects=self.custom_objects, compile=False)
-        self.model._make_predict_function()
+        self.infer_helper = InferenceHelper(dataset='nyu', device='cpu')
 
         # Publishers
         self.pub_image_depth = rospy.Publisher(
@@ -85,32 +75,6 @@ class MonoDepth:
         self.camera_info = None
 
         print("Hello world")
-
-    # Loss function for the depth map
-    def depth_loss_function(self, y_true, y_pred):
-        theta = 0.1
-        max_depth_val = self.max_depth / self.min_depth
-
-        # Point-wise depth
-        l_depth = tf.keras.backend.mean(
-            tf.keras.backend.abs(y_pred - y_true), axis=-1)
-
-        # Edges
-        dy_true, dx_true = tf.image.image_gradients(y_true)
-        dy_pred, dx_pred = tf.image.image_gradients(y_pred)
-        l_edges = tf.keras.backend.mean(tf.keras.backend.abs(
-            dy_pred - dy_true) + tf.keras.backend.abs(dx_pred - dx_true), axis=-1)
-
-        # Structural similarity (SSIM) index
-        l_ssim = tf.keras.backend.clip(
-            (1 - tf.image.ssim(y_true, y_pred, max_depth_val)) * 0.5, 0, 1)
-
-        # Weights
-        w1 = 1.0
-        w2 = 1.0
-        w3 = theta
-
-        return (w1 * l_ssim) + (w2 * tf.keras.backend.mean(l_edges)) + (w3 * tf.keras.backend.mean(l_depth))
 
     # Create a sensor_msgs.PointCloud2 from the depth and color images provided
     #
@@ -191,20 +155,14 @@ class MonoDepth:
 
         img = cv2.resize(img, (640, 480))
 
-        arr = np.clip(np.asarray(img, dtype=np.float32) / 255, 0, 1)
-
         # Predict depth image
-        with self.session.as_default():
-            with self.session.graph.as_default():
-                result = predict(self.model, arr, self.min_depth,
-                                 self.max_depth, self.batch_size)
+        bin_centers, depth = self.infer_helper.predict_pil(img)
 
-        # Resize and reshape output
-        depth = result.reshape(result.shape[1], result.shape[2], 1)
+        depth = np.clip(depth_norm(depth, max_depth=MAX_DEPTH_NYU), MIN_DEPTH,
+                        MAX_DEPTH_NYU) / MAX_DEPTH_NYU  # Ligne de code a valider
+
         # Display depth
         if self.debug:
-           #depthc = depth*255
-            #depthc = cv2.applyColorMap(depthc.astype(int), cv2.COLORMAP_PLASMA)
             cv2.imshow("Result", depth)
             cv2.waitKey(1)
 
