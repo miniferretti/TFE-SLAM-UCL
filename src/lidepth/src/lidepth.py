@@ -137,7 +137,7 @@ class Lidepth:
 
         msg = PointCloud2()
 
-        msg.header.stamp = PointCloud2.stamp
+        msg.header.stamp = PointCloud2.header.stamp
         msg.header.frame_id = PointCloud2.header.frame_id
         msg.header.seq = PointCloud2.header.seq
 
