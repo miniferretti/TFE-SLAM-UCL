@@ -102,7 +102,7 @@ class Lidepth:
     #for large point clouds, this will be <much> faster.
     #####################################################
 
-    def pointcloud2_to_array(cloud_msg, squeeze=True):
+    def pointcloud2_to_array(self, cloud_msg, squeeze=True):
    
         # construct a numpy record type equivalent to the point type of this cloud
         dtype_list = self.fields_to_dtype(cloud_msg.fields, cloud_msg.point_step) 
