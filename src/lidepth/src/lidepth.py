@@ -12,8 +12,8 @@ import ctypes
 import math
 import sys
 
-#from monodepth import monodepth
 
+DUMMY_FIELD_PREFIX = '__'
 
 class Lidepth:
     def __init__(self):
@@ -69,6 +69,31 @@ class Lidepth:
 
         return ranges
 
+
+    def fields_to_dtype(fields, point_step):
+        #Convert a list of PointFields to a numpy record datatype.
+
+        offset = 0
+        np_dtype_list = []
+        for f in fields:
+            while offset < f.offset:
+                # might be extra padding between fields
+                np_dtype_list.append(('%s%d' % (DUMMY_FIELD_PREFIX, offset), np.uint8))
+                offset += 1
+ 
+            dtype = pftype_to_nptype[f.datatype]
+            if f.count != 1:
+                dtype = np.dtype((dtype, f.count))
+ 
+            np_dtype_list.append((f.name, dtype))
+            offset += pftype_sizes[f.datatype] * f.count
+ 
+        # might be extra padding between points
+        while offset < point_step:
+            np_dtype_list.append(('%s%d' % (DUMMY_FIELD_PREFIX, offset), np.uint8))
+            offset += 1
+         
+        return np_dtype_list
 
     #####################################################
     #########     Imported function    ##################
