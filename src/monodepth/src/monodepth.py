@@ -154,7 +154,7 @@ class MonoDepth:
         msg.point_step = 24
         msg.row_step = msg.point_step * height * width
         msg.is_dense = True
-        msg.data = data.tobytes()
+        #msg.data = data.tobytes()
 
         return msg
 
