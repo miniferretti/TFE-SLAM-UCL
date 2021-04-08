@@ -25,7 +25,7 @@ class Lidepth:
         # Creation of the subscribers
         self.scan_sub = message_filters.Subscriber("/scan", LaserScan)
         self.pointCloud2_sub = message_filters.Subscriber(
-            "/monodepth/pointcloud",PointCloud2)
+            "/monodepth/pointcloud",PointCloud2, queue_size=1)
 
         ts = message_filters.ApproximateTimeSynchronizer(
             [self.pointCloud2_sub, self.scan_sub], 10, 0.1)
@@ -36,7 +36,7 @@ class Lidepth:
     def callback(self, pointCloud2_sync, scan_sync):
 
         # Process of the lidar data
-        ranges = self.range_filter(scan_sync)
+        ranges = self.range_filter(scan_sync,pointCloud2_sync)
 
         # Generate Corrected Point cloud 
         cloudCorrected_msg = self.correction(ranges,pointCloud2_sync)
