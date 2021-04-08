@@ -144,7 +144,7 @@ class Lidepth:
         msg.width = pointCloud2_sync.width
         msg.height = pointCloud2_sync.height
 
-        data = np.zeros((height * width * 6), dtype=np.float32)
+        data = np.zeros((pointCloud2_sync.width * pointCloud2_sync.height * 6), dtype=np.float32)
         data = pointCloud2_sync.data
 
 
