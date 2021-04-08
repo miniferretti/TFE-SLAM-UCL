@@ -44,7 +44,7 @@ class Lidepth:
     
         return 1
 
-    def range_filter(self, ranges, pointCloud2_sync):
+    def range_filter(self, scan_sync, pointCloud2_sync):
 
         range_data = np.array(scan_sync.ranges, np.float32)
         angle_min = scan_sync.angle_min
