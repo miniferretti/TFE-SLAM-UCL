@@ -145,7 +145,7 @@ class Lidepth:
         msg.height = pointCloud2_sync.height
 
         data = np.zeros((pointCloud2_sync.width * pointCloud2_sync.height * 6), dtype=np.float32)
-        data = float(pointCloud2_sync.data)
+        data = pointCloud2_sync.data
 
 
         # Correction with LiDAR Data
