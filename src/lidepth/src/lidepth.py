@@ -114,13 +114,6 @@ class Lidepth:
                 #if (u >= 0) and (v >= 0) and (z >= 0):
 
 
-
-        # Get the pointCloud2_sync
-
-        u = pointCloud2_sync.width
-        v = pointCloud2_sync.height
-
-
         ###################################################
         # If someone wants to reorder information 
         #in pointcould in [z,x,y,R,G,B]
@@ -139,12 +132,26 @@ class Lidepth:
             #i += 6
         ###################################################
 
+   
+        #Creation of correctedPointCloud
+
+        msg = PointCloud2()
+
+        msg.header.stamp = PointCloud2.stamp
+        msg.header.frame_id = PointCloud2.header.frame_id
+        msg.header.seq = PointCloud2.header.seq
+
+        msg.width = pointCloud2_sync.width
+        msg.height = pointCloud2_sync.height
+
+        data = np.zeros((height * width * 6), dtype=np.float32)
+        data = pointCloud2_sync.data
+
+
         # Correction with LiDAR Data
 
-        ###################################################
-        # Matrice Pixels : inclusion des données LiDAR
-        ###################################################
-
+        u = pointCloud2_sync.width
+        v = pointCloud2_sync.height
    
         for i in range(len(UV[0, :])):
             u = UV[0, i]
@@ -155,18 +162,24 @@ class Lidepth:
                     v_pointCloud = self.valmap(v, 0, V, 0, pointCloud2_sync.height)
                     ipixel = int((v_pointCloud * u) + u_pointCloud)
 
-                    differenceIpixel = pointCloud2_sync.data[(ipixel*6)+2] - P[2, i]
-                    print('difference in pixel at [ "%s" ; "%s" ] is : "%s" ', pointCloud2_sync.data[(ipixel*6)], pointCloud2_sync.data[(ipixel*6)+1],differenceIpixel )
+                    differenceIpixel = data[(ipixel*6)+2] - P[2, i]
+                    print('difference in pixel at [ "%s" ; "%s" ] is : "%s" ', data[(ipixel*6)], data[(ipixel*6)+1],differenceIpixel)
                     
-                    pointCloud2_sync.data[(ipixel*6)+2] = P[2, i]
+                    data[(ipixel*6)+2] = P[2, i]
 
                     # Stores the LiDar pixels kept on the image
-                    P_real = np.append(P_real, P[:, i])
+                    #P_real = np.append(P_real, P[:, i])
 
         print("Point cloud adjusted with Lidar Data")
+        
 
-        correctedCloud = PointCloud2()
-        correctedCloud = pointCloud2_sync
+        msg.is_bigendian = False
+        msg.point_step = 24
+        msg.row_step = msg.point_step * height * width
+        msg.is_dense = True
+        msg.data = data.tobytes()
+
+        correctedCloud = msg
 
         return correctedCloud
 
