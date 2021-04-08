@@ -69,7 +69,7 @@ class Lidepth:
         return ranges
 
 
-    def fields_to_dtype(fields, point_step):
+    def fields_to_dtype(self, fields, point_step):
         #Convert a list of PointFields to a numpy record datatype.
 
         offset = 0
