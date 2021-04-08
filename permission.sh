@@ -5,4 +5,9 @@ cd ..
 cd ..
 cd src/monodepth/src
 chmod +x monodepth.py
+cd ..
+cd ..
+cd ..
+cd src/monodepth_adabin/src
+chmod +x monodepth_adabin.py
 echo "Permission successfuly granted"

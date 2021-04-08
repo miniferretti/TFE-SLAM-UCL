@@ -9,7 +9,6 @@ import cv2
 import rospkg
 import rospy
 from scipy.ndimage import filters
-import message_filters
 from models import UnetAdaptiveBins
 import models_io
 from infer import InferenceHelper
@@ -22,56 +21,44 @@ MAX_DEPTH_KITTI = 80
 N_BINS = 256
 
 
-print("Hello world")
-# from tensorflow import keras
-
-
-print("Hello world")
-
-
-class MonoDepth:
+class MonoDepth_adabin:
     def __init__(self):
 
         print("Hello world")
 
         # Get parameters
-        self.debug = rospy.get_param("~debug", True)
+        self.debug = rospy.get_param("~debug", False)
         self.frame_id = rospy.get_param("~frame_id", "map")
 
         self.topic_color = rospy.get_param(
             "~topic_color", "/raspicam_node/image")
         self.topic_depth = rospy.get_param(
-            "~topic_depth", "/monodepth/image_depth")
+            "~topic_depth", "/monodepth_adabin/image_depth")
         self.topic_pointcloud = rospy.get_param(
-            "~topic_pointcloud", "/monodepth/pointcloud")
+            "~topic_pointcloud", "/monodepth_adabin/pointcloud")
         self.topic_camera_info = rospy.get_param(
             "~topic_camera_info", "/raspicam_node/camera_info")
-       # self.topic_color_pub = rospy.get_param(
-       #     "~topic_color_pub", "/monodepth/color_image")
 
-        self.min_depth = rospy.get_param("~min_depth", 10)
-        self.max_depth = rospy.get_param("~max_depth", 1000)
-        self.batch_size = rospy.get_param("~batch_size", 1)
-        self.model_file = rospy.get_param("~model_file", "/models/nyu.h5")
+        self.min_depth = rospy.get_param("~min_depth", MIN_DEPTH)
+        self.max_depth = rospy.get_param("~max_depth", MAX_DEPTH_NYU)
 
         # Load model into GPU / CPU
-        self.infer_helper = InferenceHelper(dataset='nyu', device='cpu')
+        self.infer_helper = InferenceHelper(
+            dataset='nyu', device='cpu', MAX_DEPTH_NYU=self.max_depth, MIN_DEPTH=self.min_depth)
 
         # Publishers
         self.pub_image_depth = rospy.Publisher(
             self.topic_depth, Image, queue_size=1)
         self.pub_pointcloud = rospy.Publisher(
             self.topic_pointcloud, PointCloud2, queue_size=1)
-     #   self.pub_color_image = rospy.Publisher(
-     #       self.topic_color_pub, Image, queue_size=1)
         self.counter = 0
 
         # Subscribers
         self.bridge = CvBridge()
         self.sub_image_raw = rospy.Subscriber(
             self.topic_color, Image, self.image_callback)
-        self.sub_camera_info = rospy.Subscriber(
-            self.topic_camera_info, CameraInfo, self.camera_info_callback)
+        # self.sub_camera_info = rospy.Subscriber(
+        #    self.topic_camera_info, CameraInfo, self.camera_info_callback)
         self.camera_info = None
 
         print("Hello world")
@@ -85,7 +72,7 @@ class MonoDepth:
         msg.header.frame_id = self.frame_id
         msg.header.seq = self.counter
 
-        height, width, c = depth.shape
+        height, width = depth.shape
 
         # Resize color to match depth
         img = cv2.resize(color, (width, height))
@@ -158,7 +145,7 @@ class MonoDepth:
         # Predict depth image
         bin_centers, depth = self.infer_helper.predict_pil(img)
 
-        depth = np.clip(depth_norm(depth, max_depth=MAX_DEPTH_NYU), MIN_DEPTH,
+        depth = np.clip(depth_norm(depth.squeeze(), max_depth=MAX_DEPTH_NYU), MIN_DEPTH,
                         MAX_DEPTH_NYU) / MAX_DEPTH_NYU  # Ligne de code a valider
 
         # Display depth
@@ -185,9 +172,10 @@ class MonoDepth:
 
 
 def main(args):
-    rospy.init_node("monodepth")
+    rospy.init_node("monodepth_adabin")
 
-    depth = MonoDepth()
+    depth = MonoDepth_adabin()
+
     try:
         rospy.spin()
     except KeyboardInterrupt:

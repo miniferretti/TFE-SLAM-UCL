@@ -8,9 +8,10 @@ from PIL import Image
 from torchvision import transforms
 from tqdm import tqdm
 
-import model_io
+import models_io
 import utils
 from models import UnetAdaptiveBins
+import rospkg
 
 
 def _is_pil_image(img):
@@ -23,7 +24,8 @@ def _is_numpy_image(img):
 
 class ToTensor(object):
     def __init__(self):
-        self.normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        self.normalize = transforms.Normalize(
+            mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
     def __call__(self, image, target_size=(640, 480)):
         # image = image.resize(target_size)
@@ -46,7 +48,8 @@ class ToTensor(object):
         elif pic.mode == 'I;16':
             img = torch.from_numpy(np.array(pic, np.int16, copy=False))
         else:
-            img = torch.ByteTensor(torch.ByteStorage.from_buffer(pic.tobytes()))
+            img = torch.ByteTensor(
+                torch.ByteStorage.from_buffer(pic.tobytes()))
         # PIL image mode: 1, L, P, I, F, RGB, YCbCr, RGBA, CMYK
         if pic.mode == 'YCbCr':
             nchannel = 3
@@ -64,25 +67,31 @@ class ToTensor(object):
 
 
 class InferenceHelper:
-    def __init__(self, dataset='nyu', device='cuda:0'):
+    def __init__(self, dataset='nyu', device='cuda:0', MAX_DEPTH_NYU=10, MAX_DEPTH_KITTI=80, MIN_DEPTH=1e-3):
         self.toTensor = ToTensor()
         self.device = device
+        self.rospack = rospkg.RosPack()
         if dataset == 'nyu':
-            self.min_depth = 1e-3
-            self.max_depth = 10
+            self.min_depth = MIN_DEPTH
+            self.max_depth = MAX_DEPTH_NYU
             self.saving_factor = 1000  # used to save in 16 bit
-            model = UnetAdaptiveBins.build(n_bins=256, min_val=self.min_depth, max_val=self.max_depth)
-            pretrained_path = "./weights/AdaBins_nyu.pt"
+            model = UnetAdaptiveBins.build(
+                n_bins=256, min_val=self.min_depth, max_val=self.max_depth)
+            pretrained_path = self.rospack.get_path(
+                "monodepth_adabin") + "/src/weights/AdaBins_nyu.pt"
         elif dataset == 'kitti':
-            self.min_depth = 1e-3
-            self.max_depth = 80
+            self.min_depth = MIN_DEPTH
+            self.max_depth = MAX_DEPTH_KITTI
             self.saving_factor = 256
-            model = UnetAdaptiveBins.build(n_bins=256, min_val=self.min_depth, max_val=self.max_depth)
-            pretrained_path = "./weights/AdaBins_kitti.pt"
+            model = UnetAdaptiveBins.build(
+                n_bins=256, min_val=self.min_depth, max_val=self.max_depth)
+            pretrained_path = self.rospack.get_path(
+                "monodepth_adabin") + "/src/weights/AdaBins_kitti.pt"
         else:
-            raise ValueError("dataset can be either 'nyu' or 'kitti' but got {}".format(dataset))
+            raise ValueError(
+                "dataset can be either 'nyu' or 'kitti' but got {}".format(dataset))
 
-        model, _, _ = model_io.load_checkpoint(pretrained_path, model)
+        model, _, _ = models_io.load_checkpoint(pretrained_path, model)
         model.eval()
         self.model = model.to(self.device)
 
@@ -95,7 +104,8 @@ class InferenceHelper:
         bin_centers, pred = self.predict(img)
 
         if visualized:
-            viz = utils.colorize(torch.from_numpy(pred).unsqueeze(0), vmin=None, vmax=None, cmap='magma')
+            viz = utils.colorize(torch.from_numpy(pred).unsqueeze(
+                0), vmin=None, vmax=None, cmap='magma')
             # pred = np.asarray(pred*1000, dtype='uint16')
             viz = Image.fromarray(viz)
             return bin_centers, pred, viz
@@ -107,9 +117,11 @@ class InferenceHelper:
         pred = np.clip(pred.cpu().numpy(), self.min_depth, self.max_depth)
 
         # Flip
-        image = torch.Tensor(np.array(image.cpu().numpy())[..., ::-1].copy()).to(self.device)
+        image = torch.Tensor(np.array(image.cpu().numpy())
+                             [..., ::-1].copy()).to(self.device)
         pred_lr = self.model(image)[-1]
-        pred_lr = np.clip(pred_lr.cpu().numpy()[..., ::-1], self.min_depth, self.max_depth)
+        pred_lr = np.clip(pred_lr.cpu().numpy()
+                          [..., ::-1], self.min_depth, self.max_depth)
 
         # Take average of original and mirror
         final = 0.5 * (pred + pred_lr)

@@ -2,19 +2,17 @@
     <node type="rviz" name="rviz" pkg="rviz" args="-d $(find rplidar_ros)/rviz/rplidar.rviz" />
     <!--   <node pkg="rqt_image_view" type="rqt_image_view" name="image_view_debug" args="/output/image_raw/compressed" /> -->
   <!--  <node pkg="rp_cyclop" name="rp_cyclop" type="rp_cyclop.py" output="screen" /> -->
-    <node pkg="monodepth" type="monodepth.py" name="monodepth" output="screen" respawn="true">
+   <node pkg="monodepth_adabin" type="monodepth_adabin.py" name="monodepth_adabin" output="screen" respawn="true">
         <param name="topic_color" value="/raspicam_node/image" />
-        <param name="topic_depth" value="/monodepth/depth_image" />
+        <param name="topic_depth" value="/monodepth_adabin/depth_image" />
+        <param name="topic_camera_info" value="/raspicam_node/camera_info"/>
     </node>
 
+  <!--  <node pkg="monodepth" type="monodepth.py" name="monodepth" output="screen" respawn="true">
+      <param name="topic_color" value="/raspicam_node/image" />
+      <param name="topic_depth" value="/monodepth/depth_image" />
+      <param name="topic_camera_info" value="/raspicam_node/camera_info"/>
+  </node> -->
 
-    <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" />
-
-    <node pkg="nodelet" type="nodelet" name="nodelet1" args="load depth_image_proc/point_cloud_xyzrgb nodelet_manager">
-        <remap from="camera_info" to="/raspicam_node/camera_info" />
-        <remap from="image_rect" to="/monodepth/depth_image" />
-        <remap from="image_rect_color" to="/monodepth/color_image" />
-        <remap from="points" to="/monodepth/pointCloud" />
-    </node> 
 
 </launch>
