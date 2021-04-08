@@ -70,16 +70,14 @@ class Lidepth:
 
     #####################################################
     #########     Imported function    ##################
+    #Converts a rospy PointCloud2 message to a numpy recordarray
+    #Reshapes the returned array to have shape (height, width), even if the height is 1.
+    #The reason for using np.fromstring rather than struct.unpack is speed... especially
+    #for large point clouds, this will be <much> faster.
     #####################################################
 
     def pointcloud2_to_array(cloud_msg, squeeze=True):
-    ''' Converts a rospy PointCloud2 message to a numpy recordarray
-
-    Reshapes the returned array to have shape (height, width), even if the height is 1.
-
-    The reason for using np.fromstring rather than struct.unpack is speed... especially
-    for large point clouds, this will be <much> faster.
-    '''
+   
     # construct a numpy record type equivalent to the point type of this cloud
     dtype_list = fields_to_dtype(cloud_msg.fields, cloud_msg.point_step) 
 
