@@ -29,6 +29,7 @@ class MonoDepth_adabin:
         # Get parameters
         self.debug = rospy.get_param("~debug", False)
         self.frame_id = rospy.get_param("~frame_id", "map")
+        self.device = rospy.get_param("~device", 'cpu')
 
         self.topic_color = rospy.get_param(
             "~topic_color", "/raspicam_node/image")
@@ -44,7 +45,7 @@ class MonoDepth_adabin:
 
         # Load model into GPU / CPU
         self.infer_helper = InferenceHelper(
-            dataset='nyu', device='cpu', MAX_DEPTH_NYU=self.max_depth, MIN_DEPTH=self.min_depth)
+            dataset='nyu', device=self.device, MAX_DEPTH_NYU=self.max_depth, MIN_DEPTH=self.min_depth)
 
         # Publishers
         self.pub_image_depth = rospy.Publisher(
@@ -57,8 +58,8 @@ class MonoDepth_adabin:
         self.bridge = CvBridge()
         self.sub_image_raw = rospy.Subscriber(
             self.topic_color, Image, self.image_callback)
-        # self.sub_camera_info = rospy.Subscriber(
-        #    self.topic_camera_info, CameraInfo, self.camera_info_callback)
+        self.sub_camera_info = rospy.Subscriber(
+            self.topic_camera_info, CameraInfo, self.camera_info_callback)
         self.camera_info = None
 
         print("Hello world")
