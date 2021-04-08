@@ -105,7 +105,7 @@ class Lidepth:
     def pointcloud2_to_array(cloud_msg, squeeze=True):
    
         # construct a numpy record type equivalent to the point type of this cloud
-        dtype_list = fields_to_dtype(cloud_msg.fields, cloud_msg.point_step) 
+        dtype_list = self.fields_to_dtype(cloud_msg.fields, cloud_msg.point_step) 
 
         # parse the cloud into an array
         cloud_arr = np.fromstring(cloud_msg.data, dtype_list)
