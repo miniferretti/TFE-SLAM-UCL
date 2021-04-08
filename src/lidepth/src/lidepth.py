@@ -7,6 +7,7 @@ import cv2
 from scipy.ndimage import filters
 import message_filters
 import numpy as np
+import ctypes
 import math
 import sys
 
