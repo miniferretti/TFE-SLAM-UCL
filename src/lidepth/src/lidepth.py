@@ -246,10 +246,10 @@ class Lidepth:
                     v_pointCloud = self.valmap(v, 0, V, 0, pointCloud2_sync.height)
                     ipixel = int((v_pointCloud * u) + u_pointCloud)
 
-                    #differenceIpixel = data[(ipixel*6)+2] - P[2, i]
-                    #print('difference in pixel at [ "%s" ; "%s" ] is : "%s" ', data[(ipixel*6)], data[(ipixel*6)+1],differenceIpixel)
+                    differenceIpixel = data[(ipixel*6)+2] - P[2, i]
+                    print('difference in pixel at [ "%s" ; "%s" ] is : "%s" ', data[(ipixel*6)], data[(ipixel*6)+1],differenceIpixel)
                     
-                    #data[(ipixel*6)+2] = P[2, i]
+                    data[(ipixel*6)+2] = P[2, i]
 
                     # Stores the LiDar pixels kept on the image
                     #P_real = np.append(P_real, P[:, i])
