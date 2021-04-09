@@ -244,8 +244,8 @@ class Lidepth:
                 if (u >= 0) and (v >= 0) and (P[2, i] >= 0):
                     u_pointCloud = self.valmap(u, 0, U, 0, pointCloud2_sync.width)
                     v_pointCloud = self.valmap(v, 0, V, 0, pointCloud2_sync.height)
-                    ipixel = int((v_pointCloud * u) + u_pointCloud)
-
+                    ipixel = (v_pointCloud * u) + u_pointCloud
+                    intIpixel = int(ipixel)
                     print('u_pointCloud : "%s" '% (u_pointCloud))
                     print('v_pointCloud : "%s" '% (v_pointCloud))
                     print('ipixel : "%s" '% (ipixel))
