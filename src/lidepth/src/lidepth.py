@@ -11,9 +11,6 @@ import numpy as np
 import ctypes
 import math
 import sys
-from layers import BilinearUpSampling2D
-from predict import predict
-from cv_bridge import CvBridge, CvBridgeError
 
 
 class Lidepth:
