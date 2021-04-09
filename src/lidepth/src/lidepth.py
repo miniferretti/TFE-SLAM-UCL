@@ -3,6 +3,7 @@
 import rospkg
 import rospy
 from sensor_msgs.msg import Image, PointCloud2, PointField, LaserScan
+import sensor_msgs.point_cloud2 as pc2
 import cv2
 from scipy.ndimage import filters
 import message_filters
@@ -12,18 +13,18 @@ import math
 import sys
 
 
-DUMMY_FIELD_PREFIX = '__'
+#DUMMY_FIELD_PREFIX = '__'
 
 # mappings between PointField types and numpy types
 type_mappings = [(PointField.INT8, np.dtype('int8')), (PointField.UINT8, np.dtype('uint8')), (PointField.INT16, np.dtype('int16')),
-                  (PointField.UINT16, np.dtype('uint16')), (PointField.INT32, np.dtype('int32')), (PointField.UINT32, np.dtype('uint32')),
+                  #(PointField.UINT16, np.dtype('uint16')), (PointField.INT32, np.dtype('int32')), (PointField.UINT32, np.dtype('uint32')),
                   (PointField.FLOAT32, np.dtype('float32')), (PointField.FLOAT64, np.dtype('float64'))]
-pftype_to_nptype = dict(type_mappings)
-nptype_to_pftype = dict((nptype, pftype) for pftype, nptype in type_mappings)
+#pftype_to_nptype = dict(type_mappings)
+#nptype_to_pftype = dict((nptype, pftype) for pftype, nptype in type_mappings)
  
  # sizes (in bytes) of PointField types
-pftype_sizes = {PointField.INT8: 1, PointField.UINT8: 1, PointField.INT16: 2, PointField.UINT16: 2,
-                 PointField.INT32: 4, PointField.UINT32: 4, PointField.FLOAT32: 4, PointField.FLOAT64: 8}
+#pftype_sizes = {PointField.INT8: 1, PointField.UINT8: 1, PointField.INT16: 2, PointField.UINT16: 2,
+                 #PointField.INT32: 4, PointField.UINT32: 4, PointField.FLOAT32: 4, PointField.FLOAT64: 8}
 
 class Lidepth:
     def __init__(self):
@@ -80,30 +81,30 @@ class Lidepth:
         return ranges
 
 
-    def fields_to_dtype(self, fields, point_step):
+    #def fields_to_dtype(self, fields, point_step):
         #Convert a list of PointFields to a numpy record datatype.
 
-        offset = 0
-        np_dtype_list = []
-        for f in fields:
-            while offset < f.offset:
+        #offset = 0
+        #np_dtype_list = []
+        #for f in fields:
+            #while offset < f.offset:
                 # might be extra padding between fields
-                np_dtype_list.append(('%s%d' % (DUMMY_FIELD_PREFIX, offset), np.uint8))
-                offset += 1
+                #np_dtype_list.append(('%s%d' % (DUMMY_FIELD_PREFIX, offset), np.uint8))
+                #offset += 1
  
-            dtype = pftype_to_nptype[f.datatype]
-            if f.count != 1:
-                dtype = np.dtype((dtype, f.count))
+            #dtype = pftype_to_nptype[f.datatype]
+            #if f.count != 1:
+                #dtype = np.dtype((dtype, f.count))
  
-            np_dtype_list.append((f.name, dtype))
-            offset += pftype_sizes[f.datatype] * f.count
+            #np_dtype_list.append((f.name, dtype))
+            #offset += pftype_sizes[f.datatype] * f.count
  
         # might be extra padding between points
-        while offset < point_step:
-            np_dtype_list.append(('%s%d' % (DUMMY_FIELD_PREFIX, offset), np.uint8))
-            offset += 1
+        #while offset < point_step:
+            #np_dtype_list.append(('%s%d' % (DUMMY_FIELD_PREFIX, offset), np.uint8))
+            #offset += 1
          
-        return np_dtype_list
+        #return np_dtype_list
 
     #####################################################
     #########     Imported function    ##################
@@ -113,10 +114,10 @@ class Lidepth:
     #for large point clouds, this will be <much> faster.
     #####################################################
 
-    def pointcloud2_to_array(self, cloud_msg, squeeze=True):
+    #def pointcloud2_to_array(self, cloud_msg, squeeze=True):
    
         # construct a numpy record type equivalent to the point type of this cloud
-        dtype_list = self.fields_to_dtype(cloud_msg.fields, cloud_msg.point_step) 
+        #dtype_list = self.fields_to_dtype(cloud_msg.fields, cloud_msg.point_step) 
 
         # parse the cloud into an array
         #cloud_arr = np.fromstring(cloud_msg.data, dtype_list)
@@ -130,7 +131,7 @@ class Lidepth:
         #else:
             #return np.reshape(cloud_arr, (cloud_msg.height, cloud_msg.width))
 
-        return dtype_list
+        #return dtype_list
     #####################################################
     #####################################################
 
@@ -201,7 +202,9 @@ class Lidepth:
 
    
         #Creation of correctedPointCloud
+        print('******************************************** \n ')
         print('Here we are! \n ')
+        print('******************************************** \n ')
 
         msg = PointCloud2()
 
@@ -219,8 +222,17 @@ class Lidepth:
         #data = pointCloud2_sync.data
         print('data shape is %s \n', data.shape)
 
-        data = self.pointcloud2_to_array(pointCloud2_sync)
+        #data = self.pointcloud2_to_array(pointCloud2_sync)
 
+        pc = pc2.read_points(pointCloud2_sync, skip_nans=True, field_names=("x", "y", "z", "r", "g", "b"))
+        print('pc shape is %s \n', pc.shape)
+
+        data_list = []
+        for p in pc:
+            data_list.append([p[0],p[1],p[2]],p[3],p[4],p[5])
+        print('data_list shape is %s \n', data_list.shape)
+        
+        data = numpy.array(data_list)
         print('data shape is %s \n', data.shape)
         
 
@@ -247,6 +259,8 @@ class Lidepth:
                     #P_real = np.append(P_real, P[:, i])
 
         print("Point cloud adjusted with Lidar Data")
+
+        print('******************************************** \n ')
         
 
         msg.is_bigendian = False
