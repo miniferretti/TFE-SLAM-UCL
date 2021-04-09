@@ -253,6 +253,9 @@ class Lidepth:
                     print('difference in pixel at [ %s ; %s ] is : "%s" '% (data[(ipixel*6)], data[(ipixel*6)+1],differenceIpixel))
                     
                     data[(ipixel*6)+2] = P[2, i]
+                    for hh in range(height/4):
+                        data[(ipixel*6)+2+(hh*width)] = data[(ipixel*6)+2+(hh*width)] + differenceIpixel * (((height/4)-hh)/height/4))
+                        data[(ipixel*6)+2-(hh*width)] = data[(ipixel*6)+2-(hh*width)] + differenceIpixel * (((height/4)-hh)/height/4))
 
                     # Stores the LiDar pixels kept on the image
                     #P_real = np.append(P_real, P[:, i])
