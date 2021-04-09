@@ -218,6 +218,9 @@ class Lidepth:
         data = np.array(data_list)
         print('data shape is ', data.shape, '\n')
 
+        data = np.reshape(data, (data.shape[0]*data.shape[1], 1))
+        print('data shape is ', data.shape, '\n')
+
         for iprinting in range(6):  
             print(data[(6*100)+iprinting], '\n')
 
