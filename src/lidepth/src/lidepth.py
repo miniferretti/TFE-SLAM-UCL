@@ -18,7 +18,7 @@ class Lidepth:
 
         # Creation of the publishers
         self.pointCloud2_pub = rospy.Publisher(
-            "/lidepth/PointCloud", PointCloud2, queue_size=1)
+            "/lidepth/pointcloud", PointCloud2, queue_size=1)
         self.img_pub = rospy.Publisher(
             "/lidepth/depth_image", Image, queue_size=1)
 
