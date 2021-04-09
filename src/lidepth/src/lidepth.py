@@ -218,9 +218,9 @@ class Lidepth:
         print('pointCloud2_sync.width is %s \n', pointCloud2_sync.width )
         print('pointCloud2_sync.height is %s \n', pointCloud2_sync.height )
 
-        data = np.zeros((pointCloud2_sync.width * pointCloud2_sync.height * 6), dtype=np.float32)
+        #data = np.zeros((pointCloud2_sync.width * pointCloud2_sync.height * 6), dtype=np.float32)
         #data = pointCloud2_sync.data
-        print('data shape is %s \n', data.shape)
+        #print('data shape is %s \n', data.shape)
 
         #data = self.pointcloud2_to_array(pointCloud2_sync)
 
