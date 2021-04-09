@@ -215,8 +215,8 @@ class Lidepth:
         msg.width = pointCloud2_sync.width
         msg.height = pointCloud2_sync.height
 
-        print('pointCloud2_sync.width is %s \n', pointCloud2_sync.width )
-        print('pointCloud2_sync.height is %s \n', pointCloud2_sync.height )
+        print('pointCloud2_sync.width is "%s" \n', pointCloud2_sync.width )
+        print('pointCloud2_sync.height is "%s" \n', pointCloud2_sync.height )
 
         #data = np.zeros((pointCloud2_sync.width * pointCloud2_sync.height * 6), dtype=np.float32)
         #data = pointCloud2_sync.data
@@ -233,7 +233,7 @@ class Lidepth:
             data_list.append([p[0],p[1],p[2],p[3],p[4],p[5]])
         
         data = np.array(data_list)
-        print('data shape is %s \n', data.shape)
+        print('data shape is "%s" \n', data.shape)
 
         
         
@@ -261,9 +261,16 @@ class Lidepth:
                     #P_real = np.append(P_real, P[:, i])
 
         print("Point cloud adjusted with Lidar Data")
-
-        print('******************************************** \n ')
         
+
+        msg.fields = [
+            PointField("y", 0, PointField.FLOAT32, 1),
+            PointField("z", 4, PointField.FLOAT32, 1),
+            PointField("x", 8, PointField.FLOAT32, 1),
+            PointField("b", 12, PointField.FLOAT32, 1),
+            PointField("g", 16, PointField.FLOAT32, 1),
+            PointField("r", 20, PointField.FLOAT32, 1)
+        ]
 
         msg.is_bigendian = False
         msg.point_step = 24
@@ -272,6 +279,8 @@ class Lidepth:
         msg.data = data.tobytes()
 
         correctedCloud = msg
+
+        print('******************************************** \n ')
 
         return correctedCloud
 

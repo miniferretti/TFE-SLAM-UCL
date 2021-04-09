@@ -145,6 +145,7 @@ class MonoDepth:
                 i += 6
 
         # Fields of the point cloud
+
         msg.fields = [
             PointField("y", 0, PointField.FLOAT32, 1),
             PointField("z", 4, PointField.FLOAT32, 1),
