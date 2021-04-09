@@ -144,6 +144,9 @@ class MonoDepth:
                 data[i + 5] = float(img[y, x, 2]) / 255.0
                 i += 6
 
+        for iprinting in 6 
+            print(data[(6*100)+iprinting], '\n')
+
         # Fields of the point cloud
 
         msg.fields = [
@@ -199,7 +202,7 @@ class MonoDepth:
 
         # Resize and reshape output
         depth = result.reshape(result.shape[1], result.shape[2], 1)
-        # Display depth
+        # Display depth`
         if self.debug:
            #depthc = depth*255
             #depthc = cv2.applyColorMap(depthc.astype(int), cv2.COLORMAP_PLASMA)

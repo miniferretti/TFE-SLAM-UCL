@@ -11,20 +11,10 @@ import numpy as np
 import ctypes
 import math
 import sys
+from layers import BilinearUpSampling2D
+from predict import predict
+from cv_bridge import CvBridge, CvBridgeError
 
-
-#DUMMY_FIELD_PREFIX = '__'
-
-# mappings between PointField types and numpy types
-type_mappings = [(PointField.INT8, np.dtype('int8')), (PointField.UINT8, np.dtype('uint8')), (PointField.INT16, np.dtype('int16')),
-                  #(PointField.UINT16, np.dtype('uint16')), (PointField.INT32, np.dtype('int32')), (PointField.UINT32, np.dtype('uint32')),
-                  (PointField.FLOAT32, np.dtype('float32')), (PointField.FLOAT64, np.dtype('float64'))]
-#pftype_to_nptype = dict(type_mappings)
-#nptype_to_pftype = dict((nptype, pftype) for pftype, nptype in type_mappings)
- 
- # sizes (in bytes) of PointField types
-#pftype_sizes = {PointField.INT8: 1, PointField.UINT8: 1, PointField.INT16: 2, PointField.UINT16: 2,
-                 #PointField.INT32: 4, PointField.UINT32: 4, PointField.FLOAT32: 4, PointField.FLOAT64: 8}
 
 class Lidepth:
     def __init__(self):
@@ -67,16 +57,11 @@ class Lidepth:
         angle_increment = scan_sync.angle_increment
         N = int((angle_max-angle_min)/angle_increment)
         angle_data = np.linspace(angle_min, angle_max, num=(N+1)) + math.pi
-       # print(len(angle_data))
-       # print(len(range_data))
 
         ranges = np.array([range_data, angle_data], np.float32)
 
         ranges[0, ranges[0, :] > range_max] = range_max
         ranges[0, ranges[0, :] < range_min] = range_min
-
-       # for i in range(len(ranges[0, :])):
-       #    print((ranges[0, i], ranges[1, i]))
 
         return ranges
 
@@ -236,8 +221,9 @@ class Lidepth:
         data = np.array(data_list)
         print('data shape is ', data.shape, '\n')
 
-        
-        
+        for iprinting in 6 
+            print(data[(6*100)+iprinting], '\n')
+
 
         # Correction with LiDAR Data
 
