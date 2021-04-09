@@ -144,8 +144,7 @@ class MonoDepth:
                 data[i + 5] = float(img[y, x, 2]) / 255.0
                 i += 6
 
-        printMax = 6
-        for iprinting in range(printMax) 
+        for iprinting in range(6):
             print(data[(6*100)+iprinting], '\n')
 
         # Fields of the point cloud
