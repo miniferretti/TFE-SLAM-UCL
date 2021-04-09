@@ -224,6 +224,8 @@ class Lidepth:
 
         #data = self.pointcloud2_to_array(pointCloud2_sync)
 
+        ## Try with pc2.read_points
+
         pc = pc2.read_points(pointCloud2_sync, skip_nans=True, field_names=("x", "y", "z", "r", "g", "b"))
 
         data_list = []
@@ -233,6 +235,8 @@ class Lidepth:
         
         data = numpy.array(data_list)
         print('data shape is %s \n', data.shape)
+
+        
         
 
         # Correction with LiDAR Data

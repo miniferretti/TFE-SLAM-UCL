@@ -115,6 +115,8 @@ class MonoDepth:
 
         height, width, c = depth.shape
 
+        height = height/2
+        width = width/2
         # Resize color to match depth
         img = cv2.resize(color, (width, height))
 
