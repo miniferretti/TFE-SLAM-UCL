@@ -226,6 +226,9 @@ class Lidepth:
         for iprinting in range(6):  
             print(data[(6*100)+iprinting], '\n')
 
+        size = sys.getsizeof(data)
+        print('The size is ', size, '\n')
+
 
         # Correction with LiDAR Data
 
