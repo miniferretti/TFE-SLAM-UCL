@@ -148,6 +148,7 @@ class MonoDepth:
         print('data shape is ', data.shape, '\n')
         size = sys.getsizeof(data)
         print('The size is ', size, '\n')
+        print(type(data)
         for iprinting in range(6):
             print(data[(6*100)+iprinting], '\n')
 
