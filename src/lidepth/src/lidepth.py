@@ -228,6 +228,7 @@ class Lidepth:
 
         size = sys.getsizeof(data)
         print('The size is ', size, '\n')
+        print(type(data[0]))
 
 
         # Correction with LiDAR Data
