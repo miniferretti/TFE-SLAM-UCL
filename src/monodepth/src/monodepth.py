@@ -144,13 +144,13 @@ class MonoDepth:
                 data[i + 5] = float(img[y, x, 2]) / 255.0
                 i += 6
 
-        print('***  MonoDepth  ****')
-        print('data shape is ', data.shape, '\n')
-        size = sys.getsizeof(data)
-        print('The size is ', size, '\n')
-        print(type(data[0]))
-        for iprinting in range(6):
-            print(data[(6*100)+iprinting], '\n')
+        #print('***  MonoDepth  ****')
+        #print('data shape is ', data.shape, '\n')
+        #size = sys.getsizeof(data)
+        #print('The size is ', size, '\n')
+        #print(type(data[0]))
+        #for iprinting in range(6):
+            #print(data[(6*100)+iprinting], '\n')
 
         # Fields of the point cloud
 

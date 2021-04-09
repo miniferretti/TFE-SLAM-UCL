@@ -216,20 +216,20 @@ class Lidepth:
             data_list.append([p[0],p[1],p[2],p[3],p[4],p[5]])
         
         data = np.array(data_list)
-        print('data shape is ', data.shape, '\n')
+        #print('data shape is ', data.shape, '\n')
 
         data = np.reshape(data, (data.shape[0]*data.shape[1], 1))
-        print('data shape is ', data.shape, '\n')
+        #print('data shape is ', data.shape, '\n')
         data = (data[:, 0])
         data = data.astype(np.float32)
-        print('data shape is ', data.shape, '\n')
+        #print('data shape is ', data.shape, '\n')
 
-        for iprinting in range(6):  
-            print(data[(6*100)+iprinting], '\n')
+        #for iprinting in range(6):  
+            #print(data[(6*100)+iprinting], '\n')
 
-        size = sys.getsizeof(data)
-        print('The size is ', size, '\n')
-        print(type(data[0]))
+        #size = sys.getsizeof(data)
+        #print('The size is ', size, '\n')
+        #print(type(data[0]))
 
 
         # Correction with LiDAR Data
@@ -246,8 +246,12 @@ class Lidepth:
                     v_pointCloud = self.valmap(v, 0, V, 0, pointCloud2_sync.height)
                     ipixel = int((v_pointCloud * u) + u_pointCloud)
 
+                    print('u_pointCloud : "%s" '% (u_pointCloud))
+                    print('v_pointCloud : "%s" '% (v_pointCloud))
+                    print('ipixel : "%s" '% (ipixel))
+   
                     differenceIpixel = data[(ipixel*6)+2] - P[2, i]
-                    print('difference in pixel at [ "%s" ; "%s" ] is : "%s" ', data[(ipixel*6)], data[(ipixel*6)+1],differenceIpixel)
+                    print('difference in pixel at [ %s ; %s ] is : "%s" '% (data[(ipixel*6)], data[(ipixel*6)+1],differenceIpixel))
                     
                     data[(ipixel*6)+2] = P[2, i]
 
