@@ -231,7 +231,6 @@ class Lidepth:
         data_list = []
         for p in pc:
             data_list.append([p[0],p[1],p[2],p[3],p[4],p[5]])
-        print('data_list shape is %s \n', data_list.shape)
         
         data = numpy.array(data_list)
         print('data shape is %s \n', data.shape)
