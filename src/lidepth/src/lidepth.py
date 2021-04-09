@@ -263,8 +263,8 @@ class Lidepth:
 
         msg.is_bigendian = False
         msg.point_step = 24
-        msg.row_step = msg.point_step * msg.height * msg.width
-        msg.is_dense = True
+        msg.row_step = msg.point_step * msg.height * msg.width 
+        msg.is_dense = False
         msg.data = data.tobytes()
 
         correctedCloud = msg
