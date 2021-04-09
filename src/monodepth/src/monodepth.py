@@ -115,8 +115,9 @@ class MonoDepth:
 
         height, width, c = depth.shape
 
-        height = int(height/2)
-        width = int(width/2)
+        #height = int(height/2)
+        #width = int(width/2)
+
         # Resize color to match depth
         img = cv2.resize(color, (width, height))
 
@@ -125,11 +126,11 @@ class MonoDepth:
         data = np.zeros((height * width * 6), dtype=np.float32)
 
         # Message data size
-        #msg.height = 1
-        #msg.width = width * height
+        msg.height = 1
+        msg.width = width * height
 
-        msg.height = height
-        msg.width = width
+        #msg.height = height
+        #msg.width = width
 
         # Iterate images and build point cloud
 
