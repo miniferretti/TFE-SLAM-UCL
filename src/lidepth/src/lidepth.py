@@ -53,7 +53,7 @@ class Lidepth:
 
         # Generate Corrected Point cloud 
         cloudCorrected_msg = self.correction(ranges,pointCloud2_sync)
-        self.pub_pointCloud2.publish(cloudCorected_msg)
+        self.pointCloud2_pub.publish(cloudCorected_msg)
     
         return 1
 
