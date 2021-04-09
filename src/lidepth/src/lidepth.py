@@ -234,8 +234,8 @@ class Lidepth:
 
         # Correction with LiDAR Data
 
-        u = pointCloud2_sync.width
-        v = pointCloud2_sync.height
+        width = pointCloud2_sync.width
+        height = pointCloud2_sync.height
    
         for i in range(len(UV[0, :])):
             u = UV[0, i]
@@ -244,8 +244,7 @@ class Lidepth:
                 if (u >= 0) and (v >= 0) and (P[2, i] >= 0):
                     u_pointCloud = self.valmap(u, 0, U, 0, pointCloud2_sync.width)
                     v_pointCloud = self.valmap(v, 0, V, 0, pointCloud2_sync.height)
-                    ipixel = (v_pointCloud * u) + u_pointCloud
-                    intIpixel = int(ipixel)
+                    ipixel = int((v_pointCloud * width) + u_pointCloud)
                     print('u_pointCloud : "%s" '% (u_pointCloud))
                     print('v_pointCloud : "%s" '% (v_pointCloud))
                     print('ipixel : "%s" '% (ipixel))
