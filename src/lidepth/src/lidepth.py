@@ -221,7 +221,8 @@ class Lidepth:
         data = np.array(data_list)
         print('data shape is ', data.shape, '\n')
 
-        for iprinting in 6 
+        printMax = 6
+        for iprinting in printMax 
             print(data[(6*100)+iprinting], '\n')
 
 
