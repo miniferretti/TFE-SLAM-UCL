@@ -144,6 +144,8 @@ class MonoDepth:
                 data[i + 5] = float(img[y, x, 2]) / 255.0
                 i += 6
 
+        print('***  MonoDepth  ****')
+        print('data shape is ', data.shape, '\n')
         for iprinting in range(6):
             print(data[(6*100)+iprinting], '\n')
 
