@@ -225,7 +225,6 @@ class Lidepth:
         #data = self.pointcloud2_to_array(pointCloud2_sync)
 
         pc = pc2.read_points(pointCloud2_sync, skip_nans=True, field_names=("x", "y", "z", "r", "g", "b"))
-        print('pc shape is %s \n', pc.shape)
 
         data_list = []
         for p in pc:
