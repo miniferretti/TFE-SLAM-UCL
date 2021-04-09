@@ -267,7 +267,7 @@ class Lidepth:
 
         msg.is_bigendian = False
         msg.point_step = 24
-        msg.row_step = msg.point_step * height * width
+        msg.row_step = msg.point_step * msg.height * msg.width
         msg.is_dense = True
         msg.data = data.tobytes()
 
