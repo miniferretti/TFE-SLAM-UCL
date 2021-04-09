@@ -145,7 +145,7 @@ class MonoDepth:
                 i += 6
 
         printMax = 6
-        for iprinting in printMax 
+        for iprinting in range(printMax) 
             print(data[(6*100)+iprinting], '\n')
 
         # Fields of the point cloud
