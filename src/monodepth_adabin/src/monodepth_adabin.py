@@ -109,7 +109,7 @@ class MonoDepth_adabin:
         return pc2
 
     def convert_from_uvd(self, u, v, z, P):
-        pixtometer = 2.87e-6
+        pixtometer = 1
         print(z)
         fx = P[0] * pixtometer
         fy = P[5] * pixtometer
