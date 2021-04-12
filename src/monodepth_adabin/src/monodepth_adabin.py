@@ -265,8 +265,8 @@ class MonoDepth_adabin:
 
         # Publish depth image
         depth = 255 * depth
-        cm = plt.get_cmap('magma')
-        depth = cm(depth)
+        #cm = plt.get_cmap('magma')
+        #depth = cm(depth)
         self.pub_image_depth.publish(
             self.bridge.cv2_to_imgmsg(depth.astype(np.uint8), "mono8"))
 
