@@ -18,6 +18,8 @@ from infer import InferenceHelper
 from predict import depth_norm
 import message_filters
 from scipy.ndimage import filters
+import matplotlib.pyplot as plt
+
 
 MIN_DEPTH = 1e-3
 MAX_DEPTH_NYU = 10
@@ -180,6 +182,8 @@ class MonoDepth_adabin:
 
         # Publish depth image
         depth = 255 * depth
+        cm = plt.get_cmap('magma')
+        depth = cm(depth)
         self.pub_image_depth.publish(
             self.bridge.cv2_to_imgmsg(depth.astype(np.uint8), "mono8"))
 
