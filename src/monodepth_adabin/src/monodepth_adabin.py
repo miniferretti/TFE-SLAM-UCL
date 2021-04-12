@@ -80,6 +80,61 @@ class MonoDepth_adabin:
 
         print("Hello world")
 
+
+    def depth_correction(self, ranges, depth)    
+
+        U = 3280  # Horizontal number of pixels
+        V = 2464  # Vertical number of pixels of the camera sensor
+
+        image_height, image_width = depth.shape
+
+        Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :])),
+                       np.zeros(len(ranges[0, :])),
+                       np.multiply(np.cos(ranges[1, :]), ranges[0, :])], np.float32)
+
+        # Translation vector between the camera and the lidar (lidar --> Camera translation) everything in meters
+        t = np.array([[0, -0.048, -0.00]], np.float32).T
+
+        # Rotation matrix of the lidar regarding the camera position
+        rotationAngle = math.radians(3.8)
+
+        R = np.array([[math.cos(rotationAngle), 0, math.sin(rotationAngle)],
+                      [0, 1, 0],
+                      [-math.sin(rotationAngle), 0, math.cos(rotationAngle)]], np.float32)
+
+        Pc = R.dot(Pl)+t
+        a = 2714.2857  # Focal length in meters
+        s = 0  # Skew constant of the camera, here 0 'cause the distortion of the camera is already corrected in the raspicam_node
+        u0 = U/2  # int(len(image_np[1, :])/2)
+        v0 = V/2  # int(len(image_np[0, :])/2)
+        # Camera plane conversion matrix H
+        H = np.array([[a, s, u0],
+                      [0, a, v0],
+                      [0, 0, 1]], np.float32)
+
+        P = H.dot(Pc)
+        UV = np.array([np.divide(P[0, :], P[2, :]),
+                       np.divide(P[1, :], P[2, :])], np.float32)
+
+        for i in range(len(UV[0, :])):
+            u = UV[0, i]
+            v = UV[1, i]
+
+            if (u <= U) and (v <= V):
+                if (u >= 0) and (v >= 0) and (P[2, i] >= 0):
+                    u_real = self.valmap(u, 0, U, 0, image_width)
+                    v_real = self.valmap(v, 0, V, 0, image_height)
+
+                    differenceDepth = depth[v_real ; u_real] - P[2, i]
+                    depth[v_real ; u_real] = P[2, i]
+
+                    for hh in range(image_height)
+                        depth[hh ; u_real] = depth[hh ; image_height] + differenceDepth *((image_height - abs(v_real - hh))/image_height)
+
+
+
+        return depth
+
     # Create a sensor_msgs.PointCloud2 from the depth and color images provided
     def create_pointcloud_msg(self, depth, color):
 
