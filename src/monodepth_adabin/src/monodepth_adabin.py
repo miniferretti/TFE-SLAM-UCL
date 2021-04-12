@@ -88,6 +88,13 @@ class MonoDepth_adabin:
                 g = img[v, u, 1]  # g
                 r = img[v, u, 2]  # r
                 a = 255
+                if abs(x) < 0.1 and abs(y) < 0.1:
+                    print(x)
+                    print(y)
+                    print(z)
+                    b = 255
+                    g = 0
+                    r = 0
                 rgb = struct.unpack('I', struct.pack('BBBB', b, g, r, a))[0]
                 pt = [x, y, z, rgb]
                 points.append(pt)
@@ -109,13 +116,10 @@ class MonoDepth_adabin:
 
     def convert_from_uvd(self, u, v, z, P):
         pixtometer = 1
-        print(z)
         fx = P[0] * pixtometer
         fy = P[5] * pixtometer
         x = u * z/fx
         y = v * z/fy
-        print(x)
-        print(y)
         return x, y, z
 
     def valmap(self, value, istart, istop, ostart, ostop):
