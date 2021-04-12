@@ -81,8 +81,8 @@ class MonoDepth_adabin:
         points = []
 
         # Iterate images and build point cloud
-        for v in range(height):
-            for u in range(width):
+        for v in range(height-1):
+            for u in range(width-1):
                 x, y, z = self.convert_from_uvd(self.valmap(
                     u, 0, width, 0, 1280), self.valmap(v, 0, height, 0, 960), depth, P)
                 b = img[v, u, 0]  # b
