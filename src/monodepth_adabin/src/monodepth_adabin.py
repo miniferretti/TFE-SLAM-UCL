@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from cv_bridge import CvBridge, CvBridgeError
-from sensor_msgs.msg import Image, PointCloud2, PointField, CameraInfo
+from sensor_msgs.msg import Image, PointCloud2, PointField, CameraInfo, LaserScan
 from std_msgs.msg import Header
 from sensor_msgs import point_cloud2
 import sys
@@ -16,6 +16,8 @@ from models import UnetAdaptiveBins
 import models_io
 from infer import InferenceHelper
 from predict import depth_norm
+import message_filters
+from scipy.ndimage import filters
 
 MIN_DEPTH = 1e-3
 MAX_DEPTH_NYU = 10
@@ -42,6 +44,7 @@ class MonoDepth_adabin:
             "~topic_pointcloud", "/monodepth_adabin/pointcloud")
         self.topic_camera_info = rospy.get_param(
             "~topic_camera_info", "/raspicam_node/camera_info")
+        self.topic_laserScan = rospy.get_param("~topic_lidar_data", "/scan")
 
         self.min_depth = rospy.get_param("~min_depth", MIN_DEPTH)
         self.max_depth = rospy.get_param("~max_depth", MAX_DEPTH_NYU)
@@ -59,10 +62,18 @@ class MonoDepth_adabin:
 
         # Subscribers
         self.bridge = CvBridge()
-        self.sub_image_raw = rospy.Subscriber(
-            self.topic_color, Image, self.image_callback)
         self.sub_camera_info = rospy.Subscriber(
             self.topic_camera_info, CameraInfo, self.camera_info_callback)
+
+        self.sub_image_raw = message_filters.Subscriber(
+            self.topic_color, Image)
+        self.sub_laserScan = message_filters.Subscriber(
+            self.topic_laserScan, LaserScan)
+
+        ts = message_filters.ApproximateTimeSynchronizer(
+            [self.sub_image_raw, self.sub_laserScan], 10, 0.1)
+        ts.registerCallback(self.image_lidar_callback)
+
         self.camera_info = None
 
         print("Hello world")
@@ -189,12 +200,12 @@ class MonoDepth_adabin:
         #
         # After processing it publishes back the estimated depth result
 
-    def image_callback(self, data):
+    def image_lidar_callback(self, image_sync, scan_sync):
 
         print("New frame processed")
         # Convert message to opencv image
         try:
-            image = self.bridge.imgmsg_to_cv2(data, "bgr8")
+            image = self.bridge.imgmsg_to_cv2(image_sync, "bgr8")
         except CvBridgeError as e:
             print(e)
 
