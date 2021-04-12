@@ -78,8 +78,31 @@ class MonoDepth_adabin:
 
         print("Hello world")
 
+    # Filters impossible ranges and combines it with angle data
+    def range_filter(self, scan_sync):
 
-    def depth_correction(self, ranges, depth)    
+        range_data = np.array(scan_sync.ranges, np.float32)
+        angle_min = scan_sync.angle_min
+        angle_max = scan_sync.angle_max
+        range_min = scan_sync.range_min
+        range_max = scan_sync.range_max
+        angle_increment = scan_sync.angle_increment
+        N = int((angle_max-angle_min)/angle_increment)
+        angle_data = np.linspace(angle_min, angle_max, num=(N+1)) + math.pi
+       # print(len(angle_data))
+       # print(len(range_data))
+
+        ranges = np.array([range_data, angle_data], np.float32)
+
+        ranges[0, ranges[0, :] > range_max] = range_max
+        ranges[0, ranges[0, :] < range_min] = range_min
+
+       # for i in range(len(ranges[0, :])):
+       #    print((ranges[0, i], ranges[1, i]))
+
+        return ranges
+
+    def depth_correction(self, ranges, depth):    
 
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
@@ -209,6 +232,8 @@ class MonoDepth_adabin:
         except CvBridgeError as e:
             print(e)
 
+        ranges = self.range_filter(scan_sync)
+
         # Display image
         image = cv2.rotate(image, cv2.ROTATE_180)
         if self.debug:
@@ -227,6 +252,8 @@ class MonoDepth_adabin:
                         MAX_DEPTH_NYU) / MAX_DEPTH_NYU  # Ligne de code a valider
 
         true_depth = true_depth.squeeze()
+
+        true_depth = self.depth_correction(ranges,true_depth)
 
         # Display depth
         if self.debug:
