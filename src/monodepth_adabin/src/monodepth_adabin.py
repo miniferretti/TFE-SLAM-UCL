@@ -2,11 +2,14 @@
 
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image, PointCloud2, PointField, CameraInfo
+from std_msgs.msg import Header
+from sensor_msgs import point_cloud2
 import sys
 import time
 import numpy as np
 import cv2
 import rospkg
+import struct
 import rospy
 from scipy.ndimage import filters
 from models import UnetAdaptiveBins
@@ -65,55 +68,56 @@ class MonoDepth_adabin:
         print("Hello world")
 
     # Create a sensor_msgs.PointCloud2 from the depth and color images provided
-    #
-    # It ignores are camera parameters and assumes the images to be rectified
     def create_pointcloud_msg(self, depth, color):
-        msg = PointCloud2()
-        msg.header.stamp = rospy.Time.now()
-        msg.header.frame_id = self.frame_id
-        msg.header.seq = self.counter
 
         height, width = depth.shape
+        P = self.camera_info.P
+        print(P)
 
         # Resize color to match depth
         img = cv2.resize(color, (width, height))
 
-        # Point cloud data numpy array
-        i = 0
-        data = np.zeros((height * width * 6), dtype=np.float32)
-
-        # Message data size
-        msg.height = 1
-        msg.width = width * height
+        # Point cloud data list
+        points = []
 
         # Iterate images and build point cloud
-        for y in range(height):
-            for x in range(width):
-                data[i] = (x - (width / 2)) / 100.0
-                data[i + 1] = (-y + (height / 2)) / 100.0
-                data[i + 2] = depth[y, x] / 25
-                data[i + 3] = float(img[y, x, 0]) / 255.0
-                data[i + 4] = float(img[y, x, 1]) / 255.0
-                data[i + 5] = float(img[y, x, 2]) / 255.0
-                i += 6
+        for v in range(height):
+            for u in range(width):
+                x, y, z = self.convert_from_uvd(self.valmap(
+                    u, 0, width, 0, 1280), self.valmap(v, 0, height, 0, 960), depth, P)
+                b = img[v, u, 0]  # b
+                g = img[v, u, 1]  # g
+                r = img[v, u, 2]  # r
+                a = 255
+                rgb = struct.unpack('I', struct.pack('BBBB', b, g, r, a))[0]
+                pt = [x, y, z, rgb]
+                points.append(pt)
 
         # Fields of the point cloud
-        msg.fields = [
+        fields = [
             PointField("y", 0, PointField.FLOAT32, 1),
             PointField("z", 4, PointField.FLOAT32, 1),
             PointField("x", 8, PointField.FLOAT32, 1),
-            PointField("b", 12, PointField.FLOAT32, 1),
-            PointField("g", 16, PointField.FLOAT32, 1),
-            PointField("r", 20, PointField.FLOAT32, 1)
+            PointField("rgba", 12, PointField.UINT32, 1),
         ]
 
-        msg.is_bigendian = False
-        msg.point_step = 24
-        msg.row_step = msg.point_step * height * width
-        msg.is_dense = True
-        msg.data = data.tobytes()
+        header = Header()
+        header.frame_id = "map"
+        pc2 = point_cloud2.create_cloud(header, fields, points)
+        pc2.header.stamp = rospy.Time.now()
 
-        return msg
+        return pc2
+
+    def convert_from_uvd(self, u, v, true_map, P):
+        fx = P[0]
+        fy = P[5]
+        z = true_map[v, u]
+        x = u * z/fx
+        y = v * z/fy
+        return x, y, z
+
+    def valmap(self, value, istart, istop, ostart, ostop):
+        return int(ostart + (ostop - ostart) * ((value - istart) / (istop - istart)))
 
         # Callback to recieve and store the camera_info parameters
 
@@ -125,7 +129,8 @@ class MonoDepth_adabin:
         # After processing it publishes back the estimated depth result
 
     def image_callback(self, data):
-        print("Hello world")
+
+        print("New frame processed")
         # Convert message to opencv image
         try:
             image = self.bridge.imgmsg_to_cv2(data, "bgr8")
@@ -144,10 +149,12 @@ class MonoDepth_adabin:
         img = cv2.resize(img, (640, 480))
 
         # Predict depth image
-        bin_centers, depth = self.infer_helper.predict_pil(img)
+        bin_centers, true_depth = self.infer_helper.predict_pil(img)
 
-        depth = np.clip(depth_norm(depth.squeeze(), max_depth=MAX_DEPTH_NYU), MIN_DEPTH,
+        depth = np.clip(depth_norm(true_depth.squeeze(), max_depth=MAX_DEPTH_NYU), MIN_DEPTH,
                         MAX_DEPTH_NYU) / MAX_DEPTH_NYU  # Ligne de code a valider
+
+        true_depth = true_depth.squeeze()
 
         # Display depth
         if self.debug:
@@ -160,14 +167,9 @@ class MonoDepth_adabin:
             self.bridge.cv2_to_imgmsg(depth.astype(np.uint8), "mono8"))
 
         # Generate Point cloud
-        cloud_msg = self.create_pointcloud_msg(depth, image)
+        cloud_msg = self.create_pointcloud_msg(true_depth, image)
         self.pub_pointcloud.publish(cloud_msg)
-
-        # Publishes the related camera_info for the creation of the PointCloud2 node
-       # self.pub_camera_info.publish(camera_info)
-      #  self.pub_color_image.publish(
-       #     self.bridge.cv2_to_imgmsg(img.astype(np.uint8), "bgr8"))
-
+        
         # Increment counter
         self.counter += 1
 
