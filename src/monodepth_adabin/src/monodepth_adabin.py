@@ -115,6 +115,8 @@ class MonoDepth_adabin:
         fy = P[5] * pixtometer
         x = u * z/fx
         y = v * z/fy
+        print(x)
+        print(y)
         return x, y, z
 
     def valmap(self, value, istart, istop, ostart, ostop):
