@@ -81,10 +81,10 @@ class MonoDepth_adabin:
         points = []
 
         # Iterate images and build point cloud
-        for v in range(height-1):
-            for u in range(width-1):
+        for v in range(height):
+            for u in range(width):
                 x, y, z = self.convert_from_uvd(self.valmap(
-                    u, 0, width, 0, 1280), self.valmap(v, 0, height, 0, 960), depth, P)
+                    u, 0, width, 0, 1280), self.valmap(v, 0, height, 0, 960), depth[v, u], P)
                 b = img[v, u, 0]  # b
                 g = img[v, u, 1]  # g
                 r = img[v, u, 2]  # r
@@ -108,10 +108,9 @@ class MonoDepth_adabin:
 
         return pc2
 
-    def convert_from_uvd(self, u, v, true_map, P):
+    def convert_from_uvd(self, u, v, z, P):
         fx = P[0]
         fy = P[5]
-        z = true_map[v, u]
         x = u * z/fx
         y = v * z/fy
         return x, y, z
@@ -169,7 +168,7 @@ class MonoDepth_adabin:
         # Generate Point cloud
         cloud_msg = self.create_pointcloud_msg(true_depth, image)
         self.pub_pointcloud.publish(cloud_msg)
-        
+
         # Increment counter
         self.counter += 1
 
