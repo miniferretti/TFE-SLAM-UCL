@@ -84,7 +84,7 @@ class MonoDepth_adabin:
         for v in range(height):
             for u in range(width):
                 x, y, z = self.convert_from_uvd(self.valmap(
-                    (u - (width / 2)), 0, width, 0, 640), self.valmap((-v + (height / 2)), 0, height, 0, 480), depth[v, u], P)
+                    (u - (width / 2)), 0, width, 0, 1280), self.valmap((-v + (height / 2)), 0, height, 0, 960), depth[v, u], P)
                 b = img[v, u, 0]  # b
                 g = img[v, u, 1]  # g
                 r = img[v, u, 2]  # r
