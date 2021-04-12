@@ -155,6 +155,8 @@ class MonoDepth_adabin:
                     for hh in range(image_height):
                         depth[hh , u_real] = depth[hh , image_height] + differenceDepth *((image_height - abs(v_real - hh))/image_height)
 
+                    print('Difference in pixel at [ %s ; %s ] is : "%s" '% (v_real, u_real, differenceDepth))
+                    print('The depth at this point', depth[v_real , u_real])
 
 
         return depth
