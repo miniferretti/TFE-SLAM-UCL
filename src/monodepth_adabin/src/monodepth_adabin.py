@@ -79,6 +79,10 @@ class MonoDepth_adabin:
 
         self.camera_info = None
 
+        int xpixel
+        int ypixel
+
+
         print("Hello world")
 
     # Filters impossible ranges and combines it with angle data
@@ -155,10 +159,9 @@ class MonoDepth_adabin:
                     for hh in range(image_height):
                         depth[hh , u_real] = depth[hh , image_height] + differenceDepth *((image_height - abs(v_real - hh))/image_height)
 
-                    print('Difference in pixel at [ %s ; %s ] is : "%s" '% (v_real, u_real, differenceDepth))
-                    print('The depth at this point', depth[v_real , u_real])
-
-
+        print('Difference in pixel at [ %s ; %s ] is : "%s" '% (v_real, u_real, differenceDepth))
+        print('The depth at this point', depth[v_real , u_real])
+        
         return depth
 
     # Create a sensor_msgs.PointCloud2 from the depth and color images provided
@@ -258,7 +261,7 @@ class MonoDepth_adabin:
 
         true_depth = true_depth.squeeze()
 
-        true_depth = self.depth_correction(ranges,true_depth)
+        true_depth_c = self.depth_correction(ranges,true_depth)
 
         # Display depth
         if self.debug:
