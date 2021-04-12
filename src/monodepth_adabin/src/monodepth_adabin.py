@@ -148,11 +148,11 @@ class MonoDepth_adabin:
                     u_real = self.valmap(u, 0, U, 0, image_width)
                     v_real = self.valmap(v, 0, V, 0, image_height)
 
-                    differenceDepth = depth[v_real ; u_real] - P[2, i]
-                    depth[v_real ; u_real] = P[2, i]
+                    differenceDepth = depth[v_real , u_real] - P[2, i]
+                    depth[v_real , u_real] = P[2, i]
 
                     for hh in range(image_height)
-                        depth[hh ; u_real] = depth[hh ; image_height] + differenceDepth *((image_height - abs(v_real - hh))/image_height)
+                        depth[hh , u_real] = depth[hh , image_height] + differenceDepth *((image_height - abs(v_real - hh))/image_height)
 
 
 
