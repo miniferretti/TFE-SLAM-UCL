@@ -73,15 +73,14 @@ class MonoDepth_adabin:
         self.sub_laserScan = message_filters.Subscriber(
             self.topic_laserScan, LaserScan)
 
-        ts = message_filters.ApproximateTimeSynchronizer(
-            [self.sub_image_raw, self.sub_laserScan], 10, 0.1)
-        ts.registerCallback(self.image_lidar_callback)
+        self.ts = message_filters.ApproximateTimeSynchronizer(
+            [self.sub_image_raw, self.sub_laserScan], 1, 0.1, allow_headerless=True)
+        self.ts.registerCallback(self.image_lidar_callback)
 
         self.camera_info = None
 
-        int xpixel
-        int ypixel
-
+      #  int xpixel
+      #  int ypixel
 
         print("Hello world")
 
@@ -109,7 +108,7 @@ class MonoDepth_adabin:
 
         return ranges
 
-    def depth_correction(self, ranges, depth):    
+    def depth_correction(self, ranges, depth):
 
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
@@ -153,15 +152,17 @@ class MonoDepth_adabin:
                     u_real = self.valmap(u, 0, U, 0, image_width)
                     v_real = self.valmap(v, 0, V, 0, image_height)
 
-                    differenceDepth = depth[v_real , u_real] - P[2, i]
-                    depth[v_real , u_real] = P[2, i]
+                    differenceDepth = depth[v_real, u_real] - P[2, i]
+                    depth[v_real, u_real] = P[2, i]
 
                     for hh in range(image_height):
-                        depth[hh , u_real] = depth[hh , image_height] + differenceDepth *((image_height - abs(v_real - hh))/image_height)
+                        depth[hh, u_real] = depth[hh, image_height] + differenceDepth * \
+                            ((image_height - abs(v_real - hh))/image_height)
 
-        print('Difference in pixel at [ %s ; %s ] is : "%s" '% (v_real, u_real, differenceDepth))
-        print('The depth at this point', depth[v_real , u_real])
-        
+        print('Difference in pixel at [ %s ; %s ] is : "%s" ' % (
+            v_real, u_real, differenceDepth))
+        print('The depth at this point', depth[v_real, u_real])
+
         return depth
 
     # Create a sensor_msgs.PointCloud2 from the depth and color images provided
@@ -261,7 +262,7 @@ class MonoDepth_adabin:
 
         true_depth = true_depth.squeeze()
 
-        true_depth_c = self.depth_correction(ranges,true_depth)
+        true_depth_c = self.depth_correction(ranges, true_depth)
 
         # Display depth
         if self.debug:
