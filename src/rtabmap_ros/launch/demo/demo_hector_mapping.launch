@@ -59,12 +59,12 @@
     <param name="map_update_angle_thresh" value="0.06" />
     
     <!-- Advertising config --> 
-    <param name="scan_topic" value="/jn0/base_scan"/>
+    <param name="scan_topic" value="/scan"/>
   </node>
   
   <!-- If argument "hector" is false, we use rtabmap's icp odometry to generate odometry for us -->
   <node unless="$(arg hector)" pkg="rtabmap_ros" type="icp_odometry" name="icp_odometry" output="screen" >
-     <remap from="scan"      to="/jn0/base_scan"/>
+     <remap from="scan"      to="/scan"/>
      <remap from="odom"      to="/scanmatch_odom"/>
      <remap from="odom_info"      to="/rtabmap/odom_info"/>
 	  
