@@ -1,4 +1,9 @@
 <launch>
-    <include file= "$(find raspicam_node)/launch/camerav2_1280x960.launch"/>
-    <include file= "$(find rplidar_ros)/launch/rplidar_a3.launch"/>
+    <include file="$(find raspicam_node)/launch/camerav2_1280x960.launch" />
+    <include file="$(find rplidar_ros)/launch/rplidar_a3.launch" />
+
+    <!-- TF of the robot and all the sensors-->
+    <node pkg="tf" type="static_transform_publisher" name="basefootprint_to_baselink" args="0.0 0.0 1 0.0 0.0 0.0 base_footprint baselink 100" />
+    <node pkg="tf" type="static_transform_publisher" name="baselink_to_rplidar" args="0.0 0.048 0.0 0.0 0.0 0.0 baselink laser 100" />
+    <node pkg="tf" type="static_transform_publisher" name="baselink_to_cam" args="0.0 0.0 0.0 0.0 0.0 0.0 baselink cam 100" />
 </launch>
