@@ -5,5 +5,5 @@
     <!-- TF of the robot and all the sensors-->
     <node pkg="tf" type="static_transform_publisher" name="basefootprint_to_baselink" args="0.0 0.0 1 0.0 0.0 0.0 basefootprint baselink 100" />
     <node pkg="tf" type="static_transform_publisher" name="baselink_to_rplidar" args="0.0 0.048 0.1 0.0 0.0 0.0 baselink laser 100" />
-    <node pkg="tf" type="static_transform_publisher" name="baselink_to_cam" args="0.0 0.0 0.0 0.0 0.0 0.0 baselink cam 100" />
+    <node pkg="tf" type="static_transform_publisher" name="baselink_to_cam" args="0.06 0.0 0.06 0.0 0.0 0.0 baselink cam 100" />
 </launch>
