@@ -206,7 +206,7 @@ class MonoDepth_adabin:
         ]
 
         header = Header()
-        header.frame_id = "map"
+        header.frame_id = "cam"
         pc2 = point_cloud2.create_cloud(header, fields, points)
         pc2.header.stamp = rospy.Time.now()
 
