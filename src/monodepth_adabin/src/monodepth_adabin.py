@@ -79,9 +79,6 @@ class MonoDepth_adabin:
 
         self.camera_info = None
 
-        int xpixel
-        int ypixel
-
 
         print("Hello world")
 
