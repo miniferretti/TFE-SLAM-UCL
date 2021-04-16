@@ -32,7 +32,7 @@ N_BINS = 256
 class MonoDepth_adabin:
     def __init__(self):
 
-        print("Hello world")
+        print("Hello world from Adabin")
 
         # Get parameters
         self.debug = rospy.get_param("~debug", False)
