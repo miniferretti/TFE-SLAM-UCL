@@ -11,7 +11,7 @@
   </node>
 
   <!-- TF of the base footprint regarding to the world-->
-  <node pkg="tf" type="static_transform_publisher" name="world_to_basefootprint" args="0.0 0.0 0.0 0.0 0.0 0.0 world basefootprint 100" />
+  <node pkg="tf" type="static_transform_publisher" name="world_to_base_footprint" args="0.0 0.0 0.0 0.0 0.0 0.0 world base_footprint 100" />
   
   <!--  <node pkg="monodepth" type="monodepth.py" name="monodepth" output="screen" respawn="true">
       <param name="topic_color" value="/raspicam_node/image" />
