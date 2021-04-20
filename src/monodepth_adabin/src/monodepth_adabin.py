@@ -73,9 +73,9 @@ class MonoDepth_adabin:
         self.sub_laserScan = message_filters.Subscriber(
             self.topic_laserScan, LaserScan)
 
-        ts = message_filters.ApproximateTimeSynchronizer(
+        self.ts = message_filters.ApproximateTimeSynchronizer(
             [self.sub_image_raw, self.sub_laserScan], 10, 0.1)
-        ts.registerCallback(self.image_lidar_callback)
+        self.ts.registerCallback(self.image_lidar_callback)
 
         self.camera_info = None
 
