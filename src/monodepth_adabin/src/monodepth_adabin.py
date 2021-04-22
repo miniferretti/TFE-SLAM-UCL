@@ -210,9 +210,6 @@ class MonoDepth_adabin:
                 r = img[v, u, 2]  # r
                 a = 255
                 if abs(x) < 0.01 and abs(y) < 0.01:
-                    print(x)
-                    print(y)
-                    print(z)
                     b = 255
                     g = 0
                     r = 0
