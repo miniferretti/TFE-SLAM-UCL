@@ -99,7 +99,7 @@ class MonoDepth_adabin:
        # print(len(range_data))
 
         ranges = np.array([range_data, angle_data], np.float32)
-1
+
         ranges[0, ranges[0, :] > range_max] = range_max
         ranges[0, ranges[0, :] < range_min] = range_min
 
