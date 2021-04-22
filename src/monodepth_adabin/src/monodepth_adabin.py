@@ -193,7 +193,7 @@ class MonoDepth_adabin:
 
         height, width = depth.shape
         P = self.camera_info.P
-        print(P)
+        #print(P)
         # Resize color to match depth
         img = np.fliplr(cv2.resize(color, (width, height)))
         depth = np.fliplr(depth)
