@@ -176,7 +176,8 @@ class MonoDepth_adabin:
                         depth[hh, u_real] = depth[hh, image_height] + differenceDepth *((image_height - abs(v_real - hh))/image_height)
                     
                     #Changes for LiDAR points 
-                    depth[u_real, v_real] = P[2, i]
+                    depth[v_real, u_real] = P[2, i]
+                    
 
 
                     u_real_previous = u_real 
@@ -250,7 +251,6 @@ class MonoDepth_adabin:
 
     def camera_info_callback(self, data):
         self.camera_info = data
-        print("Camera info update")
 
         # Callback to receive and process image published.
         #
