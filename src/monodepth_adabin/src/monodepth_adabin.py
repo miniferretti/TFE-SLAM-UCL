@@ -250,7 +250,6 @@ class MonoDepth_adabin:
 
     def camera_info_callback(self, data):
         self.camera_info = data
-        print("Camera info update")
 
         # Callback to receive and process image published.
         #
