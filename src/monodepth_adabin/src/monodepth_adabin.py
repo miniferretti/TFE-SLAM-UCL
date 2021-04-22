@@ -32,7 +32,7 @@ N_BINS = 256
 class MonoDepth_adabin:
     def __init__(self):
 
-        print("Hello world from Adabin")
+        print("Hello world")
 
         # Get parameters
         self.debug = rospy.get_param("~debug", False)
@@ -74,11 +74,13 @@ class MonoDepth_adabin:
             self.topic_laserScan, LaserScan)
 
         self.ts = message_filters.ApproximateTimeSynchronizer(
-            [self.sub_image_raw, self.sub_laserScan], 10, 0.1)
+            [self.sub_image_raw, self.sub_laserScan], 10, 0.2)
         self.ts.registerCallback(self.image_lidar_callback)
 
         self.camera_info = None
 
+      #  int xpixel
+      #  int ypixel
 
         print("Hello world")
 
@@ -106,7 +108,7 @@ class MonoDepth_adabin:
 
         return ranges
 
-    def depth_correction(self, ranges, depth):    
+    def depth_correction(self, ranges, depth):
 
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
@@ -141,6 +143,10 @@ class MonoDepth_adabin:
         UV = np.array([np.divide(P[0, :], P[2, :]),
                        np.divide(P[1, :], P[2, :])], np.float32)
 
+        u_real_previous = 0
+        v_real_previous = 0
+        depth_previous = depth[240, 0]
+
         for i in range(len(UV[0, :])):
             u = UV[0, i]
             v = UV[1, i]
@@ -150,15 +156,36 @@ class MonoDepth_adabin:
                     u_real = self.valmap(u, 0, U, 0, image_width)
                     v_real = self.valmap(v, 0, V, 0, image_height)
 
-                    differenceDepth = depth[v_real , u_real] - P[2, i]
-                    depth[v_real , u_real] = P[2, i]
+                    differenceDepth = depth[v_real, u_real] - P[2, i]
+                    
+                    StepWidth = u_real - u_real_previous
+                    StepHeight = v_real - v_real_previous
+                    MidHeight = int((v_real + v_real_previous)/2)
+                    StepDepth = P[2, i] - depth_previous 
 
+                    # Changes for points without information on x
+
+                    for inter_u in range(StepWidth):
+                    	depth[MidHeight,u_real_previous +inter_u] = depth_previous + StepWidth *(inter_u/StepWidth) * StepDepth
+						#for inter_h in range(image_height):
+							#interDifferenceDepth = depth[MidHeight,u_real_previous +inter_u] - depth[inter_h, u_real_previous +inter_u]
+                    		#depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] + interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
+
+                    # Changes for points with information on x 
                     for hh in range(image_height):
-                        depth[hh , u_real] = depth[hh , image_height] + differenceDepth *((image_height - abs(v_real - hh))/image_height)
+                        depth[hh, u_real] = depth[hh, image_height] + differenceDepth *((image_height - abs(v_real - hh))/image_height)
+                    
+                    #Changes for LiDAR points 
+                    depth[u_real, v_real] = P[2, i]
 
-        print('Difference in pixel at [ %s ; %s ] is : "%s" '% (v_real, u_real, differenceDepth))
-        print('The depth at this point', depth[v_real , u_real])
-        
+
+                    u_real_previous = u_real 
+                    v_real_previous = v_real
+                    depth_previous = P[2, i]
+
+        print('Difference in pixel at [ %s ; %s ] is : "%s" ' % (v_real, u_real, differenceDepth))
+        print('The depth at this point', depth[v_real, u_real])
+
         return depth
 
     # Create a sensor_msgs.PointCloud2 from the depth and color images provided
@@ -202,7 +229,7 @@ class MonoDepth_adabin:
         ]
 
         header = Header()
-        header.frame_id = "map"
+        header.frame_id = "cam"
         pc2 = point_cloud2.create_cloud(header, fields, points)
         pc2.header.stamp = rospy.Time.now()
 
@@ -223,6 +250,7 @@ class MonoDepth_adabin:
 
     def camera_info_callback(self, data):
         self.camera_info = data
+        print("Camera info update")
 
         # Callback to receive and process image published.
         #
@@ -258,7 +286,7 @@ class MonoDepth_adabin:
 
         true_depth = true_depth.squeeze()
 
-        true_depth = self.depth_correction(ranges,true_depth)
+        #true_depth_c = self.depth_correction(ranges, true_depth)
 
         # Display depth
         if self.debug:
