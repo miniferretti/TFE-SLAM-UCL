@@ -74,7 +74,7 @@ class MonoDepth_adabin:
             self.topic_laserScan, LaserScan)
 
         self.ts = message_filters.ApproximateTimeSynchronizer(
-            [self.sub_image_raw, self.sub_laserScan], 1, 0.5)
+            [self.sub_image_raw, self.sub_laserScan], 1, 0.01)
         self.ts.registerCallback(self.image_lidar_callback)
 
         self.camera_info = None
@@ -99,7 +99,7 @@ class MonoDepth_adabin:
        # print(len(range_data))
 
         ranges = np.array([range_data, angle_data], np.float32)
-
+1
         ranges[0, ranges[0, :] > range_max] = range_max
         ranges[0, ranges[0, :] < range_min] = range_min
 
