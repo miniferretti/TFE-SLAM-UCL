@@ -258,6 +258,8 @@ class MonoDepth_adabin:
 
     def image_lidar_callback(self, image_sync, scan_sync):
 
+        start_time = rospy.Time.now()
+
         print("New frame processed")
         # Convert message to opencv image
         try:
@@ -306,6 +308,10 @@ class MonoDepth_adabin:
 
         # Increment counter
         self.counter += 1
+
+        end_time = rospy.Time.now()
+
+        print("Total time taken  = {} for frame = {}".format(end_time-start_time,self.counter))
 
 
 def main(args):
