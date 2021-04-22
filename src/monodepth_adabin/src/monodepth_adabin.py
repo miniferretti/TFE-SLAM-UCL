@@ -74,7 +74,7 @@ class MonoDepth_adabin:
             self.topic_laserScan, LaserScan)
 
         self.ts = message_filters.ApproximateTimeSynchronizer(
-            [self.sub_image_raw, self.sub_laserScan], 1, 0.1, allow_headerless=True)
+            [self.sub_image_raw, self.sub_laserScan], 20, 0.5)
         self.ts.registerCallback(self.image_lidar_callback)
 
         self.camera_info = None
@@ -250,6 +250,7 @@ class MonoDepth_adabin:
 
     def camera_info_callback(self, data):
         self.camera_info = data
+        print("Camera info update")
 
         # Callback to receive and process image published.
         #
@@ -285,7 +286,7 @@ class MonoDepth_adabin:
 
         true_depth = true_depth.squeeze()
 
-        true_depth_c = self.depth_correction(ranges, true_depth)
+        #true_depth_c = self.depth_correction(ranges, true_depth)
 
         # Display depth
         if self.debug:
