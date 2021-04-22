@@ -74,7 +74,7 @@ class MonoDepth_adabin:
             self.topic_laserScan, LaserScan)
 
         self.ts = message_filters.ApproximateTimeSynchronizer(
-            [self.sub_image_raw, self.sub_laserScan], 10, 0.2)
+            [self.sub_image_raw, self.sub_laserScan], 20, 0.2)
         self.ts.registerCallback(self.image_lidar_callback)
 
         self.camera_info = None
@@ -286,7 +286,7 @@ class MonoDepth_adabin:
 
         true_depth = true_depth.squeeze()
 
-        #true_depth_c = self.depth_correction(ranges, true_depth)
+        true_depth_c = self.depth_correction(ranges, true_depth)
 
         # Display depth
         if self.debug:
@@ -301,7 +301,7 @@ class MonoDepth_adabin:
             self.bridge.cv2_to_imgmsg(depth.astype(np.uint8), "mono8"))
 
         # Generate Point cloud
-        cloud_msg = self.create_pointcloud_msg(true_depth, image)
+        cloud_msg = self.create_pointcloud_msg(true_depth_c, image)
         self.pub_pointcloud.publish(cloud_msg)
 
         # Increment counter
