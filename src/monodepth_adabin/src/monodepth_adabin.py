@@ -157,34 +157,35 @@ class MonoDepth_adabin:
                     v_real = self.valmap(v, 0, V, 0, image_height)
 
                     differenceDepth = depth[v_real, u_real] - P[2, i]
-                    
+
                     StepWidth = u_real - u_real_previous
                     StepHeight = v_real - v_real_previous
                     MidHeight = int((v_real + v_real_previous)/2)
-                    StepDepth = P[2, i] - depth_previous 
+                    StepDepth = P[2, i] - depth_previous
 
                     # Changes for points without information on x
 
                     for inter_u in range(StepWidth):
-                        depth[MidHeight,u_real_previous +inter_u] = depth_previous + StepWidth *(inter_u/StepWidth) * StepDepth
-						for inter_h in range(image_height):
-						    interDifferenceDepth = depth[MidHeight,u_real_previous +inter_u] - depth[inter_h, u_real_previous +inter_u]
-                    	    depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] + interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
+                        depth[MidHeight, u_real_previous + inter_u] = depth_previous + \
+                            StepWidth * (inter_u/StepWidth) * StepDepth
+                        for inter_h in range(image_height):
+                            interDifferenceDepth = depth[MidHeight, u_real_previous +
+                                       inter_u] - depth[inter_h, u_real_previous + inter_u]
+                            depth[inter_h, u_real_previous + inter_u] = depth[inter_h, u_real_previous + inter_u] + interDifferenceDepth * ((image_height - abs(MidHeight - inter_h))/image_height)
 
-                    # Changes for points with information on x 
+                    # Changes for points with information on x
                     for hh in range(image_height):
-                        depth[hh, u_real] = depth[hh, image_height] + differenceDepth *((image_height - abs(v_real - hh))/image_height)
-                    
-                    #Changes for LiDAR points 
+                        depth[hh, u_real] = depth[hh, image_height] + differenceDepth * ((image_height - abs(v_real - hh))/image_height)
+
+                    #Changes for LiDAR points
                     depth[v_real, u_real] = P[2, i]
 
-
-
-                    u_real_previous = u_real 
+                    u_real_previous = u_real
                     v_real_previous = v_real
                     depth_previous = P[2, i]
 
-        print('Difference in pixel at [ %s ; %s ] is : "%s" ' % (v_real, u_real, differenceDepth))
+        print('Difference in pixel at [ %s ; %s ] is : "%s" ' % (
+            v_real, u_real, differenceDepth))
         print('The depth at this point', depth[v_real, u_real])
 
         return depth
