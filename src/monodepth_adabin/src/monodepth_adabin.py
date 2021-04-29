@@ -178,6 +178,9 @@ class MonoDepth_adabin:
                         depth[hh, u_real] = P[2, i]
                         #depth[hh, u_real] = depth[hh, u_real] + differenceDepth * ((image_height - abs(v_real - hh))/image_height)
 
+                    for iterrr in range(8):
+                        depth[v_real, u_real + iterrr] = P[2, i]
+
                     #Changes for LiDAR points
                     depth[v_real, u_real] = P[2, i]
 
