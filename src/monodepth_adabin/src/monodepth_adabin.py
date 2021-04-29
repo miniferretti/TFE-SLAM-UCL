@@ -171,9 +171,9 @@ class MonoDepth_adabin:
                     for iterrr in range(5):
                         depth[v_real, min(u_real + iterrr, 639)] = P[2, i]
                         depth[v_real, max(u_real - iterrr, 0)] = P[2, i]
-                        for inter_h in range(image_height):
+                        for inter_h in range(25):
                             depth[v_real + inter_h, min(u_real + iterrr, 639) ] = P[2, i]
-                            depth[v_real + inter_h, min(u_real + iterrr, 639) ] = P[2, i]
+                            depth[v_real - inter_h, min(u_real + iterrr, 639) ] = P[2, i]
                         #depth[inter_h, u_real_previous + inter_u] = depth[inter_h, u_real_previous + inter_u] + interDifferenceDepth * ((image_height - abs(MidHeight - inter_h))/image_height)
 
 
