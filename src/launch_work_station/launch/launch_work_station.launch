@@ -97,7 +97,7 @@
       <param name="Icp/VoxelSize" type="string" value="0.05" />
       <param name="Icp/RangeMax" type="string" value="$(arg max_range)" />
       <param name="Grid/RangeMax" type="string" value="$(arg max_range)" />
-    </node>
+    </node> 
 
   </group>
 
