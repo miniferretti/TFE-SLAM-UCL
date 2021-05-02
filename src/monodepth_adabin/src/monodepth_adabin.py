@@ -267,7 +267,7 @@ class MonoDepth_adabin:
         # except CvBridgeError as e:
         #    print(e)
 
-        np_arr = np.fromstring(image_sync.data, np.uint8)
+        np_arr = np.frombuffer(image_sync.data, np.uint8)
         image = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
 
         ranges = self.range_filter(scan_sync)
