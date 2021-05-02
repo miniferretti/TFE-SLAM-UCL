@@ -9,7 +9,7 @@
     <param name="topic_depth" value="/monodepth_adabin/depth_image" />
     <param name="topic_camera_info" value="/raspicam_node/camera_info" />
     <param name="device" value="cpu" />
-    <param name="debug" value="True" />
+    <param name="debug" value="False" />
   </node>
 
 </launch>
