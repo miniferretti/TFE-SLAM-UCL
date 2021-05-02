@@ -74,7 +74,7 @@ class MonoDepth_adabin:
             self.topic_laserScan, LaserScan)
 
         self.ts = message_filters.ApproximateTimeSynchronizer(
-            [self.sub_image_raw, self.sub_laserScan], 20, 0.01)
+            [self.sub_image_raw, self.sub_laserScan], 20, 1)
         self.ts.registerCallback(self.image_lidar_callback)
 
         self.camera_info = None
@@ -283,6 +283,7 @@ class MonoDepth_adabin:
                         MAX_DEPTH_NYU) / MAX_DEPTH_NYU  # Ligne de code a valider
 
         true_depth = true_depth.squeeze()
+        depth = np.kron(depth,np.ones((2,2))) #upscale the image 
 
         #true_depth_c = self.depth_correction(ranges, true_depth)
 
