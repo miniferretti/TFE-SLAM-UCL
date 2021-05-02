@@ -47,7 +47,8 @@ class MonoDepth_adabin:
             "~topic_pointcloud", "/monodepth_adabin/pointcloud")
         self.topic_camera_info = rospy.get_param(
             "~topic_camera_info", "/raspicam_node/camera_info")
-        self.topic_laserScan = rospy.get_param("~topic_lidar_data", "/scan")
+        self.topic_laserScan = rospy.get_param(
+            "~topic_lidar_data", "/scan")
 
         self.min_depth = rospy.get_param("~min_depth", MIN_DEPTH)
         self.max_depth = rospy.get_param("~max_depth", MAX_DEPTH_NYU)
@@ -74,7 +75,7 @@ class MonoDepth_adabin:
             self.topic_laserScan, LaserScan)
 
         self.ts = message_filters.ApproximateTimeSynchronizer(
-            [self.sub_image_raw, self.sub_laserScan], 20, 0.1)
+            [self.sub_image_raw, self.sub_laserScan], 10, 1)
         self.ts.registerCallback(self.image_lidar_callback)
 
         self.camera_info = None
