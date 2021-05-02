@@ -69,13 +69,13 @@ class MonoDepth_adabin:
         self.sub_camera_info = rospy.Subscriber(
             self.topic_camera_info, CameraInfo, self.camera_info_callback)
 
-        self.sub_image_raw = message_filters.Subscriber(
+        self.sub_image_comp = message_filters.Subscriber(
             self.topic_color, CompressedImage)
         self.sub_laserScan = message_filters.Subscriber(
             self.topic_laserScan, LaserScan)
 
         self.ts = message_filters.ApproximateTimeSynchronizer(
-            [self.sub_image_raw, self.sub_laserScan], 10, 0.1)
+            [self.sub_image_comp, self.sub_laserScan], 5, 0.01)
         self.ts.registerCallback(self.image_lidar_callback)
 
         self.camera_info = None
