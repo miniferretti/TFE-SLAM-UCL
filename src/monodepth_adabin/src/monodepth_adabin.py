@@ -1,26 +1,27 @@
 #!/usr/bin/env python3
 
-from cv_bridge import CvBridge, CvBridgeError
-from sensor_msgs.msg import Image, PointCloud2, PointField, CameraInfo, LaserScan, CompressedImage
-from std_msgs.msg import Header
-from sensor_msgs import point_cloud2
+import math
+import struct
 import sys
 import time
-import math
-import numpy as np
+
 import cv2
+import matplotlib.pyplot as plt
+import message_filters
+import numpy as np
 import rospkg
-import struct
 import rospy
+from cv_bridge import CvBridge, CvBridgeError
 from scipy.ndimage import filters
-from models import UnetAdaptiveBins
+from sensor_msgs import point_cloud2
+from sensor_msgs.msg import (CameraInfo, CompressedImage, Image, LaserScan,
+                             PointCloud2, PointField)
+from std_msgs.msg import Header
+
 import models_io
 from infer import InferenceHelper
+from models import UnetAdaptiveBins
 from predict import depth_norm
-import message_filters
-from scipy.ndimage import filters
-import matplotlib.pyplot as plt
-
 
 MIN_DEPTH = 1e-3
 MAX_DEPTH_NYU = 10
@@ -75,7 +76,7 @@ class MonoDepth_adabin:
             self.topic_laserScan, LaserScan)
 
         self.ts = message_filters.ApproximateTimeSynchronizer(
-            [self.sub_image_comp, self.sub_laserScan], 1, 0.05)
+            [self.sub_image_comp, self.sub_laserScan], queue_size=10, slop=0.1, allow_headerless=True)
         self.ts.registerCallback(self.image_lidar_callback)
 
         self.camera_info = None
