@@ -1,14 +1,15 @@
 <launch>
-    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find rplidar_ros)/rviz/rplidar.rviz" />
-    <node type="rqt_tf_tree" name="rqt_tf_tree" pkg="rqt_tf_tree" />
-    <!--   <node pkg="rqt_image_view" type="rqt_image_view" name="image_view_debug" args="/output/image_raw/compressed" /> -->
-    <!--  <node pkg="rp_cyclop" name="rp_cyclop" type="rp_cyclop.py" output="screen" /> -->
-  
-    <node pkg="monodepth_adabin" type="monodepth_adabin.py" name="monodepth_adabin" output="screen" respawn="true">
-      <param name="topic_color" value="/raspicam_node/image" />
-      <param name="topic_depth" value="/monodepth_adabin/depth_image" />
-      <param name="topic_camera_info" value="/raspicam_node/camera_info" />
-      <param name="device" value="cpu" />
-    </node>
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find rplidar_ros)/rviz/rplidar.rviz" />
+  <node type="rqt_tf_tree" name="rqt_tf_tree" pkg="rqt_tf_tree" />
+  <!--   <node pkg="rqt_image_view" type="rqt_image_view" name="image_view_debug" args="/output/image_raw/compressed" /> -->
+  <!--  <node pkg="rp_cyclop" name="rp_cyclop" type="rp_cyclop.py" output="screen" /> -->
+
+  <node pkg="monodepth_adabin" type="monodepth_adabin.py" name="monodepth_adabin" output="screen" respawn="true">
+    <param name="topic_color" value="/raspicam_node/image" />
+    <param name="topic_depth" value="/monodepth_adabin/depth_image" />
+    <param name="topic_camera_info" value="/raspicam_node/camera_info" />
+    <param name="device" value="cpu" />
+    <param name="debug" value="True" />
+  </node>
 
 </launch>
