@@ -259,7 +259,7 @@ class MonoDepth_adabin:
 
         start_time = time.time()
 
-        print("New frame processed")
+        print("New frame processed of type {}".format(image_sync.format))
         # Convert message to opencv image
        # try:
         #    image = self.bridge.imgmsg_to_cv2(image_sync, "bgr8")
