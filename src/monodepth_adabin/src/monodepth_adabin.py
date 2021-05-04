@@ -273,7 +273,6 @@ class MonoDepth_adabin:
         ranges = self.range_filter(scan_sync)
 
         # Display image
-        image = cv2.rotate(image, cv2.ROTATE_180)
         if self.debug:
             cv2.imshow("Image", image)
             cv2.waitKey(1)
