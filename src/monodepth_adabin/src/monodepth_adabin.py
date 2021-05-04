@@ -71,7 +71,7 @@ class MonoDepth_adabin:
             self.topic_camera_info, CameraInfo, self.camera_info_callback)
 
         self.sub_image_comp = message_filters.Subscriber(
-            self.topic_color, CompressedImage, 1)
+            self.topic_color, CompressedImage)
         self.sub_laserScan = message_filters.Subscriber(
             self.topic_laserScan, LaserScan, 1)
 
