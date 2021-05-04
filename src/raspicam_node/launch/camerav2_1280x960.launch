@@ -2,7 +2,7 @@
   <arg name="enable_raw" default="false"/>
   <arg name="enable_imv" default="false"/>
   <arg name="camera_id" default="0"/>
-  <arg name="camera_frame_id" default="raspicam"/>
+  <arg name="camera_frame_id" default="cam"/>
   <arg name="camera_name" default="camerav2_1280x960_custom"/>
 
   <node type="raspicam_node" pkg="raspicam_node" name="raspicam_node" output="screen">
@@ -17,6 +17,7 @@
     <param name="camera_name" value="$(arg camera_name)"/>
     <param name="width" value="1280"/>
     <param name="height" value="960"/>
+    <param name="vFlip" type="int" value="1"/>
 
     <param name="framerate" value="30"/>
   </node>
