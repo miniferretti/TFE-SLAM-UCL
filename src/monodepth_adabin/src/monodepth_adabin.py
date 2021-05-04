@@ -23,7 +23,7 @@ from infer import InferenceHelper
 from models import UnetAdaptiveBins
 from predict import depth_norm
 
-MIN_DEPTH = 1e-3
+MIN_DEPTH = 1e-1
 MAX_DEPTH_NYU = 10
 MAX_DEPTH_KITTI = 80
 
