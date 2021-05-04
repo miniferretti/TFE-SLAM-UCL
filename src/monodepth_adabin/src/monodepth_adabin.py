@@ -73,7 +73,7 @@ class MonoDepth_adabin:
         self.sub_image_comp = message_filters.Subscriber(
             self.topic_color, CompressedImage)
         self.sub_laserScan = message_filters.Subscriber(
-            self.topic_laserScan, LaserScan, 1)
+            self.topic_laserScan, LaserScan)
 
         self.ts = message_filters.ApproximateTimeSynchronizer(
             [self.sub_image_comp, self.sub_laserScan], queue_size=2, slop=1)
