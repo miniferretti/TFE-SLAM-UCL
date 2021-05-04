@@ -27,7 +27,7 @@
     <arg name="p2n" default="true" />
 
     <!-- Limit lidar range if > 0  -->
-    <arg name="max_range" default="0" />
+    <arg name="max_range" default="25" />
 
     <!-- Use libpointmatcher for ICP? -->
     <arg name="pm" default="true" />
