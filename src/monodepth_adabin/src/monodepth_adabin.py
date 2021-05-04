@@ -41,7 +41,7 @@ class MonoDepth_adabin:
         self.device = rospy.get_param("~device", 'cpu')
 
         self.topic_color = rospy.get_param(
-            "~topic_color", "/raspicam_node/image/compressed")
+            "~topic_color", "/raspicam_node/image/compressed/image")
         self.topic_depth = rospy.get_param(
             "~topic_depth", "/monodepth_adabin/image_depth")
         self.topic_pointcloud = rospy.get_param(
