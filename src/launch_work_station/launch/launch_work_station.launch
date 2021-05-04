@@ -80,7 +80,7 @@
       <param name="subscribe_scan" type="bool" value="true" />
 
       <remap from="scan" to="/scan" />
-      <remap from="rgb" to="/raspicam_node/image/compressed" />
+      <remap from="rgb" to="/raspicam_node/image" />
 
       <!-- As hector doesn't provide compatible covariance in the odometry topic, don't use the topic and fix the covariance -->
       <param if="$(arg hector)" name="odom_frame_id" type="string" value="hector_map" />
