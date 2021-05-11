@@ -20,6 +20,6 @@
     <param name="vFlip" value="true" />
     <param name="hFlip" value="true" />
 
-    <param name="framerate" value="1" />
+    <param name="framerate" value="10" />
   </node>
 </launch>
