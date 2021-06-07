@@ -1,3 +1,13 @@
 #!/bin/bash
-cd src/cyclop_matteo
-chmod +x cyclop_matteo.py
+cd src/rp_cyclop
+chmod +x rp_cyclop.py
+cd ..
+cd ..
+cd src/monodepth/src
+chmod +x monodepth.py
+cd ..
+cd ..
+cd ..
+cd src/monodepth_adabin/src
+chmod +x monodepth_adabin.py
+echo "Permission successfuly granted"
