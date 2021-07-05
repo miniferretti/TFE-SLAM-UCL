@@ -1,3 +1,9 @@
 {
-    "cmake.configureOnOpen": true
+    "cmake.configureOnOpen": true,
+    "files.associations": {
+        "functional": "cpp",
+        "memory": "cpp",
+        "sstream": "cpp",
+        "optional": "cpp"
+    }
 }
