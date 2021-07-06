@@ -6,7 +6,7 @@
     <node pkg="mpu_6050_driver" name="imu_node" type="imu_node.py" output="screen">
         <param name="i2c_bus" type="int" value="1" />
         <param name="device_address" type="int" value="104" />
-        <parma name="imu_frame" type="string" value="base_imu" />
+        <param name="imu_frame" type="string" value="base_imu" />
     </node>
     <node pkg="mpu_6050_driver" name="tf_broadcaster_imu" type="tf_broadcaster_imu.py" output="screen" />
 
