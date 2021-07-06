@@ -86,7 +86,7 @@ if __name__ == '__main__':
     if type(ADDR) == str:
         ADDR = int(ADDR, 16)
 
-    IMU_FRAME = rospy.get_param('~imu_frame', 'imu_link')
+    IMU_FRAME = rospy.get_param('~imu_frame', 'base_imu')
 
     bus.write_byte_data(ADDR, PWR_MGMT_1, 0)
 
