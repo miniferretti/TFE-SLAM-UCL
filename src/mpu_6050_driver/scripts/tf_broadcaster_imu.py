@@ -1,4 +1,4 @@
-#!/usr/bin/env python3  
+#!/usr/bin/env python3
 import rospy
 import tf_conversions
 import tf2_ros
@@ -23,7 +23,8 @@ def handle_imu_pose(msg):
 
     br.sendTransform(t)
 
+
 if __name__ == '__main__':
-      rospy.init_node('tf_broadcaster_imu')
-      rospy.Subscriber('/imu/data', Imu, handle_imu_pose)
-      rospy.spin()
+    rospy.init_node('tf_broadcaster_imu')
+    rospy.Subscriber('/imu/data', Imu, handle_imu_pose)
+    rospy.spin()
