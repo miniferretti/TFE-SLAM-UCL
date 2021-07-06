@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3  
 import rospy
 import tf_conversions
 import tf2_ros
@@ -15,7 +15,7 @@ def handle_imu_pose(msg):
     t.child_frame_id = "base_imu"
     t.transform.translation.x = 0
     t.transform.translation.y = 0
-    t.transform.translation.z = 1.1
+    t.transform.translation.z = 0
     t.transform.rotation.x = msg.orientation.x
     t.transform.rotation.y = msg.orientation.y
     t.transform.rotation.z = msg.orientation.z
@@ -23,8 +23,7 @@ def handle_imu_pose(msg):
 
     br.sendTransform(t)
 
-
 if __name__ == '__main__':
-    rospy.init_node('tf_broadcaster_imu')
-    rospy.Subscriber('/imu/data', Imu, handle_imu_pose)
-    rospy.spin()
+      rospy.init_node('tf_broadcaster_imu')
+      rospy.Subscriber('/imu/data', Imu, handle_imu_pose)
+      rospy.spin()
