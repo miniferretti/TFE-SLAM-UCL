@@ -3,8 +3,8 @@
     <include file="$(find rplidar_ros)/launch/rplidar_a3.launch" />
 
     <!--IMU and asociated TF launch -->
-    <node pkg="mpu_6050_driver" name="imu_node.py" output="screen"/>
-    <node pkg="mpu_6050_driver" name="tf_broadcaster_imu.py" output="screen"/>
+    <node pkg="mpu_6050_driver" name="imu_node.py" type="imu_node.py" output="screen"/>
+    <node pkg="mpu_6050_driver" name="tf_broadcaster_imu.py" type="tf_broadcaster_imu.py" output="screen"/>
 
     <!-- TF of the robot and all the sensors-->
     <node pkg="tf" type="static_transform_publisher" name="basefootprint_to_baselink" args="0.0 0.0 1 0.0 0.0 0.0 base_footprint base_link 100" />
