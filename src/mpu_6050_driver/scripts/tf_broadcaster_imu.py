@@ -15,7 +15,7 @@ def handle_imu_pose(msg):
     t.child_frame_id = "base_imu"
     t.transform.translation.x = 0
     t.transform.translation.y = 0
-    t.transform.translation.z = 1.1
+    t.transform.translation.z = 110
     t.transform.rotation.x = msg.orientation.x
     t.transform.rotation.y = msg.orientation.y
     t.transform.rotation.z = msg.orientation.z
