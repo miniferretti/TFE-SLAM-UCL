@@ -11,8 +11,8 @@ def handle_imu_pose(msg):
     t = geometry_msgs.msg.TransformStamped()
 
     t.header.stamp = rospy.Time.now()
-    t.header.frame_id = "plane"
-    t.child_frame_id = "imu_link"
+    t.header.frame_id = "base_footprint"
+    t.child_frame_id = "base_imu"
     t.transform.translation.x = 0
     t.transform.translation.y = 0
     t.transform.translation.z = 0
