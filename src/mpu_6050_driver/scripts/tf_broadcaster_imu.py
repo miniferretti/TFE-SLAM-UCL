@@ -8,7 +8,7 @@ from sensor_msgs.msg import Temperature, Imu
 n_samples = 20
 n = 0
 calib = False
-x, y, z, w = 0
+x, y, z, w = [0, 0, 0, 0]
 
 
 def handle_imu_pose(msg):
