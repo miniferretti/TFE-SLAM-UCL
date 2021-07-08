@@ -1,4 +1,6 @@
 #!/bin/bash
+git stash
+git pull
 cd src/rp_cyclop
 chmod +x rp_cyclop.py
 cd ..
@@ -21,4 +23,4 @@ cd ..
 cd ..
 cd ..
 source devel/setup.bash
-echo "Permission successfuly granted"
+echo "Permission successfuly granted and ROS ready to launch"
