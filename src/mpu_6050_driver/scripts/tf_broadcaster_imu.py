@@ -24,7 +24,8 @@ def handle_imu_pose(msg):
     global n_samples, n, calib, x, y, z, w, rot
 
     if n < n_samples:
-        a = euler_from_quaternion(msg.orientation)
+        a = euler_from_quaternion(
+            [msg.orientation.x, msg.orientation.y, msg.orientation.z, msg.orientation.w])
         x.append(a[0])
         y.append(a[1])
         z.append(a[2])
