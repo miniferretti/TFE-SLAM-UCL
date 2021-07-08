@@ -46,7 +46,7 @@ def handle_imu_pose(msg):
         q_or = [(msg.orientation.x - x/n_samples) / the_norm, (msg.orientation.y - y/n_samples) / the_norm,
                 (msg.orientation.z - z/n_samples) / the_norm, (msg.orientation.w - w/n_samples) / the_norm]
 
-        q_f = multiply_quaternion(q_rot, q_or)
+        q_f = quaternion_multiply(q_rot, q_or)
 
         t.transform.rotation = geometry_msgs.msg.Quaternion(
             q_f[0], q_f[1], q_f[2], q_f[3])
