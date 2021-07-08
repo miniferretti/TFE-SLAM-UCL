@@ -39,7 +39,7 @@ def handle_imu_pose(msg):
         t.transform.translation.y = 0
         t.transform.translation.z = 1.1
         t.transform.rotation.x = (msg.orientation.x - x/n_samples) / the_norm
-        t.transform.rotation.y = (msg.orientation.y - y/n_samples) / the_norm
+        t.transform.rotation.y = -(msg.orientation.y - y/n_samples) / the_norm
         t.transform.rotation.z = (msg.orientation.z - z/n_samples) / the_norm
         t.transform.rotation.w = (msg.orientation.w - w/n_samples) / the_norm
         print(t.transform.rotation)
