@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import rospy
 import tf_conversions
 from tf.transformations import *
@@ -34,6 +35,7 @@ def handle_imu_pose(msg):
         t = geometry_msgs.msg.TransformStamped()
 
         q_rot = quaternion_from_euler(0, math.pi, 0)
+
         t.header.stamp = rospy.Time.now()
         t.header.frame_id = "base_footprint"
         t.child_frame_id = "base_imu"
@@ -44,7 +46,7 @@ def handle_imu_pose(msg):
         t.transform.rotation.y = (msg.orientation.y - y/n_samples) / the_norm
         t.transform.rotation.z = (msg.orientation.z - z/n_samples) / the_norm
         t.transform.rotation.w = (msg.orientation.w - w/n_samples) / the_norm
-        t.transform.rotation = quaternion_multiply(q_rot, t.transform.rotation)
+        t.transform.rotation = q_rot*t.transform.rotation
         print(t.transform.rotation)
 
         br.sendTransform(t)
