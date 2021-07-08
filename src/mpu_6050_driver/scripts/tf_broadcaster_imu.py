@@ -22,7 +22,7 @@ def handle_imu_pose(msg):
         z += msg.orientation.z
         w += msg.orientation.w
         n += 1
-        if n == n_samples-1:
+        if n == n_samples + 1:
             calib = True
     else:
 
