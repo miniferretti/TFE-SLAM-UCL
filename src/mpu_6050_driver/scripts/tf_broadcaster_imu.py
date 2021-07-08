@@ -28,15 +28,8 @@ def handle_imu_pose(msg):
             calib = True
     else:
 
-        the_norm = math.sqrt((msg.orientation.x - x/n_samples)**2 + (msg.orientation.y - y/n_samples)
-                             ** 2 + (msg.orientation.z - z/n_samples)**2 + (msg.orientation.w - w/n_samples)**2)
-
         br = tf2_ros.TransformBroadcaster()
         t = geometry_msgs.msg.TransformStamped()
-
-        q_rot = quaternion_from_euler(0, math.pi, 0)
-        q_rot = geometry_msgs.msg.Quaternion(
-            q_rot[0], q_rot[1], q_rot[2], q_rot[3])
 
         t.header.stamp = rospy.Time.now()
         t.header.frame_id = "base_footprint"
@@ -44,12 +37,19 @@ def handle_imu_pose(msg):
         t.transform.translation.x = 0
         t.transform.translation.y = 0
         t.transform.translation.z = 1.1
-        t.transform.rotation.x = (msg.orientation.x - x/n_samples) / the_norm
-        t.transform.rotation.y = (msg.orientation.y - y/n_samples) / the_norm
-        t.transform.rotation.z = (msg.orientation.z - z/n_samples) / the_norm
-        t.transform.rotation.w = (msg.orientation.w - w/n_samples) / the_norm
-        print(type(q_rot))
-        t.transform.rotation = q_rot*t.transform.rotation
+
+        the_norm = math.sqrt((msg.orientation.x - x/n_samples)**2 + (msg.orientation.y - y/n_samples)
+                             ** 2 + (msg.orientation.z - z/n_samples)**2 + (msg.orientation.w - w/n_samples)**2)
+
+        q_rot = quaternion_from_euler(0, math.pi, 0)
+
+        q_or = [(msg.orientation.x - x/n_samples) / the_norm, (msg.orientation.y - y/n_samples) / the_norm,
+                (msg.orientation.z - z/n_samples) / the_norm, (msg.orientation.w - w/n_samples) / the_norm]
+
+        q_f = multiply_quaternion(q_rot, q_or)
+
+        t.transform.rotation = geometry_msgs.msg.Quaternion(
+            q_f[0], q_f[1], q_f[2], q_f[3])
 
         br.sendTransform(t)
 
