@@ -23,6 +23,13 @@ def handle_imu_pose(msg):
         if n == n_samples:
             calib = True
     else:
+
+        msg.orientation.x = msg.orientation.x - x/n_samples
+        msg.orientation.y = msg.orientation.y - y/n_samples
+        msg.orientation.z = msg.orientation.z - z/n_samples
+        msg.orientation.w = msg.orientation.w - w/n_samples
+        msg.orientation.normalize()
+
         br = tf2_ros.TransformBroadcaster()
         t = geometry_msgs.msg.TransformStamped()
 
@@ -32,10 +39,10 @@ def handle_imu_pose(msg):
         t.transform.translation.x = 0
         t.transform.translation.y = 0
         t.transform.translation.z = 1.1
-        t.transform.rotation.x = msg.orientation.x - x/n_samples
-        t.transform.rotation.y = msg.orientation.y - y/n_samples
-        t.transform.rotation.z = msg.orientation.z - z/n_samples
-        t.transform.rotation.w = msg.orientation.w - w/n_samples
+        t.transform.rotation.x = msg.orientation.x
+        t.transform.rotation.y = msg.orientation.y
+        t.transform.rotation.z = msg.orientation.z
+        t.transform.rotation.w = msg.orientation.w
         print(t.transform.rotation)
 
         br.sendTransform(t)
