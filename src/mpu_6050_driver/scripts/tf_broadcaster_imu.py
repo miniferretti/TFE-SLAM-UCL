@@ -35,7 +35,8 @@ def handle_imu_pose(msg):
         t = geometry_msgs.msg.TransformStamped()
 
         q_rot = quaternion_from_euler(0, math.pi, 0)
-        q_rot = geometry_msgs.msg.Quaternion(q_rot)
+        q_rot = geometry_msgs.msg.Quaternion(
+            q_rot[0], q_rot[1], q_rot[2], q_rot[3])
 
         t.header.stamp = rospy.Time.now()
         t.header.frame_id = "base_footprint"
@@ -49,7 +50,6 @@ def handle_imu_pose(msg):
         t.transform.rotation.w = (msg.orientation.w - w/n_samples) / the_norm
         print(type(q_rot))
         t.transform.rotation = q_rot*t.transform.rotation
-        
 
         br.sendTransform(t)
 
