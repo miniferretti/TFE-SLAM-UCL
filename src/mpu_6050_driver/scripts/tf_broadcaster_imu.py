@@ -16,7 +16,7 @@ x, y, z, w = [0, 0, 0, 0]
 def handle_imu_pose(msg):
     global n_samples, n, calib, x, y, z, w
 
-    if calib == False:
+    if calib == True:
         x += msg.orientation.x
         y += msg.orientation.y
         z += msg.orientation.z
