@@ -46,8 +46,9 @@ def handle_imu_pose(msg):
         t.transform.rotation.y = (msg.orientation.y - y/n_samples) / the_norm
         t.transform.rotation.z = (msg.orientation.z - z/n_samples) / the_norm
         t.transform.rotation.w = (msg.orientation.w - w/n_samples) / the_norm
+        print(type(t.transform.rotation))
         t.transform.rotation = q_rot*t.transform.rotation
-        print(t.transform.rotation)
+        
 
         br.sendTransform(t)
 
