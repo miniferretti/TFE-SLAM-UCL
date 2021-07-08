@@ -9,7 +9,7 @@ import numpy as np
 import geometry_msgs.msg
 from sensor_msgs.msg import Temperature, Imu
 
-n_samples = 100
+n_samples = 200
 n = 0
 calib = False
 x, y, z = [[], [], []]
