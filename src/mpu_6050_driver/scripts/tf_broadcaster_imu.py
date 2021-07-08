@@ -2,6 +2,8 @@
 import rospy
 import tf_conversions
 import tf2_ros
+import math
+import numpy as np
 import geometry_msgs.msg
 from sensor_msgs.msg import Temperature, Imu
 
@@ -28,7 +30,9 @@ def handle_imu_pose(msg):
         msg.orientation.y = msg.orientation.y - y/n_samples
         msg.orientation.z = msg.orientation.z - z/n_samples
         msg.orientation.w = msg.orientation.w - w/n_samples
-        msg.orientation.normalize()
+        msg.orientation = msg.orientation / \
+            math.sqrt(msg.orientation.x**2 + msg.orientation.y**2 +
+                      msg.orientation.z**2 + msg.orientation.w**2)
 
         br = tf2_ros.TransformBroadcaster()
         t = geometry_msgs.msg.TransformStamped()
