@@ -25,7 +25,7 @@ cd ..
 source devel/setup.bash
 echo "Permission successfuly granted and ROS ready to launch"
 
-for x in 1 2 3 4 5 6 7 8 9 10
+for x in 1 2 3 4 5
 do
     echo "."
     sleep 1
