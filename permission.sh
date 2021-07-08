@@ -17,4 +17,5 @@ ls
 cd src/mpu_6050_driver/scripts
 chmod +x imu_node.py
 chmod +x tf_broadcaster_imu.py
+source devel/setup.bash
 echo "Permission successfuly granted"
