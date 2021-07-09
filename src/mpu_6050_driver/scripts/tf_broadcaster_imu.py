@@ -35,14 +35,14 @@ def handle_imu_pose(msg):
     t = geometry_msgs.msg.TransformStamped()
 
     t.header.stamp = rospy.Time.now()
-    t.header.frame_id = "base_footprint"
+    t.header.frame_id = "base_link"
     t.child_frame_id = "base_imu"
-    t.transform.translation.x = 0
+    t.transform.translation.x = 0.045
     t.transform.translation.y = 0
-    t.transform.translation.z = 1.1
+    t.transform.translation.z = 0.055
 
     q_rot = quaternion_from_euler(
-        0-average(x), math.pi-average(y), 0-average(z))
+        0-average(x), (math.pi/2)-average(y), 0-average(z))  # Correction of the initial offset of the values of the IMU
 
     q_or = [msg.orientation.x, msg.orientation.y,
             msg.orientation.z, msg.orientation.w]

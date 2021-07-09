@@ -12,8 +12,8 @@
     <node pkg="mpu_6050_driver" name="tf_broadcaster_imu" type="tf_broadcaster_imu.py" output="screen" />
 
     <!-- TF of the robot and all the sensors-->
-    <node pkg="tf" type="static_transform_publisher" name="base_imu_to_baselink" args="0.0 0.0 -0.1 0.0 0.0 0.0 base_imu base_link 100" />
-    <node pkg="tf" type="static_transform_publisher" name="baselink_to_rplidar" args="0.0 0.02 0.08 3.14 0.0 0.0 base_link laser 100" />
-    <node pkg="tf" type="static_transform_publisher" name="baselink_to_cam" args="0.06 0.0 0.06 0.0 0.0 0.0 base_link cam 100" />
+    <node pkg="tf" type="static_transform_publisher" name="base_footprint_to_baselink" args="0.0 0.0 0.92 0.0 0.0 0.0 base_footprint base_link 100" />
+    <node pkg="tf" type="static_transform_publisher" name="base_link_to_rplidar" args="0.0 0.02 0.08 3.14 0.0 0.0 base_link laser 100" />
+    <node pkg="tf" type="static_transform_publisher" name="base_imu_to_cam" args="0.0 0.0 -0.02 0.0 -3.14/2 0.0 base_link cam 100" />
 
 </launch>

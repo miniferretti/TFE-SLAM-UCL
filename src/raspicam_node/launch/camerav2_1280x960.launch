@@ -17,7 +17,7 @@
     <param name="camera_name" value="$(arg camera_name)" />
     <param name="width" value="1280" />
     <param name="height" value="960" />
-    <param name="vFlip" value="true" />
+    <param name="vFlip" value="false" />
     <param name="hFlip" value="true" />
 
     <param name="framerate" value="1" />
