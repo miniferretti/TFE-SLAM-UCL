@@ -18,7 +18,7 @@
     <param name="width" value="1280" />
     <param name="height" value="960" />
     <param name="vFlip" value="false" />
-    <param name="hFlip" value="true" />
+    <param name="hFlip" value="false" />
 
     <param name="framerate" value="1" />
   </node>
