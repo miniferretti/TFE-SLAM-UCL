@@ -1,4 +1,5 @@
 #!/bin/bash
+git pull
 cd src/rp_cyclop
 chmod +x rp_cyclop.py
 cd ..
@@ -12,7 +13,8 @@ cd src/monodepth_adabin/src
 chmod +x monodepth_adabin.py
 echo "Permission successfuly granted and ready to launch the nodes"
 
-for x in 1 2 3 4 do
+for x in 1 2 3 4 
+do
     echo "."
 done
 
