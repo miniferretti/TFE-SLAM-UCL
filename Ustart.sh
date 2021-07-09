@@ -31,5 +31,5 @@ do
     sleep 1
 done
 
-echo "Launching ROS of the Raspberry pi"
+echo "Launching ROS on the Raspberry pi"
 roslaunch launch_rpi launch_rpi.launch
