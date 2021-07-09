@@ -11,7 +11,7 @@
     <param name="device" value="cpu" />
     <param name="debug" value="False" />
     <param name="queue_size" type="int" value="5" />
-    <param name="slop" type="double" value="0.05" />
+    <param name="slop" type="double" value="0.5" />
   </node>
 
 </launch>
