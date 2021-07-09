@@ -9,6 +9,8 @@
     <param name="topic_depth" value="/monodepth_adabin/depth_image" />
     <param name="topic_camera_info" value="/raspicam_node/camera_info" />
     <param name="device" value="cpu" />
+    <param name="queue_size" type="int" value="5" />
+    <param name="slop" type="float" value="0.1" />
   </node> -->
 
   <!-- TF of the base footprint regarding to the world-->

@@ -53,6 +53,8 @@ class MonoDepth_adabin:
 
         self.min_depth = rospy.get_param("~min_depth", MIN_DEPTH)
         self.max_depth = rospy.get_param("~max_depth", MAX_DEPTH_NYU)
+        self.queue_size = rospy.get_param("~queue_szie", 2)
+        self.slop = rospy.get_param("~slop", 1)
 
         # Load model into GPU / CPU
         self.infer_helper = InferenceHelper(
@@ -76,7 +78,7 @@ class MonoDepth_adabin:
             self.topic_laserScan, LaserScan)
 
         self.ts = message_filters.ApproximateTimeSynchronizer(
-            [self.sub_image_comp, self.sub_laserScan], queue_size=2, slop=1)
+            [self.sub_image_comp, self.sub_laserScan], queue_size=self.queue_size, slop=self.slop)
         self.ts.registerCallback(self.image_lidar_callback)
 
         self.camera_info = None
