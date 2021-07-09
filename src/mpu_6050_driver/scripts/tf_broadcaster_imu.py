@@ -9,7 +9,7 @@ import numpy as np
 import geometry_msgs.msg
 from sensor_msgs.msg import Temperature, Imu
 
-n_samples = 200
+n_samples = 0
 n = 0
 calib = False
 x, y, z = [[], [], []]
@@ -17,7 +17,10 @@ rot = None
 
 
 def average(lst):
-    return sum(lst)/len(lst)
+    if len(lst) == 0:
+        return 0
+    else: 
+        return sum(lst)/len(lst)
 
 
 def handle_imu_pose(msg):
