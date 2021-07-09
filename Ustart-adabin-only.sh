@@ -19,6 +19,7 @@ echo "Permission successfuly granted and ready to launch the nodes"
 for x in 1 2 3 4 
 do
     echo "."
+    sleep 1
 done
 
 roslaunch launch_work_station launch_work_station_ada_bin_only.launch
