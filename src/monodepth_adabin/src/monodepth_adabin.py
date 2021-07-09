@@ -53,7 +53,7 @@ class MonoDepth_adabin:
 
         self.min_depth = rospy.get_param("~min_depth", MIN_DEPTH)
         self.max_depth = rospy.get_param("~max_depth", MAX_DEPTH_NYU)
-        self.queue_size = rospy.get_param("~queue_szie", 2)
+        self.queue_size = rospy.get_param("~queue_size", 2)
         self.slop = rospy.get_param("~slop", 1)
 
         # Load model into GPU / CPU
