@@ -81,7 +81,7 @@ class MonoDepth_adabin:
             [self.sub_image_comp, self.sub_laserScan], queue_size=self.queue_size, slop=self.slop)
         self.ts.registerCallback(self.image_lidar_callback)
 
-        print("Launching ada_bin with queue size = %s and slop = %s".format(
+        print("Launching ada_bin with queue size = {} and slop = {}".format(
             self.queue_size, self.slop))
 
         self.camera_info = None
