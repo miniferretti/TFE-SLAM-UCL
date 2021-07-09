@@ -19,7 +19,7 @@ rot = None
 def average(lst):
     if len(lst) == 0:
         return 0
-    else: 
+    else:
         return sum(lst)/len(lst)
 
 
@@ -35,7 +35,7 @@ def handle_imu_pose(msg):
         n += 1
 
     eu_or = euler_from_quaternion(
-            [msg.orientation.x, msg.orientation.y, msg.orientation.z, msg.orientation.w])
+        [msg.orientation.x, msg.orientation.y, msg.orientation.z, msg.orientation.w])
 
     br = tf2_ros.TransformBroadcaster()
     t = geometry_msgs.msg.TransformStamped()
@@ -49,11 +49,11 @@ def handle_imu_pose(msg):
 
     q_rot = quaternion_from_euler(
         0-average(x), 0-average(y), 0-average(z))  # Correction of the initial offset of the values of the IMU
-        
+
     print(q_rot)
 
-    q_or = [msg.orientation.x, msg.orientation.y,
-            msg.orientation.z, msg.orientation.w]
+   # q_or = [msg.orientation.x, msg.orientation.y, msg.orientation.z, msg.orientation.w]
+    q_or = quaternion_from_euler(0, eu_or[1], 0)
 
     q_f = quaternion_multiply(q_rot, q_or)
 
