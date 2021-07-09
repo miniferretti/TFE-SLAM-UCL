@@ -1,6 +1,7 @@
 #!/bin/bash
 git stash
 git pull
+calkin_make
 cd src/rp_cyclop
 chmod +x rp_cyclop.py
 cd ..
