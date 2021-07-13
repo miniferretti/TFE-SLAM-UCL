@@ -74,7 +74,7 @@ class MonoDepth_adabin:
             self.topic_laserScan, LaserScan)
 
         self.ts = message_filters.ApproximateTimeSynchronizer(
-            [self.sub_image_raw, self.sub_laserScan], 20, 0.01)
+            [self.sub_image_raw, self.sub_laserScan], 10, 0.1)
         self.ts.registerCallback(self.image_lidar_callback)
 
         self.camera_info = None
@@ -157,55 +157,40 @@ class MonoDepth_adabin:
                     v_real = self.valmap(v, 0, V, 0, image_height)
 
                     differenceDepth = depth[v_real, u_real] - P[2, i]
-
+                    
                     StepWidth = u_real - u_real_previous
                     StepHeight = v_real - v_real_previous
                     MidHeight = int((v_real + v_real_previous)/2)
-                    StepDepth = P[2, i] - depth_previous
-
-                    ####################################################
-                    # Suboptimal but cool looking 
-                    #for hh in range(image_height):
-                        #depth[hh, u_real] = P[2, i]
-                    
-                    #for iterrr in range(5):
-                        #depth[v_real, min(u_real + iterrr, 639)] = P[2, i]
-                        #depth[v_real, max(u_real - iterrr, 0)] = P[2, i]
-                        #for inter_h in range(25):
-                            #depth[v_real + inter_h, min(u_real + iterrr, 639) ] = P[2, i]
-                            #depth[v_real - inter_h, min(u_real + iterrr, 639) ] = P[2, i]
-                        #depth[inter_h, u_real_previous + inter_u] = depth[inter_h, u_real_previous + inter_u] + interDifferenceDepth * ((image_height - abs(MidHeight - inter_h))/image_height)
-
-
-                    ####################################################
-                    # More complete corrections
+                    StepDepth = P[2, i] - depth_previous 
 
                     # Changes for points without information on x
+
                     for inter_u in range(StepWidth):
-                        depth[v_real, u_real_previous + inter_u] = depth_previous + ((inter_u/StepWidth) * StepDepth)
-                        for inter_h in range(image_height):
-                            interDifferenceDepth = depth[v_real, u_real_previous + inter_u] - depth[inter_h, u_real_previous + inter_u]
-                            depth[inter_h, u_real_previous + inter_u] = depth[inter_h, u_real_previous + inter_u] + interDifferenceDepth * ((image_height - abs(v_real - inter_h))/image_height)
+                    	depth[MidHeight,u_real_previous +inter_u] = depth_previous + StepWidth *(inter_u/StepWidth) * StepDepth
+						#for inter_h in range(image_height):
+							#interDifferenceDepth = depth[MidHeight,u_real_previous +inter_u] - depth[inter_h, u_real_previous +inter_u]
+                    		#depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] + interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
 
-                    # Changes for points with information on x
-                    #for hh in range(image_height):
-                        #depth[hh, u_real] = P[2, i]
-                        #depth[hh, u_real] = depth[hh, u_real] + differenceDepth * ((image_height - abs(v_real - hh))/image_height)
+                    # Changes for points with information on x 
+                    for hh in range(image_height):
+                        depth[hh, u_real] = depth[hh, image_height] + differenceDepth *((image_height - abs(v_real - hh))/image_height)
+                    
+                    #Changes for LiDAR points 
+                    depth[u_real, v_real] = P[2, i]
 
-                    ####################################################
 
-                    #Changes for LiDAR points
-                    depth[v_real, u_real] = P[2, i]
-
-                    u_real_previous = u_real
+                    u_real_previous = u_real 
                     v_real_previous = v_real
                     depth_previous = P[2, i]
 
-        print('Difference in pixel at [ %s ; %s ] is : "%s" ' % (
-            v_real, u_real, differenceDepth))
+        print('Difference in pixel at [ %s ; %s ] is : "%s" ' % (v_real, u_real, differenceDepth))
         print('The depth at this point', depth[v_real, u_real])
 
         return depth
+
+    def showTheDepthDetected(self, depth):
+        imageToShow = depth
+        cv2.imshow("Result", depth)
 
     # Create a sensor_msgs.PointCloud2 from the depth and color images provided
     def create_pointcloud_msg(self, depth, color):
@@ -229,9 +214,6 @@ class MonoDepth_adabin:
                 r = img[v, u, 2]  # r
                 a = 255
                 if abs(x) < 0.01 and abs(y) < 0.01:
-                   #print(x)
-                   #print(y)
-                   #print(z)
                     b = 255
                     g = 0
                     r = 0
@@ -276,6 +258,8 @@ class MonoDepth_adabin:
 
     def image_lidar_callback(self, image_sync, scan_sync):
 
+        start_time = time.time()
+
         print("New frame processed")
         # Convert message to opencv image
         try:
@@ -286,7 +270,7 @@ class MonoDepth_adabin:
         ranges = self.range_filter(scan_sync)
 
         # Display image
-        #image = cv2.rotate(image, cv2.ROTATE_180)
+        image = cv2.rotate(image, cv2.ROTATE_180)
         if self.debug:
             cv2.imshow("Image", image)
             cv2.waitKey(1)
@@ -304,7 +288,7 @@ class MonoDepth_adabin:
 
         true_depth = true_depth.squeeze()
 
-        true_depth_c = self.depth_correction(ranges, true_depth)
+        #true_depth_c = self.depth_correction(ranges, true_depth)
 
         # Display depth
         if self.debug:
@@ -319,11 +303,15 @@ class MonoDepth_adabin:
             self.bridge.cv2_to_imgmsg(depth.astype(np.uint8), "mono8"))
 
         # Generate Point cloud
-        cloud_msg = self.create_pointcloud_msg(true_depth_c, image)
+        cloud_msg = self.create_pointcloud_msg(true_depth, image)
         self.pub_pointcloud.publish(cloud_msg)
 
         # Increment counter
         self.counter += 1
+
+        end_time = time.time()
+
+        print("Total time taken  = {} for frame = {}".format(end_time-start_time,self.counter))
 
 
 def main(args):
