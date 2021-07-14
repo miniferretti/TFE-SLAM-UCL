@@ -32,7 +32,7 @@ N_BINS = 256
 class MonoDepth_adabin:
     def __init__(self):
 
-        print("MonoDepth_adabin")
+        print("Hello world")
 
         # Get parameters
         self.debug = rospy.get_param("~debug", False)
@@ -113,11 +113,9 @@ class MonoDepth_adabin:
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
 
-        print("********  Depth Correction  **********")
-
         image_height, image_width = depth.shape
 
-        cv2.imshow("Received Depths", depth)
+        cv2.imshow("Received Depth", depth)
 
         Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :])),
                        np.zeros(len(ranges[0, :])),
@@ -288,7 +286,7 @@ class MonoDepth_adabin:
 
         true_depth = true_depth.squeeze()
 
-        true_depth_c = self.depth_correction(ranges, true_depth)
+        #true_depth_c = self.depth_correction(ranges, true_depth)
 
         # Display depth
         if self.debug:
