@@ -286,7 +286,7 @@ class MonoDepth_adabin:
 
         true_depth = true_depth.squeeze()
 
-        #true_depth_c = self.depth_correction(ranges, true_depth)
+        true_depth_c = self.depth_correction(ranges, true_depth)
 
         # Display depth
         if self.debug:
