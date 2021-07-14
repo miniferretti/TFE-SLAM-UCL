@@ -4,7 +4,7 @@
   <!--   <node pkg="rqt_image_view" type="rqt_image_view" name="image_view_debug" args="/output/image_raw/compressed" /> -->
   <!--  <node pkg="rp_cyclop" name="rp_cyclop" type="rp_cyclop.py" output="screen" /> -->
 
- <!-- <node pkg="monodepth_adabin" type="monodepth_adabin.py" name="monodepth_adabin" output="screen" respawn="true">
+  <!-- <node pkg="monodepth_adabin" type="monodepth_adabin.py" name="monodepth_adabin" output="screen" respawn="true">
     <param name="topic_color" value="/raspicam_node/image" />
     <param name="topic_depth" value="/monodepth_adabin/depth_image" />
     <param name="topic_camera_info" value="/raspicam_node/camera_info" />
