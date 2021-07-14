@@ -301,7 +301,7 @@ class MonoDepth_adabin:
         true_depth = true_depth.squeeze()
         depth = np.kron(depth, np.ones((2, 2)))  # upscale the image
 
-        #true_depth_c = self.depth_correction(ranges, true_depth)
+        true_depth_c = self.depth_correction(ranges, true_depth)
 
         # Display depth
         if self.debug:
