@@ -3,16 +3,15 @@
 from layers import BilinearUpSampling2D
 from predict import predict
 from cv_bridge import CvBridge, CvBridgeError
-from sensor_msgs.msg import Image, PointCloud2, PointField
+from sensor_msgs.msg import Image, PointCloud2, PointField, CameraInfo
 import sys
 import time
 import numpy as np
 import cv2
 import rospkg
 import rospy
-
-#from lidepth.source.lidepth import lidepth
-
+from scipy.ndimage import filters
+import message_filters
 
 # import keras
 import tensorflow as tf
@@ -44,6 +43,10 @@ class MonoDepth:
             "~topic_depth", "/monodepth/image_depth")
         self.topic_pointcloud = rospy.get_param(
             "~topic_pointcloud", "/monodepth/pointcloud")
+        self.topic_camera_info = rospy.get_param(
+            "~topic_camera_info", "/raspicam_node/camera_info")
+       # self.topic_color_pub = rospy.get_param(
+       #     "~topic_color_pub", "/monodepth/color_image")
 
         self.min_depth = rospy.get_param("~min_depth", 10)
         self.max_depth = rospy.get_param("~max_depth", 1000)
@@ -69,12 +72,19 @@ class MonoDepth:
             self.topic_depth, Image, queue_size=1)
         self.pub_pointcloud = rospy.Publisher(
             self.topic_pointcloud, PointCloud2, queue_size=1)
+     #   self.pub_color_image = rospy.Publisher(
+     #       self.topic_color_pub, Image, queue_size=1)
         self.counter = 0
 
         # Subscribers
         self.bridge = CvBridge()
         self.sub_image_raw = rospy.Subscriber(
             self.topic_color, Image, self.image_callback)
+        self.sub_camera_info = rospy.Subscriber(
+            self.topic_camera_info, CameraInfo, self.camera_info_callback)
+        self.camera_info = None
+
+        print("Hello world")
 
     # Loss function for the depth map
     def depth_loss_function(self, y_true, y_pred):
@@ -105,8 +115,6 @@ class MonoDepth:
     # Create a sensor_msgs.PointCloud2 from the depth and color images provided
     #
     # It ignores are camera parameters and assumes the images to be rectified
-
-
     def create_pointcloud_msg(self, depth, color):
         msg = PointCloud2()
         msg.header.stamp = rospy.Time.now()
@@ -114,9 +122,6 @@ class MonoDepth:
         msg.header.seq = self.counter
 
         height, width, c = depth.shape
-
-        #height = int(height/2)
-        #width = int(width/2)
 
         # Resize color to match depth
         img = cv2.resize(color, (width, height))
@@ -126,14 +131,10 @@ class MonoDepth:
         data = np.zeros((height * width * 6), dtype=np.float32)
 
         # Message data size
-        #msg.height = 1
-        #msg.width = width * height
-
-        msg.height = height
-        msg.width = width
+        msg.height = 1
+        msg.width = width * height
 
         # Iterate images and build point cloud
-
         for y in range(height):
             for x in range(width):
                 data[i] = (x - (width / 2)) / 100.0
@@ -144,16 +145,7 @@ class MonoDepth:
                 data[i + 5] = float(img[y, x, 2]) / 255.0
                 i += 6
 
-        #print('***  MonoDepth  ****')
-        #print('data shape is ', data.shape, '\n')
-        #size = sys.getsizeof(data)
-        #print('The size is ', size, '\n')
-        #print(type(data[0]))
-        #for iprinting in range(6):
-            #print(data[(6*100)+iprinting], '\n')
-
         # Fields of the point cloud
-
         msg.fields = [
             PointField("y", 0, PointField.FLOAT32, 1),
             PointField("z", 4, PointField.FLOAT32, 1),
@@ -165,16 +157,23 @@ class MonoDepth:
 
         msg.is_bigendian = False
         msg.point_step = 24
-        msg.row_step = msg.point_step  * width
+        msg.row_step = msg.point_step * height * width
         msg.is_dense = True
         msg.data = data.tobytes()
 
         return msg
 
-    # Callback to receive and process image published.
-    #
-    # After processing it publishes back the estimated depth result
+        # Callback to recieve and store the camera_info parameters
+
+    def camera_info_callback(self, data):
+        self.camera_info = data
+
+        # Callback to receive and process image published.
+        #
+        # After processing it publishes back the estimated depth result
+
     def image_callback(self, data):
+        print("Hello world")
         # Convert message to opencv image
         try:
             image = self.bridge.imgmsg_to_cv2(data, "bgr8")
@@ -190,11 +189,6 @@ class MonoDepth:
         # Get image data as a numpy array to be passed for processing.
         img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        # Cropping the Image
-        img = img[(616):(1848), 0:3280]   # Image : 3280 * 2464
-
-        #img = img[(924):(1386), 0:3280]  
-        #img = img[(2464/4):((2464*3)/4), 0:3280]   # Image : 3280 * 2464
         img = cv2.resize(img, (640, 480))
 
         arr = np.clip(np.asarray(img, dtype=np.float32) / 255, 0, 1)
@@ -207,7 +201,7 @@ class MonoDepth:
 
         # Resize and reshape output
         depth = result.reshape(result.shape[1], result.shape[2], 1)
-        # Display depth`
+        # Display depth
         if self.debug:
            #depthc = depth*255
             #depthc = cv2.applyColorMap(depthc.astype(int), cv2.COLORMAP_PLASMA)
@@ -222,6 +216,11 @@ class MonoDepth:
         # Generate Point cloud
         cloud_msg = self.create_pointcloud_msg(depth, image)
         self.pub_pointcloud.publish(cloud_msg)
+
+        # Publishes the related camera_info for the creation of the PointCloud2 node
+       # self.pub_camera_info.publish(camera_info)
+      #  self.pub_color_image.publish(
+       #     self.bridge.cv2_to_imgmsg(img.astype(np.uint8), "bgr8"))
 
         # Increment counter
         self.counter += 1

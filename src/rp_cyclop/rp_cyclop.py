@@ -28,7 +28,7 @@ class image_feature:
             "/raspicam_node/image/compressed", CompressedImage)
         self.scan_sub = message_filters.Subscriber("/scan", LaserScan)
 
-        # self.subscriber = rospy.Subscriber(
+       # self.subscriber = rospy.Subscriber(
         #    "/raspicam_node/image/compressed", CompressedImage, self.callback,  queue_size=1)
 
         ts = message_filters.ApproximateTimeSynchronizer(
