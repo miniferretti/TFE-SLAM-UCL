@@ -117,10 +117,15 @@ class MonoDepth_adabin:
 
     def depth_correction(self, ranges, depth):
 
+
+        print("********  Depth Correction  **********")
+
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
 
         image_height, image_width = depth.shape
+
+        cv2.imshow("Received Depths", depth)
 
         Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :])),
                        np.zeros(len(ranges[0, :])),
