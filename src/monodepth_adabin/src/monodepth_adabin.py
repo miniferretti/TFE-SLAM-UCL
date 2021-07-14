@@ -115,6 +115,8 @@ class MonoDepth_adabin:
 
         image_height, image_width = depth.shape
 
+        cv2.imshow("Received Depths", depth)
+
         Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :])),
                        np.zeros(len(ranges[0, :])),
                        np.multiply(np.cos(ranges[1, :]), ranges[0, :])], np.float32)
@@ -187,10 +189,6 @@ class MonoDepth_adabin:
         print('The depth at this point', depth[v_real, u_real])
 
         return depth
-
-    def showTheDepthDetected(self, depth):
-        imageToShow = depth
-        cv2.imshow("Result", depth)
 
     # Create a sensor_msgs.PointCloud2 from the depth and color images provided
     def create_pointcloud_msg(self, depth, color):
