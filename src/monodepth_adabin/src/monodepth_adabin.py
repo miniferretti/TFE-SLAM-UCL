@@ -32,7 +32,7 @@ N_BINS = 256
 class MonoDepth_adabin:
     def __init__(self):
 
-        print("Hello world")
+        print("MonoDepth_adabin")
 
         # Get parameters
         self.debug = rospy.get_param("~debug", False)
@@ -112,6 +112,8 @@ class MonoDepth_adabin:
 
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
+
+        print("********  Depth Correction  **********")
 
         image_height, image_width = depth.shape
 
