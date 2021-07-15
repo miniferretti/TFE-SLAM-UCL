@@ -261,7 +261,7 @@ class MonoDepth_adabin:
 
         differenceDepth = depth
 
-        differenceDepth[:,:] = depth[:,:] - oldDepth[:,:]
+        differenceDepth = np.subtract(depth, oldDepth)
 
         Difference_max_value = [max(idx) for idx in zip(*differenceDepth)]
 
