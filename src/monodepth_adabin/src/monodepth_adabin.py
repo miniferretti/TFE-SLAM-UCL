@@ -135,7 +135,7 @@ class MonoDepth_adabin:
         print("depth[240,100] : %s" %(depth[240,50]))
         print("depth[240,200] : %s" %(depth[240,200]))
 
-        depthScaled = depth
+        depthScaled = depth.copy()
         #cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
         depthScaled[:,:] = (depth[:,:] / max_value[3])
 
@@ -239,7 +239,7 @@ class MonoDepth_adabin:
         print("depth[240,100] : %s" %(depth[240,50]))
         print("depth[240,200] : %s" %(depth[240,200]))
 
-        NewDepthScaled = depth
+        NewDepthScaled = depth.copy()
         #cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
         NewDepthScaled[:,:] = (depth[:,:] / New_max_value[3])
 
@@ -259,7 +259,7 @@ class MonoDepth_adabin:
 
         print("--- Difference  --- ")
 
-        differenceDepth = depth
+        differenceDepth = depth.copy()
 
         differenceDepth = np.subtract(depth, oldDepth)
 
@@ -271,7 +271,7 @@ class MonoDepth_adabin:
         print("differenceDepth[240,100] : %s" %(differenceDepth[240,50]))
         print("differenceDepth[240,200] : %s" %(differenceDepth[240,200]))
 
-        differenceDepthScaled = differenceDepth
+        differenceDepthScaled = differenceDepth.copy()
         #cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
         differenceDepthScaled[:,:] = (differenceDepth[:,:] / Difference_max_value[3])
 
