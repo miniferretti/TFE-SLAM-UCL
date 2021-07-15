@@ -127,7 +127,7 @@ class MonoDepth_adabin:
 
         min = 0
         max = 0
-        cv2.minMaxIdx(depth, &min, &max)
+        cv2.minMaxIdx(depth, min, max)
         depthScaled = depth
         cv2.convertScaleAbs(depth, depthScaled, 255 / max)
         cv2.imshow("Out", depthScaled)
