@@ -128,7 +128,7 @@ class MonoDepth_adabin:
         max_value = [max(idx) for idx in zip(*depth)]
         depthScaled = depth
         cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
-        cv2.imshow("Out", depthScaled)
+        cv2.imshow("Received Depths", depthScaled)
         cv2.waitKey(0)
 
         #cv2.imshow("Received Depths", depth)
