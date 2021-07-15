@@ -137,7 +137,7 @@ class MonoDepth_adabin:
 
         depthScaled = depth
         #cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
-        depthScaled[:,:] = (depth[:,:] / max_value[3)
+        depthScaled[:,:] = (depth[:,:] / max_value[3])
 
         print("depthScaled[240,0] : %s" %(depthScaled[240,0]))
         print("depthScaled[240,100] : %s" %(depthScaled[240,50]))
