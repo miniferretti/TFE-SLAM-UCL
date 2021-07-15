@@ -259,7 +259,7 @@ class MonoDepth_adabin:
 
         print("--- Difference  --- ")
 
-        differenceDepth = depth - oldDepth
+        differenceDepth[:,:] = depth[:,:] - oldDepth[:,:]
 
         Difference_max_value = [max(idx) for idx in zip(*differenceDepth)]
 
