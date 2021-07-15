@@ -153,7 +153,7 @@ class MonoDepth_adabin:
         cv2.imshow("Received Depths ColorGradient", depthScaledColored)
         cv2.waitKey(0)
 
-        oldDepth = depth
+        oldDepth = depth.copy()
 
         #cv2.imshow("Received Depths", depth)
         
