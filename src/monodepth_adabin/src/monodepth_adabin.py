@@ -153,6 +153,8 @@ class MonoDepth_adabin:
         cv2.imshow("Received Depths ColorGradient", depthScaledColored)
         cv2.waitKey(0)
 
+        oldDepth = depth
+
         #cv2.imshow("Received Depths", depth)
         
 
@@ -257,12 +259,34 @@ class MonoDepth_adabin:
 
         print("--- Difference  --- ")
 
-        DifferenceScaled = NewDepthScaled - depthScaled
-        DifferenceScaledColored = NewDepthScaledColored - depthScaledColored
-        cv2.imshow("Received Depths", DifferenceScaled)
+        differenceDepth = depth - oldDepth
+
+        Difference_max_value = [max(idx) for idx in zip(*depth)]
+
+        print("Difference_max_value[3] : %s" % (Difference_max_value[3]))
+
+        print("differenceDepth[240,0] : %s" %(differenceDepth[240,0]))
+        print("differenceDepth[240,100] : %s" %(differenceDepth[240,50]))
+        print("differenceDepth[240,200] : %s" %(differenceDepth[240,200]))
+
+        differenceDepthScaled = differenceDepth
+        #cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
+        differenceDepthScaled[:,:] = (depth[:,:] / ifference_max_value[3])
+
+        print("differenceDepthScaled[240,0] : %s" %(differenceDepthScaled[240,0]))
+        print("differenceDepthScaled[240,100] : %s" %(differenceDepthScaled[240,50]))
+        print("differenceDepthScaled[240,200] : %s" %(differenceDepthScaled[240,200]))
+
+        cv2.imshow("Received Depths", differenceDepthScaled)
         cv2.waitKey(0)
-        cv2.imshow("Received Depths ColorGradient", DifferenceScaledColored)
+
+        ImageDifferenceDepth = np.array(differenceDepthScaled * 255, dtype = np.uint8)
+
+        #depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_JET)
+        DifferenceDepthScaledColored = cv2.applyColorMap(ImageDifferenceDepth, cv2.COLORMAP_RAINBOW)   
+        cv2.imshow("Received Depths ColorGradient", DifferenceDepthScaledColored)
         cv2.waitKey(0)
+
 
         return depth
 
