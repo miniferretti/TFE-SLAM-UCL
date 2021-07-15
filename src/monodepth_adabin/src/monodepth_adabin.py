@@ -129,9 +129,10 @@ class MonoDepth_adabin:
         depthScaled = depth
         cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
         cv2.imshow("Out", depthScaled)
+        cv2.waitKey(0)
 
         #cv2.imshow("Received Depths", depth)
-        cv2.waitKey(1)
+        
 
         Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :])),
                        np.zeros(len(ranges[0, :])),
