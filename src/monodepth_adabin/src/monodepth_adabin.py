@@ -229,9 +229,9 @@ class MonoDepth_adabin:
             v_real, u_real, differenceDepth))
         print('The depth at this point', depth[v_real, u_real])
 
-        max_value = [max(idx) for idx in zip(*depth)]
+        New_max_value = [max(idx) for idx in zip(*depth)]
 
-        print("max_value[3] : %s" % (max_value[3]))
+        print("New_max_value[3] : %s" % (New_max_value[3]))
 
         print("depth[240,0] : %s" %(depth[240,0]))
         print("depth[240,100] : %s" %(depth[240,50]))
@@ -239,7 +239,7 @@ class MonoDepth_adabin:
 
         NewDepthScaled = depth
         #cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
-        NewDepthScaled[:,:] = (depth[:,:] / max_value[3])
+        NewDepthScaled[:,:] = (depth[:,:] / New_max_value[3])
 
         print("NewDepthScaled[240,0] : %s" %(NewDepthScaled[240,0]))
         print("NewDepthScaled[240,100] : %s" %(NewDepthScaled[240,50]))
@@ -263,7 +263,7 @@ class MonoDepth_adabin:
         cv2.waitKey(0)
         cv2.imshow("Received Depths ColorGradient", DifferenceScaledColored)
         cv2.waitKey(0)
-        
+
         return depth
 
     # Create a sensor_msgs.PointCloud2 from the depth and color images provided
