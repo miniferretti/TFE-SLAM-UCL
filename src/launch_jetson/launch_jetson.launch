@@ -8,7 +8,7 @@
       <param name="topic_color" value="/raspicam_node/image/compressed" />
       <param name="topic_depth" value="/monodepth_adabin/depth_image" />
       <param name="topic_camera_info" value="/raspicam_node/camera_info" />
-      <param name="device" value="cpu" />
+      <param name="device" value="cuda" />
       <param name="debug" value="False" />
       <param name="queue_size" type="int" value="2" />
       <param name="slop" type="double" value="1" />
