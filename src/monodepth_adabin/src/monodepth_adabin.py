@@ -271,7 +271,7 @@ class MonoDepth_adabin:
 
         differenceDepthScaled = differenceDepth
         #cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
-        differenceDepthScaled[:,:] = (depth[:,:] / ifference_max_value[3])
+        differenceDepthScaled[:,:] = (depth[:,:] / Difference_max_value[3])
 
         print("differenceDepthScaled[240,0] : %s" %(differenceDepthScaled[240,0]))
         print("differenceDepthScaled[240,100] : %s" %(differenceDepthScaled[240,50]))
