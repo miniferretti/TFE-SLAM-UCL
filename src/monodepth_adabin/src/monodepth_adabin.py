@@ -148,8 +148,8 @@ class MonoDepth_adabin:
 
         imageDepths = np.array(depthScaled * 255, dtype = np.uint8)
 
-        #depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_JET)
-        depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_RAINBOW)   
+        depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_JET)
+        #depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_RAINBOW)   
         cv2.imshow("Received Depths ColorGradient", depthScaledColored)
         cv2.waitKey(0)
 
@@ -253,7 +253,7 @@ class MonoDepth_adabin:
         NewImageDepths = np.array(NewDepthScaled * 255, dtype = np.uint8)
 
         #depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_JET)
-        NewDepthScaledColored = cv2.applyColorMap(NewImageDepths, cv2.COLORMAP_RAINBOW)   
+        NewDepthScaledColored = cv2.applyColorMap(NewImageDepths, cv2.COLORMAP_JET)   
         cv2.imshow("Received Depths ColorGradient", NewDepthScaledColored)
         cv2.waitKey(0)
 
