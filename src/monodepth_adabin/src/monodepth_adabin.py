@@ -132,7 +132,7 @@ class MonoDepth_adabin:
 
         depthScaled = depth
         cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
-        cv2.imshow("Received Depths", depthScaled)
+        cv2.imshow("Received Depths", depthScaled, cmap='gray', vmin=0, vmax=255)
         cv2.waitKey(0)
 
         #cv2.imshow("Received Depths", depth)
