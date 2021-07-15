@@ -125,8 +125,15 @@ class MonoDepth_adabin:
 
         image_height, image_width = depth.shape
 
-        cv2.imshow("Received Depths", depth)
-        cv2.waitKey(0)
+        double min;
+        double max;
+        cv2.minMaxIdx(depth, &min, &max);
+        cv::Mat adjMap;
+        cv2.convertScaleAbs(depth, adjMap, 255 / max);
+        cv2.imshow("Out", adjMap);
+
+        #cv2.imshow("Received Depths", depth)
+        cv2.waitKey(1)
 
         Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :])),
                        np.zeros(len(ranges[0, :])),
