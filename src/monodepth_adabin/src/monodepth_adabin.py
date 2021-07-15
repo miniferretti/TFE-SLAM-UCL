@@ -146,6 +146,10 @@ class MonoDepth_adabin:
         cv2.imshow("Received Depths", depthScaled)
         cv2.waitKey(0)
 
+        depthScaledColored = cv2.applyColorMap(depthScaled, cv2.COLORMAP_JET)
+        cv2.imshow("Received Depths ColorGradient", depthScaledColored)
+        cv2.waitKey(0)
+
         #cv2.imshow("Received Depths", depth)
         
 
