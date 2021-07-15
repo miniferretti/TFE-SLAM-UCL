@@ -125,7 +125,7 @@ class MonoDepth_adabin:
 
         image_height, image_width = depth.shape
 
-        max_value = [max(idx) for idx in zip(*test_list)]
+        max_value = [max(idx) for idx in zip(*depth)]
         depthScaled = depth
         cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
         cv2.imshow("Out", depthScaled)
