@@ -188,6 +188,8 @@ class MonoDepth_adabin:
         v_real_previous = 0
         depth_previous = depth[240, 0]
 
+        print("--- Correcting the depth  --- ")
+
         for i in range(len(UV[0, :])):
             u = UV[0, i]
             v = UV[1, i]
@@ -227,6 +229,41 @@ class MonoDepth_adabin:
             v_real, u_real, differenceDepth))
         print('The depth at this point', depth[v_real, u_real])
 
+        max_value = [max(idx) for idx in zip(*depth)]
+
+        print("max_value[3] : %s" % (max_value[3]))
+
+        print("depth[240,0] : %s" %(depth[240,0]))
+        print("depth[240,100] : %s" %(depth[240,50]))
+        print("depth[240,200] : %s" %(depth[240,200]))
+
+        NewDepthScaled = depth
+        #cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
+        NewDepthScaled[:,:] = (depth[:,:] / max_value[3])
+
+        print("NewDepthScaled[240,0] : %s" %(NewDepthScaled[240,0]))
+        print("NewDepthScaled[240,100] : %s" %(NewDepthScaled[240,50]))
+        print("NewDepthScaled[240,200] : %s" %(NewDepthScaled[240,200]))
+
+        cv2.imshow("Received Depths", NewDepthScaled)
+        cv2.waitKey(0)
+
+        NewImageDepths = np.array(NewDepthScaled * 255, dtype = np.uint8)
+
+        #depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_JET)
+        NewDepthScaledColored = cv2.applyColorMap(NewImageDepths, cv2.COLORMAP_RAINBOW)   
+        cv2.imshow("Received Depths ColorGradient", NewDepthScaledColored)
+        cv2.waitKey(0)
+
+        print("--- Difference  --- ")
+
+        DifferenceScaled = NewDepthScaled - depthScaled
+        DifferenceScaledColored = NewDepthScaledColored - depthScaledColored
+        cv2.imshow("Received Depths", DifferenceScaled)
+        cv2.waitKey(0)
+        cv2.imshow("Received Depths ColorGradient", DifferenceScaledColored)
+        cv2.waitKey(0)
+        
         return depth
 
     # Create a sensor_msgs.PointCloud2 from the depth and color images provided
