@@ -129,8 +129,7 @@ class MonoDepth_adabin:
 
         max_value = [max(idx) for idx in zip(*depth)]
 
-        print("max_value[3] : ")
-        print(max_value[3])
+        print("max_value[3] : %s" % (max_value[3]))
 
         print("depth[240,0] : %s" %(depth[240,0]))
         print("depth[240,100] : %s" %(depth[240,50]))
@@ -138,6 +137,11 @@ class MonoDepth_adabin:
 
         depthScaled = depth
         cv2.convertScaleAbs(depth, depthScaled, 255 / max_value[3])
+
+        print("depthScaled[240,0] : %s" %(depthScaled[240,0]))
+        print("depthScaled[240,100] : %s" %(depthScaled[240,50]))
+        print("depthScaled[240,200] : %s" %(depthScaled[240,200]))
+
         cv2.imshow("Received Depths", depthScaled)
         cv2.waitKey(0)
 
