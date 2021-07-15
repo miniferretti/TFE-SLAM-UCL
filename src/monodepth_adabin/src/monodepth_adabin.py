@@ -377,6 +377,9 @@ class MonoDepth_adabin:
             cv2.imshow("Image", image)
             cv2.waitKey(1)
 
+        cv2.imshow("Image", image)
+        cv2.waitKey(0)
+
         # Get image data as a numpy array to be passed for processing.
         img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
