@@ -125,11 +125,9 @@ class MonoDepth_adabin:
 
         image_height, image_width = depth.shape
 
-        min = 0
-        max = 0
-        cv2.minMaxIdx(depth, min, max)
+        max_value = [max(idx) for idx in zip(*test_list)]
         depthScaled = depth
-        cv::convertScaleAbs(depth, depthScaled, 255 / max)
+        cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
         cv2.imshow("Out", depthScaled)
 
         #cv2.imshow("Received Depths", depth)
