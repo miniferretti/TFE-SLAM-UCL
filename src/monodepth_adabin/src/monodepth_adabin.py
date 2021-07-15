@@ -277,14 +277,14 @@ class MonoDepth_adabin:
         print("differenceDepthScaled[240,100] : %s" %(differenceDepthScaled[240,50]))
         print("differenceDepthScaled[240,200] : %s" %(differenceDepthScaled[240,200]))
 
-        cv2.imshow("Received Depths", differenceDepthScaled)
+        cv2.imshow("Difference Depths", differenceDepthScaled)
         cv2.waitKey(0)
 
         ImageDifferenceDepth = np.array(differenceDepthScaled * 255, dtype = np.uint8)
 
         #depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_JET)
         DifferenceDepthScaledColored = cv2.applyColorMap(ImageDifferenceDepth, cv2.COLORMAP_RAINBOW)   
-        cv2.imshow("Received Depths ColorGradient", DifferenceDepthScaledColored)
+        cv2.imshow("Difference Depths ColorGradient", DifferenceDepthScaledColored)
         cv2.waitKey(0)
 
 
