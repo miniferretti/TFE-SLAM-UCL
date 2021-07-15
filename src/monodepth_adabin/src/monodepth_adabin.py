@@ -126,7 +126,7 @@ class MonoDepth_adabin:
         image_height, image_width = depth.shape
 
         cv2.imshow("Received Depths", depth)
-        cv2.waitKey()
+        cv2.waitKey(0)
 
         Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :])),
                        np.zeros(len(ranges[0, :])),
