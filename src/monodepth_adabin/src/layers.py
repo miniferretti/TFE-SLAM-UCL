@@ -9,7 +9,7 @@ class BilinearUpSampling2D(Layer):
         super(BilinearUpSampling2D, self).__init__(**kwargs)
         self.data_format = self.normalize_data_format(data_format)
         self.size = self.normalize_tuple(size, 2, "size")
-        self.input_spec = InputSpec(ndim=4)
+        self.input_spec =  InputSpec(ndim=4)
 
     def compute_output_shape(self, input_shape):
         if self.data_format == "channels_first":
