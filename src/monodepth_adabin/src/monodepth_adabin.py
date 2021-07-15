@@ -125,12 +125,12 @@ class MonoDepth_adabin:
 
         image_height, image_width = depth.shape
 
-        double min;
-        double max;
-        cv2.minMaxIdx(depth, &min, &max);
-        cv::Mat adjMap;
-        cv2.convertScaleAbs(depth, adjMap, 255 / max);
-        cv2.imshow("Out", adjMap);
+        double min
+        double max
+        cv2.minMaxIdx(depth, &min, &max)
+        cv::Mat adjMap
+        cv2.convertScaleAbs(depth, adjMap, 255 / max)
+        cv2.imshow("Out", adjMap)
 
         #cv2.imshow("Received Depths", depth)
         cv2.waitKey(1)
