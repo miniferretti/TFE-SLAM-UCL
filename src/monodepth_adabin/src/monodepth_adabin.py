@@ -118,6 +118,10 @@ class MonoDepth_adabin:
     def depth_correction(self, ranges, depth):
 
 
+        print("********  Depth from LiDAR  **********")
+
+        print(ranges[0, :])
+
         print("********  Depth Correction  **********")
 
         U = 3280  # Horizontal number of pixels
