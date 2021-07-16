@@ -126,8 +126,6 @@ class MonoDepth_adabin:
                 ranges[0, i_enum] = previousCorrectlyDetectedRange
             previousCorrectlyDetectedRange = ranges[0, i_enum]
 
-        cv2.waitKey(0)
-
         #print(ranges[0, :])
         #for i_print in range(np.size(ranges, 1)):
             #print(ranges[0, i_print])
@@ -138,7 +136,6 @@ class MonoDepth_adabin:
             for y_print in range((depth, 0)):
                 print(depth[y_print, x_print]) 
             #print(ranges[0, i_print])
-        cv2.waitKey(0)
 
         print("********  Depth Correction  **********")
 
