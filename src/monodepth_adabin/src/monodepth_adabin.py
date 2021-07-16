@@ -149,6 +149,8 @@ class MonoDepth_adabin:
 
         max_value = [max(idx) for idx in zip(*depth)]
 
+        print(max_value)
+
         print("max_value[3] : %s" % (max_value[3]))
 
         print("depth[240,0] : %s" %(depth[240,0]))
