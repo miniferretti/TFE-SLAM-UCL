@@ -210,15 +210,15 @@ class MonoDepth_adabin:
 
                     # Changes for points without information on x
 
-                    #for inter_u in range(StepWidth):
-                        #depth[MidHeight, u_real_previous + inter_u] = depth_previous + StepWidth * (inter_u/StepWidth) * StepDepth
-                        # for inter_h in range(image_height):
-                        #interDifferenceDepth = depth[MidHeight,u_real_previous +inter_u] - depth[inter_h, u_real_previous +inter_u]
-                        #depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] + interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
+                    for inter_u in range(StepWidth):
+                        depth[MidHeight, u_real_previous + inter_u] = depth_previous + StepWidth * (inter_u/StepWidth) * StepDepth
+                        for inter_h in range(image_height):
+                            interDifferenceDepth = depth[MidHeight,u_real_previous +inter_u] - depth[inter_h, u_real_previous +inter_u]
+                            depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] + interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
 
                     # Changes for points with information on x
-                    #for hh in range(image_height):
-                        #depth[hh, u_real] = depth[hh, image_height] + differenceDepth * ((image_height - abs(v_real - hh))/image_height)
+                    for hh in range(image_height):
+                        depth[hh, u_real] = depth[hh, image_height] + differenceDepth * ((image_height - abs(v_real - hh))/image_height)
 
                     # Changes for LiDAR points
                     depth[v_real, u_real] = P[2, i]
