@@ -169,7 +169,7 @@ class MonoDepth_adabin:
 
         imageDepths = np.array(depthScaled * 255, dtype = np.uint8)
 
-        depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_JET)
+        depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_RAINBOW)
         #depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_RAINBOW)   
         cv2.imshow("Received Depths ColorGradient", depthScaledColored)
         cv2.waitKey(0)
@@ -231,11 +231,11 @@ class MonoDepth_adabin:
 
                     # Changes for points without information on x
 
-                    for inter_u in range(StepWidth):
-                        depth[MidHeight, u_real_previous + inter_u] = depth_previous + (inter_u/StepWidth) * StepDepth
-                        for inter_h in range(image_height):
-                            interDifferenceDepth = depth[MidHeight,u_real_previous +inter_u] - depth[inter_h, u_real_previous +inter_u]
-                            depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] + interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
+                    #for inter_u in range(StepWidth):
+                        #depth[MidHeight, u_real_previous + inter_u] = depth_previous + (inter_u/StepWidth) * StepDepth
+                        #for inter_h in range(image_height):
+                            #interDifferenceDepth = depth[MidHeight,u_real_previous +inter_u] - depth[inter_h, u_real_previous +inter_u]
+                            #depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] + interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
 
                     # Changes for points with information on x
                     #for hh in range(image_height):
@@ -278,7 +278,7 @@ class MonoDepth_adabin:
         NewImageDepths = np.array(NewDepthScaled * 255, dtype = np.uint8)
 
         #depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_JET)
-        NewDepthScaledColored = cv2.applyColorMap(NewImageDepths, cv2.COLORMAP_JET)   
+        NewDepthScaledColored = cv2.applyColorMap(NewImageDepths, cv2.COLORMAP_RAINBOW)   
         cv2.imshow("Corrected Depths ColorGradient", NewDepthScaledColored)
         cv2.waitKey(0)
 
@@ -311,7 +311,7 @@ class MonoDepth_adabin:
         ImageDifferenceDepth = np.array(differenceDepthScaled * 255, dtype = np.uint8)
 
         #depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_RAINBOW)
-        DifferenceDepthScaledColored = cv2.applyColorMap(ImageDifferenceDepth, cv2.COLORMAP_JET)   
+        DifferenceDepthScaledColored = cv2.applyColorMap(ImageDifferenceDepth, cv2.COLORMAP_RAINBOW)   
         cv2.imshow("Difference Depths ColorGradient", DifferenceDepthScaledColored)
         cv2.waitKey(0)
 
