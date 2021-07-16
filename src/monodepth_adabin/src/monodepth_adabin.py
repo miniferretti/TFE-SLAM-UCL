@@ -255,9 +255,10 @@ class MonoDepth_adabin:
             v_real, u_real, differenceDepth))
         print('The depth at this point', depth[v_real, u_real])
 
-        New_max_value = [max(idx) for idx in zip(*depth)]
+        #New_max_value = [max(idx) for idx in zip(*depth)]
+        New_max_value = np.amax(depth)
 
-        print("New_max_value[3] : %s" % (New_max_value[3]))
+        print("New_max_value : %s" % (New_max_value))
 
         print("depth[240,0] : %s" %(depth[240,0]))
         print("depth[240,100] : %s" %(depth[240,50]))
@@ -265,7 +266,7 @@ class MonoDepth_adabin:
 
         NewDepthScaled = depth.copy()
         #cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
-        NewDepthScaled[:,:] = (depth[:,:] / New_max_value[3])
+        NewDepthScaled[:,:] = (depth[:,:] / New_max_value)
 
         print("NewDepthScaled[240,0] : %s" %(NewDepthScaled[240,0]))
         print("NewDepthScaled[240,100] : %s" %(NewDepthScaled[240,50]))
@@ -287,9 +288,10 @@ class MonoDepth_adabin:
 
         differenceDepth = np.subtract(depth, oldDepth)
 
-        Difference_max_value = [max(idx) for idx in zip(*differenceDepth)]
+        #Difference_max_value = [max(idx) for idx in zip(*differenceDepth)]
+        Difference_max_value = np.amax(differenceDepth)
 
-        print("Difference_max_value[3] : %s" % (Difference_max_value[3]))
+        print("Difference_max_value : %s" % (Difference_max_value))
 
         print("differenceDepth[240,0] : %s" %(differenceDepth[240,0]))
         print("differenceDepth[240,100] : %s" %(differenceDepth[240,50]))
@@ -297,7 +299,7 @@ class MonoDepth_adabin:
 
         differenceDepthScaled = differenceDepth.copy()
         #cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
-        differenceDepthScaled[:,:] = (differenceDepth[:,:] / Difference_max_value[3])
+        differenceDepthScaled[:,:] = (differenceDepth[:,:] / Difference_max_value)
 
         print("differenceDepthScaled[240,0] : %s" %(differenceDepthScaled[240,0]))
         print("differenceDepthScaled[240,100] : %s" %(differenceDepthScaled[240,50]))
