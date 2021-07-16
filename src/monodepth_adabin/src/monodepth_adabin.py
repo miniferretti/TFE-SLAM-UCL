@@ -130,12 +130,6 @@ class MonoDepth_adabin:
         #for i_print in range(np.size(ranges, 1)):
             #print(ranges[0, i_print])
 
-        print("********  Depth from MonoDepth_adabin  **********")
-
-        for x_print in range(np.size(depth, 0)):
-            for y_print in range((depth, 0)):
-                print(depth[y_print, x_print]) 
-            #print(ranges[0, i_print])
 
         print("********  Depth Correction  **********")
 
@@ -145,6 +139,13 @@ class MonoDepth_adabin:
         image_height, image_width = depth.shape
 
         print(depth.shape)
+
+        print("********  Depth from MonoDepth_adabin  **********")
+
+        for x_print in range(image_width):
+            for y_print in range(image_height):
+                print(depth[y_print, x_print]) 
+            #print(ranges[0, i_print])
 
         max_value = [max(idx) for idx in zip(*depth)]
 
