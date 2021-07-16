@@ -121,7 +121,7 @@ class MonoDepth_adabin:
         print("********  Depth from LiDAR  **********")
 
         print(ranges[0, :])
-        for i_print in range(np.size(ranges, 0)):
+        for i_print in range(np.size(ranges, 1)):
             print(ranges[0, i_print])
 
         print("********  Depth Correction  **********")
