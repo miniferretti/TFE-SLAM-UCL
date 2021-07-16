@@ -120,6 +120,12 @@ class MonoDepth_adabin:
 
         print("********  Depth from LiDAR  **********")
 
+        previousCorrectlyDetectedRange = 1.0
+        for i_enum in range(np.size(ranges, 1)):
+            if (ranges[0, i_enum] == 25.00):
+                ranges[0, i_enum] = previousCorrectlyDetectedRange
+            previousCorrectlyDetectedRange = ranges[0, i_enum]
+            
         print(ranges[0, :])
         for i_print in range(np.size(ranges, 1)):
             print(ranges[0, i_print])
