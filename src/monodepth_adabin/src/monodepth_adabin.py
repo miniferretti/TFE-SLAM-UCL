@@ -147,7 +147,8 @@ class MonoDepth_adabin:
                 print(depth[y_print, x_print]) 
             #print(ranges[0, i_print])
 
-        max_value = [max(idx) for idx in zip(*depth)]
+        #max_value = [max(idx) for idx in zip(*depth)]
+        max_value = np.amax(depth)
 
         print(max_value)
 
