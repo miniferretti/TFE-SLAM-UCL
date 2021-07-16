@@ -150,9 +150,7 @@ class MonoDepth_adabin:
         #max_value = [max(idx) for idx in zip(*depth)]
         max_value = np.amax(depth)
 
-        print(max_value)
-
-        print("max_value[3] : %s" % (max_value[3]))
+        print("max_value : %s" % (max_value))
 
         print("depth[240,0] : %s" %(depth[240,0]))
         print("depth[240,100] : %s" %(depth[240,50]))
@@ -160,7 +158,7 @@ class MonoDepth_adabin:
 
         depthScaled = depth.copy()
         #cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
-        depthScaled[:,:] = (depth[:,:] / max_value[3])
+        depthScaled[:,:] = (depth[:,:] / max_value)
 
         print("depthScaled[240,0] : %s" %(depthScaled[240,0]))
         print("depthScaled[240,100] : %s" %(depthScaled[240,50]))
