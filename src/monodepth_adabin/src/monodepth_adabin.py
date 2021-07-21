@@ -240,13 +240,15 @@ class MonoDepth_adabin:
 
                     # Changes for points without information on x
 
+
                     for inter_u in range(abs(StepWidth)):
-                        depth[MidHeight, u_real_previous + inter_u] = depth_previous + (inter_u/StepWidth) * StepDepth
-                        for inter_h in range(image_height):
-                            interDifferenceDepth = depth[MidHeight,u_real_previous +inter_u] - depth[inter_h, u_real_previous +inter_u]
-                            if (inter_h != MidHeight):
-                            	depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] + interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
-                        print("depth[MidHeight, u_real_previous + inter_u] = %s" %(depth[MidHeight, u_real_previous + inter_u]))
+                    	if ( (u_real_previous + inter_u < 640)):
+                        	depth[MidHeight, u_real_previous + inter_u ] = depth_previous + (inter_u/StepWidth) * StepDepth
+                        	for inter_h in range(image_height):
+                            	interDifferenceDepth = depth[MidHeight,u_real_previous +inter_u] - depth[inter_h, u_real_previous +inter_u]
+                            	if (inter_h != MidHeight):
+                            		depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] + interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
+                        	print("depth[MidHeight, u_real_previous + inter_u] = %s" %(depth[MidHeight, u_real_previous + inter_u]))
 
                     
 
