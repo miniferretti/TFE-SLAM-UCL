@@ -293,6 +293,7 @@ class MonoDepth_adabin:
 
         # Predict depth image
         bin_centers, true_depth = self.infer_helper.predict_pil(img)
+        print(true_depth)
 
         depth = np.clip(depth_norm(true_depth.squeeze(), max_depth=MAX_DEPTH_NYU), MIN_DEPTH,
                         MAX_DEPTH_NYU) / MAX_DEPTH_NYU  # Ligne de code a valider
@@ -317,6 +318,7 @@ class MonoDepth_adabin:
             self.bridge.cv2_to_imgmsg(depth.astype(np.uint8), "mono8"))
 
         # Publish the synced Camera_info topic
+        self.camera_info.header.stamp = rospy.Time.now()
         self.pub_camera_info.publish(self.camera_info)
 
         # Generate and publish Point cloud
