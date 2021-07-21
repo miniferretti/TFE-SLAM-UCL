@@ -268,7 +268,7 @@ class MonoDepth_adabin:
                             for inter_h in range(image_height):
                                 if ((u_real_previous - inter_u) < 640):
                                     if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u ]) <= 0.1):
-                                        depth[inter_h, u_real_previous - inter_u] = P[2, i]
+                                        depth[inter_h, u_real_previous - inter_u] = P[2, i] 
 
 
                     if(correctionMethod == 3):
@@ -277,6 +277,7 @@ class MonoDepth_adabin:
                                 if ((u_real_previous - inter_u) < 640):
                                     if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u ]) <= 0.1):
                                         depth[inter_h, u_real_previous - inter_u] = depth[inter_h, u_real_previous - inter_u] + differenceDepth
+
 
                     if(correctionMethod == 4):
                         for inter_u in range(abs(StepWidth)):
@@ -290,7 +291,12 @@ class MonoDepth_adabin:
                                 #print("depth[MidHeight, u_real_previous + inter_u] = %s" %(depth[MidHeight, u_real_previous + inter_u]))
                                     
 
-                    
+                    if(correctionMethod == 5):
+                        for inter_u in range(abs(StepWidth)):
+                            for inter_h in range(image_height):
+                                if ((u_real_previous - inter_u) < 640):
+                                    if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u ]) <= 0.1):
+                                        depth[inter_h, u_real_previous - inter_u] = depth_previous + (inter_u/StepWidth) * StepDepth
 
                     #math.copysign(inter_u, StepWidth)
 
