@@ -69,6 +69,20 @@
       <param name="Odom/ScanKeyFrameThr" type="string" value="0.9" />
     </node>
 
+    <!-- Nodelet for converting a pointcloud to a depth image and rgb image for rtabmap mapping-->
+    <node pkg="rtabmap_ros" type="pointcloud_to_depthimage" name="pointcloud_to_depthimage">
+      <remap from="cloud" to="/monodepth_adabin/pointcloud" />
+      <remap from="camera_info" to="/monodepth_adabin/camera_info" />
+      
+      <!-- Parameters for the nodelet-->
+      <param name="queue_size" type="int" value="1" />
+      <param name="fixed_frame_id" type="string" value="cam" />
+      <param name="approx" type="bool" value="true" />
+      <param name="queue_size" type="int" value="1" />
+      <param name="decimation" type="int" value="2" />
+      <param name="fill_holes_size" type="int" value="5" />
+    </node>
+
     <!-- Choose hector_slam or icp_odometry for odometry -->
     <arg name="hector" default="false" />
     <!-- SLAM -->
