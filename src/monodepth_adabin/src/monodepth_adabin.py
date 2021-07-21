@@ -54,6 +54,8 @@ class MonoDepth_adabin:
             "~topic_camera_info_repub", "/monodepth_adabin/camera_info")
         self.topic_laserScan_repub = rospy.get_param(
             "~topic_laserScan_repub", "/monodepth_adabin/scan")
+        self.topic_image_repub = rospy.get_param(
+            "~topic_image_repub", "/monodepth_adabin/image/compressed")
 
         self.min_depth = rospy.get_param("~min_depth", MIN_DEPTH)
         self.max_depth = rospy.get_param("~max_depth", MAX_DEPTH_NYU)
@@ -73,6 +75,8 @@ class MonoDepth_adabin:
             self.topic_camera_info_repub, CameraInfo, queue_size=1)
         self.pub_laserScan = rospy.Publisher(
             self.topic_laserScan_repub, LaserScan, queue_size=1)
+        self.pub_image = rospy.Publisher(
+            self.topic_image_repub, CompressedImage, queue_size=1)
         self.counter = 0
 
         # Subscribers
@@ -273,7 +277,7 @@ class MonoDepth_adabin:
     def image_lidar_callback(self, image_sync, scan_sync):
 
         start_time = time.time()
-        self.stamp = rospy.Time.now()
+        self.stamp = image_sync.header.stamp
 
         print("New frame processed of type {}".format(image_sync.format))
         # Convert message to opencv image
@@ -334,6 +338,9 @@ class MonoDepth_adabin:
 
         # Republish the laserScan with proper time stamp
         self.pub_laserScan.publish(scan_sync)
+
+        # Republish the compressed Image with proper time stamp
+        self.pub_image.publish(image_sync)
 
         # Increment counter
         self.counter += 1
