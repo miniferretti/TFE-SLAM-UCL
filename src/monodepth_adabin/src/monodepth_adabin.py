@@ -128,7 +128,7 @@ class MonoDepth_adabin:
 
         #print(ranges[0, :])
         for i_print in range(np.size(ranges, 1)):
-            print("Depth[0, %S] : %s [m] at angle %s" % (i_print, ranges[0, i_print], ranges[1, i_print]))
+            print("Depth[0, %s] : %s [m] at angle %s" % (i_print, ranges[0, i_print], ranges[1, i_print]))
 
 
         print("********  Depth Correction  **********")
