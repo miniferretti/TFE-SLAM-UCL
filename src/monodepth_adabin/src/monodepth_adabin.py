@@ -256,8 +256,8 @@ class MonoDepth_adabin:
                     if(correctionMethod == 2):
                         for inter_u in range(abs(StepWidth)):
                             for inter_h in range(image_height):
-                                if (abs(P[2, i] - depth[inter_h, u_real_previous + inter_u])):
-                                    depth[inter_h, u_real_previous +inter_u] = P[2, i]
+                                if (abs(P[2, i] - depth[inter_h, u_real_previous + math.copysign(inter_u, StepWidth)])):
+                                    depth[inter_h, u_real_previous + math.copysign(inter_u, StepWidth)] = P[2, i]
 
 
                     #for inter_u in range(StepWidth):
