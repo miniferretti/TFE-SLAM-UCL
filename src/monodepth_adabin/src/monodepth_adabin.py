@@ -320,7 +320,7 @@ class MonoDepth_adabin:
 
         # Publish the depth image
         msg = self.bridge.cv2_to_imgmsg(
-            true_depth.astype(np.float32), "mono16")
+            true_depth.astype(np.float16), "mono16")
         msg.header.stamp = self.stamp
         self.pub_image_depth.publish(msg)
 
