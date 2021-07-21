@@ -235,7 +235,8 @@ class MonoDepth_adabin:
                         depth[MidHeight, u_real_previous + inter_u] = depth_previous + (inter_u/StepWidth) * StepDepth
                         for inter_h in range(image_height):
                             interDifferenceDepth = depth[MidHeight,u_real_previous +inter_u] - depth[inter_h, u_real_previous +inter_u]
-                            depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] - interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
+                            if (inter_h != MidHeight):
+                            	depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] - interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
 
                     # Changes for points with information on x
                     #for hh in range(image_height):
