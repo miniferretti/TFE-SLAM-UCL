@@ -211,7 +211,7 @@ class MonoDepth_adabin:
         v_real_previous = 230
         depth_previous = depth[230, 345]
 
-        correctionMethod = 1
+        correctionMethod = 4
 
         print("--- Correcting the depth  --- ")
 
