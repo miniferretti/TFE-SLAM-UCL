@@ -72,14 +72,13 @@
 
     <!-- Nodelet for converting a pointcloud to a depth image and rgb image for rtabmap mapping-->
 
-    <node pkg="rtabmap_ros" type="pointcloud_to_depthimage" name="pointcloud_to_depthimage">
+  <!--  <node pkg="rtabmap_ros" type="pointcloud_to_depthimage" name="pointcloud_to_depthimage">
 
       <remap from="cloud" to="/monodepth_adabin/pointcloud" />
       <remap from="camera_info" to="/monodepth_adabin/camera_info" />
       <remap from="image" to="/monodepth_adabin/depth_registered/image"/>
       <remap from="image_raw" to="/monodepth_adabin/depth_registered/image_raw"/>
 
-      <!-- Parameters for the nodelet-->
       <param name="queue_size" type="int" value="1" />
       <param name="fixed_frame_id" type="string" value="cam" />
       <param name="approx" type="bool" value="true" />
@@ -87,7 +86,7 @@
       <param name="decimation" type="int" value="1" />
       <param name="fill_holes_size" type="int" value="0" />
 
-    </node>
+    </node> -->
 
     <!-- Choose hector_slam or icp_odometry for odometry -->
     <arg name="hector" default="false" />
