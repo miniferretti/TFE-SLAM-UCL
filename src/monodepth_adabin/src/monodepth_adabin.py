@@ -127,8 +127,8 @@ class MonoDepth_adabin:
             previousCorrectlyDetectedRange = ranges[0, i_enum]
 
         #print(ranges[0, :])
-        #for i_print in range(np.size(ranges, 1)):
-            #print(ranges[0, i_print])
+        for i_print in range(np.size(ranges, 1)):
+            print("Depth[240,0] : %s [m] at angle %s" % (ranges[0, i_print], ranges[0, i_print]))
 
 
         print("********  Depth Correction  **********")
@@ -142,9 +142,9 @@ class MonoDepth_adabin:
 
         print("********  Depth from MonoDepth_adabin  **********")
 
-        for x_print in range(image_width):
-            for y_print in range(image_height):
-                print(depth[y_print, x_print]) 
+        #for x_print in range(image_width):
+            #for y_print in range(image_height):
+                #print(depth[y_print, x_print]) 
             #print(ranges[0, i_print])
 
         #max_value = [max(idx) for idx in zip(*depth)]
