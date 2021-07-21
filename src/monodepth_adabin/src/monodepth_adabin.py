@@ -489,7 +489,7 @@ class MonoDepth_adabin:
         # Get image data as a numpy array to be passed for processing.
         img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        img = cv2.resize(img, (640, 480))
+        #img = cv2.resize(img, (640, 480))
 
         # Predict depth image
         bin_centers, true_depth = self.infer_helper.predict_pil(img)
