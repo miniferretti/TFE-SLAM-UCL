@@ -295,8 +295,8 @@ class MonoDepth_adabin:
                         for inter_u in range(abs(StepWidth)):
                             for inter_h in range(image_height):
                                 if ((u_real_previous - inter_u) < 640):
-                                    if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u ]) <= 0.15):
-                                        depth[inter_h, u_real_previous - inter_u] = depth_previous - (inter_u/StepWidth) * StepDepth
+                                    if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u ]) <= 0.1):
+                                        depth[inter_h, u_real_previous - inter_u] = depth_previous + (inter_u/StepWidth) * StepDepth
                                     else :
                                         depth[inter_h, u_real_previous - inter_u] = max_value
 
