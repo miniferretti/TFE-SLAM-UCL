@@ -223,7 +223,7 @@ class MonoDepth_adabin:
                     v_real = self.valmap(v, 0, V, 0, image_height)
 
                     print(" --------- new point -------- ")
-                    print("We are at the point (%s, %s)" % (u_real, v_real))
+                    print("We are at the point (%s, %s)" % (v_real, u_real))
 
                     differenceDepth = depth[v_real, u_real] - P[2, i]
 
@@ -240,7 +240,7 @@ class MonoDepth_adabin:
 
                     # Changes for points without information on x
 
-                    for inter_u in range(StepWidth):
+                    for inter_u in range(abs(StepWidth):
                         depth[MidHeight, u_real_previous + inter_u] = depth_previous + (inter_u/StepWidth) * StepDepth
                         for inter_h in range(image_height):
                             interDifferenceDepth = depth[MidHeight,u_real_previous +inter_u] - depth[inter_h, u_real_previous +inter_u]
