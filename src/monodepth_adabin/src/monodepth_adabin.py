@@ -36,7 +36,7 @@ class MonoDepth_adabin:
         print("Hello world")
 
         # Get parameters
-        self.debug = rospy.get_param("~debug", False)
+        self.debug = rospy.get_param("~debug", True)
         self.frame_id = rospy.get_param("~frame_id", "map")
         self.device = rospy.get_param("~device", 'cpu')
 
