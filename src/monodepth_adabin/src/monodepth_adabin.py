@@ -127,8 +127,8 @@ class MonoDepth_adabin:
             previousCorrectlyDetectedRange = ranges[0, i_enum]
 
         #print(ranges[0, :])
-        for i_print in range(np.size(ranges, 1)):
-            print("Depth[0, %s] : %s [m] at angle %s" % (i_print, ranges[0, i_print], ranges[1, i_print]))
+        #for i_print in range(np.size(ranges, 1)):
+            #print("Depth[0, %s] : %s [m] at angle %s" % (i_print, ranges[0, i_print], ranges[1, i_print]))
 
 
         print("********  Depth Correction  **********")
@@ -222,12 +222,21 @@ class MonoDepth_adabin:
                     u_real = self.valmap(u, 0, U, 0, image_width)
                     v_real = self.valmap(v, 0, V, 0, image_height)
 
+                    print(" --------- new point -------- ")
+                    print("We are at the point (%s, %s)" % (u_real, v_real))
+
                     differenceDepth = depth[v_real, u_real] - P[2, i]
 
                     StepWidth = u_real - u_real_previous
                     StepHeight = v_real - v_real_previous
                     MidHeight = int((v_real + v_real_previous)/2)
                     StepDepth = P[2, i] - depth_previous
+
+                    print("differenceDepth = %s" %(differenceDepth))
+                    print("StepWidth = %s" %(StepWidth))
+                    print("StepHeight = %s" %(StepHeight))
+                    print("MidHeight = %s" %(MidHeight))
+                    print("StepDepth = %s" %(StepDepth))
 
                     # Changes for points without information on x
 
