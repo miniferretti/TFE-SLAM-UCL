@@ -333,7 +333,7 @@ class MonoDepth_adabin:
         self.pub_pointcloud.publish(cloud_msg)
 
         # Republish the laserScan with proper time stamp
-        self.pub_laserScan.Publish(scan_sync)
+        self.pub_laserScan.publish(scan_sync)
 
         # Increment counter
         self.counter += 1
