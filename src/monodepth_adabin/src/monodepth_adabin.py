@@ -255,11 +255,11 @@ class MonoDepth_adabin:
                     if(correctionMethod == 1):
                         for inter_u in range(abs(StepWidth)):
                             if ((u_real_previous + inter_u) < 640):
-                                depth[MidHeight, u_real_previous - inter_u ] = depth_previous + (inter_u/StepWidth) * StepDepth
+                                depth[MidHeight, u_real_previous - inter_u ] = depth_previous - (inter_u/StepWidth) * StepDepth
                                 for inter_h in range(image_height):
                                     interDifferenceDepth = depth[MidHeight,u_real_previous -inter_u] - depth[inter_h, u_real_previous +inter_u]
                                     if (inter_h != MidHeight):
-                                        depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] + interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
+                                        depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] - interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
                                 #print("depth[MidHeight, u_real_previous + inter_u] = %s" %(depth[MidHeight, u_real_previous + inter_u]))
 
 
