@@ -126,8 +126,9 @@ class MonoDepth_adabin:
                 ranges[0, i_enum] = previousCorrectlyDetectedRange
             previousCorrectlyDetectedRange = ranges[0, i_enum]
 
-        max_LiDAR = np.amax(ranges)
+        max_LiDAR = np.amax(ranges, axis = 0)
         print("max_LiDAR = %s" %(max_LiDAR))
+        print("max_LiDAR[0] = %s" %(max_LiDAR[0]))
 
         #print(ranges[0, :])
         #for i_print in range(np.size(ranges, 1)):
@@ -301,7 +302,7 @@ class MonoDepth_adabin:
                                     if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u ]) <= 0.15):
                                         depth[inter_h, u_real_previous - inter_u] = depth_previous - (inter_u/StepWidth) * StepDepth
                                     else :
-                                        depth[inter_h, u_real_previous - inter_u] = max_LiDAR
+                                        depth[inter_h, u_real_previous - inter_u] = max_LiDAR[0]
 
                     #math.copysign(inter_u, StepWidth)
 
