@@ -1,7 +1,7 @@
 <launch>
-    <!-- <include file="$(find raspicam_node)/launch/camerav2_1280x960.launch" /> -->
+     <include file="$(find raspicam_node)/launch/camerav2_1280x960.launch" />
 
-    <include file="$(find raspicam_node)/launch/camerav2_640x480.launch" />
+   <!-- <include file="$(find raspicam_node)/launch/camerav2_640x480.launch" /> -->
     <include file="$(find rplidar_ros)/launch/rplidar_a3.launch" />
 
     <!--IMU and asociated TF launch -->
