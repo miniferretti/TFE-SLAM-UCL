@@ -211,6 +211,8 @@ class MonoDepth_adabin:
         v_real_previous = 230
         depth_previous = depth[230, 345]
 
+        correctionMethod = 1 
+
         print("--- Correcting the depth  --- ")
 
         for i in range(len(UV[0, :])):
@@ -240,15 +242,15 @@ class MonoDepth_adabin:
 
                     # Changes for points without information on x
 
-
-                    for inter_u in range(abs(StepWidth)):
-                        if ((u_real_previous + inter_u) < 640):
-                            depth[MidHeight, u_real_previous + inter_u ] = depth_previous + (inter_u/StepWidth) * StepDepth
-                            for inter_h in range(image_height):
-                                interDifferenceDepth = depth[MidHeight,u_real_previous +inter_u] - depth[inter_h, u_real_previous +inter_u]
-                                if (inter_h != MidHeight):
-                                    depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] + interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
-                            print("depth[MidHeight, u_real_previous + inter_u] = %s" %(depth[MidHeight, u_real_previous + inter_u]))
+                    if(correctionMethod == 1):
+                        for inter_u in range(abs(StepWidth)):
+                            if ((u_real_previous + inter_u) < 640):
+                                depth[MidHeight, u_real_previous + inter_u ] = depth_previous + (inter_u/StepWidth) * StepDepth
+                                for inter_h in range(image_height):
+                                    interDifferenceDepth = depth[MidHeight,u_real_previous +inter_u] - depth[inter_h, u_real_previous +inter_u]
+                                    if (inter_h != MidHeight):
+                                        depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] + interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
+                                print("depth[MidHeight, u_real_previous + inter_u] = %s" %(depth[MidHeight, u_real_previous + inter_u]))
 
                     #for inter_u in range(StepWidth):
                             #depth[MidHeight, u_real_previous + inter_u ] = depth_previous + (inter_u/StepWidth) * StepDepth
