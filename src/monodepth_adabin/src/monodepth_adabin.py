@@ -50,6 +50,8 @@ class MonoDepth_adabin:
             "~topic_camera_info", "/raspicam_node/camera_info")
         self.topic_laserScan = rospy.get_param(
             "~topic_lidar_data", "/scan")
+        self.topic_camera_info_repub = rospy.get_param(
+            "~topic_camera_info_repub", "/monodepth_adabin/camera_info")
 
         self.min_depth = rospy.get_param("~min_depth", MIN_DEPTH)
         self.max_depth = rospy.get_param("~max_depth", MAX_DEPTH_NYU)
@@ -65,6 +67,8 @@ class MonoDepth_adabin:
             self.topic_depth, Image, queue_size=1)
         self.pub_pointcloud = rospy.Publisher(
             self.topic_pointcloud, PointCloud2, queue_size=1)
+        self.pub_camera_info = rospy.Publisher(
+            self.topic_camera_info_repub, CameraInfo, queue_size=1)
         self.counter = 0
 
         # Subscribers
@@ -307,10 +311,15 @@ class MonoDepth_adabin:
         depth = 255 * depth
         #cm = plt.get_cmap('magma')
         #depth = cm(depth)
+
+        # Publish the depth image
         self.pub_image_depth.publish(
             self.bridge.cv2_to_imgmsg(depth.astype(np.uint8), "mono8"))
 
-        # Generate Point cloud
+        # Publish the synced Camera_info topic
+        self.pub_camera_info.publish(self.camera_info)
+
+        # Generate and publish Point cloud
         cloud_msg = self.create_pointcloud_msg(true_depth, image)
         self.pub_pointcloud.publish(cloud_msg)
 
