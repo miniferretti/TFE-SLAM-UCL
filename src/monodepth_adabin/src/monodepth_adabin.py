@@ -126,8 +126,8 @@ class MonoDepth_adabin:
                 ranges[0, i_enum] = previousCorrectlyDetectedRange
             previousCorrectlyDetectedRange = ranges[0, i_enum]
 
-        max_LiDAR = np.amax(np.amax(ranges, axis = 1))
-        print("np.amax(ranges, axis = 1) = %s" %(np.amax(ranges, axis = 1)))
+        max_LiDAR = np.amax(np.amax(ranges, axis = 0))
+        print("np.amax(ranges, axis = 0) = %s" %(np.amax(ranges, axis = 0)))
         print("max_LiDAR = %s" %(max_LiDAR))
 
         #print(ranges[0, :])
