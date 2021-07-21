@@ -207,9 +207,9 @@ class MonoDepth_adabin:
         UV = np.array([np.divide(P[0, :], P[2, :]),
                        np.divide(P[1, :], P[2, :])], np.float32)
 
-        u_real_previous = 0
-        v_real_previous = 0
-        depth_previous = depth[240, 0]
+        u_real_previous = 345
+        v_real_previous = 230
+        depth_previous = depth[230, 0]
 
         print("--- Correcting the depth  --- ")
 
