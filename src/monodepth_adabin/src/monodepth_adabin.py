@@ -211,7 +211,7 @@ class MonoDepth_adabin:
         v_real_previous = 230
         depth_previous = depth[230, 345]
 
-        correctionMethod = 2
+        correctionMethod = 3
 
         print("--- Correcting the depth  --- ")
 
@@ -227,7 +227,7 @@ class MonoDepth_adabin:
                     print(" --------- new point -------- ")
                     print("We are at the point (%s, %s)" % (v_real, u_real))
 
-                    differenceDepth = depth[v_real, u_real] - P[2, i]
+                    differenceDepth =  P[2, i] - depth[v_real, u_real]
 
                     StepWidth = u_real - u_real_previous
                     StepHeight = v_real - v_real_previous
@@ -269,6 +269,16 @@ class MonoDepth_adabin:
                                 if ((u_real_previous - inter_u) < 640):
                                     if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u ]) <= 0.1):
                                         depth[inter_h, u_real_previous - inter_u] = P[2, i]
+
+
+                    if(correctionMethod == 3):
+                        for inter_u in range(abs(StepWidth)):
+                            for inter_h in range(image_height):
+                                if ((u_real_previous - inter_u) < 640):
+                                    if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u ]) <= 0.05):
+                                        depth[inter_h, u_real_previous - inter_u] = depth[inter_h, u_real_previous - inter_u] + differenceDepth
+
+                    
 
                     #math.copysign(inter_u, StepWidth)
 
