@@ -305,21 +305,21 @@ class MonoDepth_adabin:
         bin_centers, true_depth = self.infer_helper.predict_pil(img)
         print(type(true_depth))
 
-        depth = np.clip(depth_norm(true_depth.squeeze(), max_depth=MAX_DEPTH_NYU), MIN_DEPTH,
-                        MAX_DEPTH_NYU) / MAX_DEPTH_NYU  # Ligne de code a valider
+     #   depth = np.clip(depth_norm(true_depth.squeeze(), max_depth=MAX_DEPTH_NYU), MIN_DEPTH,
+     #                   MAX_DEPTH_NYU) / MAX_DEPTH_NYU  # Ligne de code a valider
 
         true_depth = true_depth.squeeze()
-        depth = np.kron(depth, np.ones((2, 2)))  # upscale the image
+       # depth = np.kron(depth, np.ones((2, 2)))  # upscale the image
 
         #true_depth_c = self.depth_correction(ranges, true_depth)
 
         # Display depth
         if self.debug:
-            cv2.imshow("Result", depth)
+            cv2.imshow("Result", true_depth)
             cv2.waitKey(1)
 
         # Publish depth image
-        depth = 255 * depth
+        #depth = 255 * depth
         #cm = plt.get_cmap('magma')
         #depth = cm(depth)
 
