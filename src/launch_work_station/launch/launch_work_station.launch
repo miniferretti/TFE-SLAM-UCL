@@ -37,7 +37,7 @@
     <arg name="pm" default="true" />
 
     <!-- Example with camera or not -->
-    <arg name="camera" default="false" />
+    <arg name="camera" default="true" />
 
     <node pkg="rtabmap_ros" type="icp_odometry" name="icp_odometry">
       <remap from="scan" to="/scan" />
