@@ -1,6 +1,8 @@
 #!/bin/bash
 git pull
 
+catkin_make
+
 source devel/setup.bash 
 
 
