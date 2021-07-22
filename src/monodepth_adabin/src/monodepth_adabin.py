@@ -277,7 +277,7 @@ class MonoDepth_adabin:
     def image_lidar_callback(self, image_sync, scan_sync):
 
         start_time = time.time()
-        self.stamp = image_sync.header.stamp
+        self.stamp = scan_sync.header.stamp
 
         print("New frame processed of type {}".format(image_sync.format))
         # Convert message to opencv image
