@@ -312,11 +312,11 @@ class MonoDepth_adabin:
                     if(correctionMethod == 6):
                         for inter_u in range(abs(StepWidth)):
                             for inter_h in range(image_height):
-                                if ((u_real_previous - inter_u) < 640):
-                                    if(abs(depth[v_real_previous, u_real_previous] - depth[inter_h, u_real_previous - inter_u ]) <= 0.2):
-                                        depth[inter_h, u_real_previous - inter_u] = depth_previous
-                                    #else :
-                                        #depth[inter_h, u_real_previous - inter_u] = max_value
+                                if(abs(depth[v_real_previous, u_real_previous] - depth[inter_h, u_real_previous - inter_u ]) <= 0.2):
+                                    print("Depth previous = %s (difference of depth = %s )" % (depth_previous, depth[inter_h, u_real_previous - inter_u] - depth_previous))
+                                    depth[inter_h, u_real_previous - inter_u] = depth_previous
+                                #else :
+                                    #depth[inter_h, u_real_previous - inter_u] = max_value
 
                     #math.copysign(inter_u, StepWidth)
 
