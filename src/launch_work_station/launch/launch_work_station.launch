@@ -37,7 +37,7 @@
     <arg name="pm" default="true" />
 
         <!-- Arg for the source of the scan-->
-    <arg name="scan_source" default="/monodepth_adabin/scan"/>
+    <arg name="scan_source" default="/scan"/>
 
     <!-- Example with camera or not -->
     <arg name="camera" default="true" />
@@ -101,10 +101,11 @@
       <param name="subscribe_rgb" type="bool" value="false" />
       <param name="subscribe_depth" type="bool" value="false" />
       <param name="subscribe_rgbd" type="bool" value="$(arg camera)" />
-      <param name="subscribe_scan" type="bool" value="true" />
+      <param name="subscribe_scan" type="bool" value="false" />
       <param name="wait_for_transform_duration" type="double" value="19"/>
+      <param name="approx_sync" type="bool" value="true"/>
 
-      <remap from="scan" to="$(arg scan_source)" />
+      <remap from="scan" to="/monodepth_adabin/scan" />
       <remap from="rgb/image" to="/monodepth_adabin/image/rgb" />
       <remap from="depth/image" to="/monodepth_adabin/image/depth" />
       <remap from="rgb/camera_info" to="/monodepth_adabin/camera_info" />
@@ -144,7 +145,7 @@
       <param name="frame_id" type="string" value="cam" />
 
       <!--<param name="queue_size" type="int" value="10" />-->
-      <param name="approx_sync" type="bool" value="true" />
+      <param name="approx_sync" type="bool" value="false" />
 
     </node>
 
