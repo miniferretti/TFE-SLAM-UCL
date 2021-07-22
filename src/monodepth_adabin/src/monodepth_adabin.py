@@ -232,9 +232,6 @@ class MonoDepth_adabin:
                     u_real = self.valmap(u, 0, U, 0, image_width)
                     v_real = self.valmap(v, 0, V, 0, image_height)
 
-                    print(" --------- new point -------- ")
-                    print("We are at the point (%s, %s)" % (v_real, u_real))
-
                     differenceDepth =  P[2, i] - depth[v_real, u_real]
 
                     StepWidth = u_real - u_real_previous
@@ -242,14 +239,17 @@ class MonoDepth_adabin:
                     MidHeight = int((v_real + v_real_previous)/2)
                     StepDepth = P[2, i] - depth_previous
 
+                    # ----      Usefull commands for printing results   ------
+                    print(" --------- new point -------- ")
+                    print("We are at the point (%s, %s)" % (v_real, u_real))
                     print("differenceDepth = %s" %(differenceDepth))
                     print("StepWidth = %s" %(StepWidth))
                     print("StepHeight = %s" %(StepHeight))
                     print("MidHeight = %s" %(MidHeight))
                     print("StepDepth = %s" %(StepDepth))
+                    # --------------------------------------------------------
 
-                    # Changes for points without information on x
-
+                    # OLD VERSION OF 1
                     #if(correctionMethod == 1):
                         #for inter_u in range(abs(StepWidth)):
                             #if ((u_real_previous + inter_u) < 640):
@@ -333,8 +333,6 @@ class MonoDepth_adabin:
                     #for hh in range(image_height):
                         #depth[hh, u_real] = depth[hh, image_height] + differenceDepth * ((image_height - abs(v_real - hh))/image_height)
 
-                    # THE other way 
-
 
                     # Changes for LiDAR points
                     depth[v_real, u_real] = P[2, i]
@@ -345,6 +343,7 @@ class MonoDepth_adabin:
                     v_real_previous = v_real
                     depth_previous = P[2, i]
         # -----------------------------------------------------------------------------------------------------------
+
 
         # ---------         Usefull commands for printing results       ---------
 
