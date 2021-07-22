@@ -278,7 +278,7 @@ class MonoDepth_adabin:
                             for inter_h in range(image_height):
                                 if ((u_real_previous - inter_u) < 640):
                                     if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u ]) <= 0.1):
-                                        depth[inter_h, u_real_previous - inter_u] = P[2, i]  
+                                        correctedDepth[inter_h, u_real_previous - inter_u] = P[2, i]  
 
 
                     if(correctionMethod == 3):
@@ -412,9 +412,10 @@ class MonoDepth_adabin:
         cv2.waitKey(0)
         # ------------------------------------------------------------------------------------------------------------
 
-        return depth
-        #depth = correctedDepth.copy()
         #return depth
+        #depth = correctedDepth.copy()
+        depth[:] = correctedDepth
+        return depth
     # ________________________________________________________________________________________________________________________________
 
 
