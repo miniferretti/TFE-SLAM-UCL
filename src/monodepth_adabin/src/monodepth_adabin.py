@@ -115,70 +115,76 @@ class MonoDepth_adabin:
 
         return ranges
 
+
+    # _________________________________________________________________________________________________________
+    ############################################################################
+    ####        Function correcting the depth image with data from LiDAR    ####
+    #                                                                          #
+    #   input :   - "depth" ; image depth from Monodepth_adabin                #
+    #             - "ranges" ; arrays of depths percieved by the LiDAR sensor  #
+    #                                                                          #
+    #   output :  - "depth" ; ajusted image_depth                              #
+    #                                                                          #
+    ############################################################################
     def depth_correction(self, ranges, depth):
 
-
-        print("********  Depth from LiDAR  **********")
-
+        # ---------------------------------------------------------------------
+        # Correcting outliers from the depths percieved by the LiDAR
         previousCorrectlyDetectedRange = 1.0
         for i_enum in range(np.size(ranges, 1)):
             if (ranges[0, i_enum] == 25.00):
                 ranges[0, i_enum] = previousCorrectlyDetectedRange
             previousCorrectlyDetectedRange = ranges[0, i_enum]
-
-        #print(ranges[0, :])
+        # If the user wants to see the content of the corrected array of depths from the LiDAR
+        # the user uncomment the following 3 lines
+        #print("********  Depth from LiDAR  **********")
         #for i_print in range(np.size(ranges, 1)):
             #print("Depth[0, %s] : %s [m] at angle %s" % (i_print, ranges[0, i_print], ranges[1, i_print]))
-
-
-        print("********  Depth Correction  **********")
+        # ---------------------------------------------------------------------
 
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
 
         image_height, image_width = depth.shape
 
-        print(depth.shape)
-
-        print("********  Depth from MonoDepth_adabin  **********")
-
+        # ---------------------------------------------------------------------
+        # If the user wants to see the content of the depth image from Monodepth_adabin
+        # the user uncomment the following 3 lines
+        #print("********  Depth from MonoDepth_adabin  **********")
         #for x_print in range(image_width):
             #for y_print in range(image_height):
                 #print(depth[y_print, x_print]) 
             #print(ranges[0, i_print])
+        # ---------------------------------------------------------------------
 
-        #max_value = [max(idx) for idx in zip(*depth)]
+
+        # ---------         Usefull commands for printing results       ---------
+        # print("max_value : %s" % (max_value))
+        # print("depth[240,0] : %s" %(depth[240,0]))
+        # print("depthScaled[240,0] : %s" %(depthScaled[240,0]))
+        # -----------------------------------------------------------------------
+
+        # ------        Printing the recieved depths using gray scale and color gradients       -------- 
+
         max_value = np.amax(depth)
 
-        print("max_value : %s" % (max_value))
-
-        print("depth[240,0] : %s" %(depth[240,0]))
-        print("depth[240,100] : %s" %(depth[240,50]))
-        print("depth[240,200] : %s" %(depth[240,200]))
-
         depthScaled = depth.copy()
-        #cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
         depthScaled[:,:] = (depth[:,:] / max_value)
-
-        print("depthScaled[240,0] : %s" %(depthScaled[240,0]))
-        print("depthScaled[240,100] : %s" %(depthScaled[240,50]))
-        print("depthScaled[240,200] : %s" %(depthScaled[240,200]))
-
-        cv2.imshow("Received Depths", depthScaled)
-        cv2.waitKey(0)
 
         imageDepths = np.array(depthScaled * 255, dtype = np.uint8)
 
-        depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_JET)
-        #depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_RAINBOW)   
+        depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_JET) # advice : using either cv2.COLORMAP_JET or cv2.COLORMAP_RAINBOW
+        oldDepth = depth.copy() # Keeping a copy of the recieved depths before corrections for further use 
+
+        cv2.imshow("Received Depths", depthScaled)
         cv2.imshow("Received Depths ColorGradient", depthScaledColored)
         cv2.waitKey(0)
-
-        oldDepth = depth.copy()
-
-        #cv2.imshow("Received Depths", depth)
+        # ----------------------------------------------------------------------------------------------
         
 
+
+        # --------------------------------------------------------------------------------------------
+        # ------    Spatial matching of the data from the monocular camera and the LiDAR       ------- 
         Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :])),
                        np.zeros(len(ranges[0, :])),
                        np.multiply(np.cos(ranges[1, :]), ranges[0, :])], np.float32)
@@ -202,18 +208,20 @@ class MonoDepth_adabin:
         H = np.array([[a, s, u0],
                       [0, a, v0],
                       [0, 0, 1]], np.float32)
-
         P = H.dot(Pc)
         UV = np.array([np.divide(P[0, :], P[2, :]),
                        np.divide(P[1, :], P[2, :])], np.float32)
+        # --------------------------------------------------------------------------------------------
+
+
+        # ---------------------------------------------------------------------------------------------
+        # ------    Correcting the image_depth from the data gathered by the LiDAR sensor       ------- 
+        #
+        correctionMethod = 6    # Selection of the correction method employed
 
         u_real_previous = 345
         v_real_previous = 230
         depth_previous = depth[230, 345]
-
-        correctionMethod = 6
-
-        print("--- Correcting the depth  --- ")
 
         for i in range(len(UV[0, :])):
             u = UV[0, i]
@@ -336,73 +344,67 @@ class MonoDepth_adabin:
                     u_real_previous = u_real
                     v_real_previous = v_real
                     depth_previous = P[2, i]
+        # -----------------------------------------------------------------------------------------------------------
 
-        print('Difference in pixel at [ %s ; %s ] is : "%s" ' % (
-            v_real, u_real, differenceDepth))
-        print('The depth at this point', depth[v_real, u_real])
+        # ---------         Usefull commands for printing results       ---------
 
-        #New_max_value = [max(idx) for idx in zip(*depth)]
+        # print('Difference in pixel at [ %s ; %s ] is : "%s" ' % (v_real, u_real, differenceDepth))
+        # print('The depth at this point', depth[v_real, u_real])
+
+        # print("New_max_value : %s" % (New_max_value))
+        # print("depth[240,0] : %s" %(depth[240,0]))
+        # print("NewDepthScaled[240,0] : %s" %(NewDepthScaled[240,0]))
+
+        # print("Difference_max_value : %s" % (Difference_max_value))
+        # print("differenceDepth[240,0] : %s" %(differenceDepth[240,0]))
+        # print("differenceDepthScaled[240,0] : %s" %(differenceDepthScaled[240,0]))
+
+        # -----------------------------------------------------------------------
+
+
+
+        # ------        Printing the corrected depths using gray scale and color gradients       -------- 
+
         New_max_value = np.amax(depth)
 
-        print("New_max_value : %s" % (New_max_value))
-
-        print("depth[240,0] : %s" %(depth[240,0]))
-        print("depth[240,100] : %s" %(depth[240,50]))
-        print("depth[240,200] : %s" %(depth[240,200]))
-
         NewDepthScaled = depth.copy()
-        #cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
         NewDepthScaled[:,:] = (depth[:,:] / New_max_value)
-
-        print("NewDepthScaled[240,0] : %s" %(NewDepthScaled[240,0]))
-        print("NewDepthScaled[240,100] : %s" %(NewDepthScaled[240,50]))
-        print("NewDepthScaled[240,200] : %s" %(NewDepthScaled[240,200]))
-
-        cv2.imshow("Corrected Depths", NewDepthScaled)
-        cv2.waitKey(0)
 
         NewImageDepths = np.array(NewDepthScaled * 255, dtype = np.uint8)
 
-        #depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_JET)
-        NewDepthScaledColored = cv2.applyColorMap(NewImageDepths, cv2.COLORMAP_JET)   
+        NewDepthScaledColored = cv2.applyColorMap(NewImageDepths, cv2.COLORMAP_JET)  
+
+        cv2.imshow("Corrected Depths", NewDepthScaled)
         cv2.imshow("Corrected Depths ColorGradient", NewDepthScaledColored)
         cv2.waitKey(0)
 
-        print("--- Difference  --- ")
+        # -----------------------------------------------------------------------------------------------
+
+
+        # ------    Printing the diffence applied on the image_depth using gray scale and color gradients   ---------- 
 
         differenceDepth = depth.copy()
 
         differenceDepth = np.subtract(depth, oldDepth)
 
-        #Difference_max_value = [max(idx) for idx in zip(*differenceDepth)]
         Difference_max_value = np.amax(differenceDepth)
 
-        print("Difference_max_value : %s" % (Difference_max_value))
-
-        print("differenceDepth[240,0] : %s" %(differenceDepth[240,0]))
-        print("differenceDepth[240,100] : %s" %(differenceDepth[240,50]))
-        print("differenceDepth[240,200] : %s" %(differenceDepth[240,200]))
-
         differenceDepthScaled = differenceDepth.copy()
-        #cv2.convertScaleAbs(depth, depthScaled, 1 / max_value[3])
+
         differenceDepthScaled[:,:] = (differenceDepth[:,:] / Difference_max_value)
-
-        print("differenceDepthScaled[240,0] : %s" %(differenceDepthScaled[240,0]))
-        print("differenceDepthScaled[240,100] : %s" %(differenceDepthScaled[240,50]))
-        print("differenceDepthScaled[240,200] : %s" %(differenceDepthScaled[240,200]))
-
-        cv2.imshow("Difference Depths", differenceDepthScaled)
-        cv2.waitKey(0)
 
         ImageDifferenceDepth = np.array(differenceDepthScaled * 255, dtype = np.uint8)
 
-        #depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_RAINBOW)
         DifferenceDepthScaledColored = cv2.applyColorMap(ImageDifferenceDepth, cv2.COLORMAP_JET)   
+
+        cv2.imshow("Difference Depths", differenceDepthScaled)
         cv2.imshow("Difference Depths ColorGradient", DifferenceDepthScaledColored)
         cv2.waitKey(0)
-
+        # ------------------------------------------------------------------------------------------------------------
 
         return depth
+    # ________________________________________________________________________________________________________________________________
+
 
     # Create a sensor_msgs.PointCloud2 from the depth and color images provided
     def create_pointcloud_msg(self, depth, color):
