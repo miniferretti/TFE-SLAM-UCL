@@ -211,7 +211,7 @@ class MonoDepth_adabin:
         v_real_previous = 230
         depth_previous = depth[230, 345]
 
-        correctionMethod = 2
+        correctionMethod = 6
 
         print("--- Correcting the depth  --- ")
 
@@ -297,6 +297,15 @@ class MonoDepth_adabin:
                                 #if ((u_real_previous - inter_u) < 640):
                                 if(abs((depth[v_real, u_real] - (inter_u/StepWidth) * StepDepth) - depth[inter_h, u_real_previous - inter_u ]) <= 0.1):
                                     depth[inter_h, u_real_previous - inter_u] = depth_previous - (inter_u/StepWidth) * StepDepth
+                                else :
+                                    depth[inter_h, u_real_previous - inter_u] = max_value
+
+
+                    if(correctionMethod == 6):
+                        for inter_u in range(abs(StepWidth)):
+                            for inter_h in range(image_height):
+                                if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u ]) <= 0.1):
+                                    depth[inter_h, u_real_previous - inter_u] = P[2, i] 
                                 else :
                                     depth[inter_h, u_real_previous - inter_u] = max_value
 
