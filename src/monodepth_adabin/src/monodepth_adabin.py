@@ -123,7 +123,7 @@ class MonoDepth_adabin:
     #   input :   - "depth" ; image depth from Monodepth_adabin                #
     #             - "ranges" ; arrays of depths percieved by the LiDAR sensor  #
     #                                                                          #
-    #   output :  - "depth" ; ajusted image_depth                              #
+    #   output :  - "correctedDepth" ; ajusted image_depth                              #
     #                                                                          #
     ############################################################################
     def depth_correction(self, ranges, depth):
@@ -218,6 +218,8 @@ class MonoDepth_adabin:
         # ------    Correcting the image_depth from the data gathered by the LiDAR sensor       ------- 
         #
         correctionMethod = 7    # Selection of the correction method employed
+
+        correctedDepth = depth.copy()
 
         u_real_previous = 345
         v_real_previous = 230
@@ -323,9 +325,9 @@ class MonoDepth_adabin:
                         for inter_u in range(abs(StepWidth)):
                             for inter_h in range(image_height):
                                 if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u ]) <= 0.15):
-                                    depth[inter_h, u_real_previous - inter_u] = P[2, i] + ((inter_u/StepWidth) * StepDepth)
+                                    correctedDepth[inter_h, u_real_previous - inter_u] = P[2, i] + ((inter_u/StepWidth) * StepDepth)
                                 else :
-                                    depth[inter_h, u_real_previous - inter_u] = max_value
+                                    correctedDepth[inter_h, u_real_previous - inter_u] = max_value
 
                     #math.copysign(inter_u, StepWidth)
 
@@ -373,9 +375,9 @@ class MonoDepth_adabin:
 
         # ------        Printing the corrected depths using gray scale and color gradients       -------- 
 
-        New_max_value = np.amax(depth)
+        New_max_value = np.amax(correctedDepth)
 
-        NewDepthScaled = depth.copy()
+        NewDepthScaled = correctedDepth.copy()
         NewDepthScaled[:,:] = (depth[:,:] / New_max_value)
 
         NewImageDepths = np.array(NewDepthScaled * 255, dtype = np.uint8)
@@ -391,9 +393,9 @@ class MonoDepth_adabin:
 
         # ------    Printing the diffence applied on the image_depth using gray scale and color gradients   ---------- 
 
-        differenceDepth = depth.copy()
+        differenceDepth = correctedDepth.copy()
 
-        differenceDepth = np.subtract(depth, oldDepth)
+        differenceDepth = np.subtract(correctedDepth, oldDepth)
 
         Difference_max_value = np.amax(differenceDepth)
 
@@ -410,7 +412,7 @@ class MonoDepth_adabin:
         cv2.waitKey(0)
         # ------------------------------------------------------------------------------------------------------------
 
-        return depth
+        return correctedDepth
     # ________________________________________________________________________________________________________________________________
 
 
