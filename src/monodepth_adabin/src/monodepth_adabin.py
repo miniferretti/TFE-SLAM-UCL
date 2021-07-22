@@ -43,7 +43,7 @@ class MonoDepth_adabin:
         self.topic_color = rospy.get_param(
             "~topic_color", "/raspicam_node/image/compressed")
         self.topic_depth = rospy.get_param(
-            "~topic_depth", "/monodepth_adabin/image_depth")
+            "~topic_depth", "/monodepth_adabin/image/depth")
         self.topic_pointcloud = rospy.get_param(
             "~topic_pointcloud", "/monodepth_adabin/pointcloud")
         self.topic_camera_info = rospy.get_param(
