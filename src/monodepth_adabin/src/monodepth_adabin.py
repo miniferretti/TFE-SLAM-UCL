@@ -346,7 +346,7 @@ class MonoDepth_adabin:
 
 
                     # Changes for LiDAR points
-                    depth[v_real, u_real] = P[2, i]
+                    correctedDepth[v_real, u_real] = P[2, i]
 
                     print("depth[%s, %s] = %s" %( v_real, u_real, P[2, i]))
 
@@ -378,7 +378,7 @@ class MonoDepth_adabin:
         New_max_value = np.amax(correctedDepth)
 
         NewDepthScaled = correctedDepth.copy()
-        NewDepthScaled[:,:] = (depth[:,:] / New_max_value)
+        NewDepthScaled[:,:] = (correctedDepth[:,:] / New_max_value)
 
         NewImageDepths = np.array(NewDepthScaled * 255, dtype = np.uint8)
 
