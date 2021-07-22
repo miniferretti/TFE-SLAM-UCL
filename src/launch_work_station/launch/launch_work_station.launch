@@ -92,7 +92,7 @@
     <arg name="hector" default="false" />
     <!-- SLAM -->
     <!-- args: "delete_db_on_start" and "udebug" -->
-    <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start --udebug --params">
+    <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start --udebug">
       <param name="frame_id" type="string" value="base_footprint" />
 
       <param name="subscribe_rgb" type="bool" value="true" />
