@@ -303,7 +303,6 @@ class MonoDepth_adabin:
 
         # Predict depth image
         bin_centers, true_depth = self.infer_helper.predict_pil(img)
-        print(true_depth.shape)
 
      #   depth = np.clip(depth_norm(true_depth.squeeze(), max_depth=MAX_DEPTH_NYU), MIN_DEPTH,
      #                   MAX_DEPTH_NYU) / MAX_DEPTH_NYU  # Ligne de code a valider
