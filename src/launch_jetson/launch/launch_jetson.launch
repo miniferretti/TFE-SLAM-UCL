@@ -14,6 +14,4 @@
     <param name="slop" type="double" value="0.5" />
   </node>
 
-  <node name="republish" type="republish" pkg="image_transport" output="screen" args="compressed in:=/monodepth_adabin/image/compressed raw out:=/monodepth_adabin/image/rgb" />
-
 </launch>

@@ -55,7 +55,7 @@ class MonoDepth_adabin:
         self.topic_laserScan_repub = rospy.get_param(
             "~topic_laserScan_repub", "/monodepth_adabin/scan")
         self.topic_image_repub = rospy.get_param(
-            "~topic_image_repub", "/monodepth_adabin/image/compressed")
+            "~topic_image_repub", "/monodepth_adabin/image/rgb")
 
         self.min_depth = rospy.get_param("~min_depth", MIN_DEPTH)
         self.max_depth = rospy.get_param("~max_depth", MAX_DEPTH_NYU)
@@ -76,7 +76,7 @@ class MonoDepth_adabin:
         self.pub_laserScan = rospy.Publisher(
             self.topic_laserScan_repub, LaserScan, queue_size=1)
         self.pub_image = rospy.Publisher(
-            self.topic_image_repub, CompressedImage, queue_size=1)
+            self.topic_image_repub, Image, queue_size=1)
         self.counter = 0
 
         # Subscribers
@@ -339,8 +339,10 @@ class MonoDepth_adabin:
         # Republish the laserScan with proper time stamp
         self.pub_laserScan.publish(scan_sync)
 
-        # Republish the compressed Image with proper time stamp
-        self.pub_image.publish(image_sync)
+        # Republish the  decompressed Image with proper time stamp
+        image = self.bridge.cv2_to_imgmsg(image,"bgr8")
+        image.header.stamp=self.stamp
+        self.pub_image.publish(image)
 
         # Increment counter
         self.counter += 1
