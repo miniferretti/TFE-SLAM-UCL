@@ -307,8 +307,8 @@ class MonoDepth_adabin:
                                 if ((u_real_previous - inter_u) < 640):
                                     if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u ]) <= 0.15):
                                         depth[inter_h, u_real_previous - inter_u] = P[2, i] 
-                                    else :
-                                        depth[inter_h, u_real_previous - inter_u] = max_value
+                                    #else :
+                                        #depth[inter_h, u_real_previous - inter_u] = max_value
 
                     #math.copysign(inter_u, StepWidth)
 
