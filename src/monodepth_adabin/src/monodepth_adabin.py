@@ -326,6 +326,7 @@ class MonoDepth_adabin:
         msg = self.bridge.cv2_to_imgmsg(
             true_depth, "32FC1")
         msg.header.stamp = self.stamp
+        msg.header.frame_id = "cam"
         self.pub_image_depth.publish(msg)
 
         # Publish the synced Camera_info topic
@@ -339,9 +340,10 @@ class MonoDepth_adabin:
         # Republish the laserScan with proper time stamp
         self.pub_laserScan.publish(scan_sync)
 
-        # Republish the  decompressed Image with proper time stamp
+        # Republish the decompressed Image with proper time stamp
         image = self.bridge.cv2_to_imgmsg(image,"bgr8")
         image.header.stamp=self.stamp
+        image.header.frame_id = "cam"
         self.pub_image.publish(image)
 
         # Increment counter
