@@ -22,4 +22,4 @@ do
     echo "."
 done
 
-roslaunch launch_jetson launch_jetson_watershed_segmentation.launch
+roslaunch launch_jetson launch_jetson_yolo.launch
