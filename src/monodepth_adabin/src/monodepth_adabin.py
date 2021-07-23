@@ -36,20 +36,26 @@ class MonoDepth_adabin:
         print("Hello world")
 
         # Get parameters
-        self.debug = rospy.get_param("~debug", True)
+        self.debug = rospy.get_param("~debug", False)
         self.frame_id = rospy.get_param("~frame_id", "map")
         self.device = rospy.get_param("~device", 'cpu')
 
         self.topic_color = rospy.get_param(
             "~topic_color", "/raspicam_node/image/compressed")
         self.topic_depth = rospy.get_param(
-            "~topic_depth", "/monodepth_adabin/image_depth")
+            "~topic_depth", "/monodepth_adabin/image/depth")
         self.topic_pointcloud = rospy.get_param(
             "~topic_pointcloud", "/monodepth_adabin/pointcloud")
         self.topic_camera_info = rospy.get_param(
             "~topic_camera_info", "/raspicam_node/camera_info")
         self.topic_laserScan = rospy.get_param(
             "~topic_lidar_data", "/scan")
+        self.topic_camera_info_repub = rospy.get_param(
+            "~topic_camera_info_repub", "/monodepth_adabin/camera_info")
+        self.topic_laserScan_repub = rospy.get_param(
+            "~topic_laserScan_repub", "/monodepth_adabin/scan")
+        self.topic_image_repub = rospy.get_param(
+            "~topic_image_repub", "/monodepth_adabin/image/rgb")
 
         self.min_depth = rospy.get_param("~min_depth", MIN_DEPTH)
         self.max_depth = rospy.get_param("~max_depth", MAX_DEPTH_NYU)
@@ -65,6 +71,12 @@ class MonoDepth_adabin:
             self.topic_depth, Image, queue_size=1)
         self.pub_pointcloud = rospy.Publisher(
             self.topic_pointcloud, PointCloud2, queue_size=1)
+        self.pub_camera_info = rospy.Publisher(
+            self.topic_camera_info_repub, CameraInfo, queue_size=1)
+        self.pub_laserScan = rospy.Publisher(
+            self.topic_laserScan_repub, LaserScan, queue_size=1)
+        self.pub_image = rospy.Publisher(
+            self.topic_image_repub, Image, queue_size=1)
         self.counter = 0
 
         # Subscribers
@@ -85,6 +97,7 @@ class MonoDepth_adabin:
             self.queue_size, self.slop))
 
         self.camera_info = None
+        self.stamp = None
 
       #  int xpixel
       #  int ypixel
@@ -237,7 +250,7 @@ class MonoDepth_adabin:
         header = Header()
         header.frame_id = "cam"
         pc2 = point_cloud2.create_cloud(header, fields, points)
-        pc2.header.stamp = rospy.Time.now()
+        pc2.header.stamp = self.stamp
 
         return pc2
 
@@ -264,6 +277,7 @@ class MonoDepth_adabin:
     def image_lidar_callback(self, image_sync, scan_sync):
 
         start_time = time.time()
+        self.stamp = scan_sync.header.stamp
 
         print("New frame processed of type {}".format(image_sync.format))
         # Convert message to opencv image
@@ -285,34 +299,52 @@ class MonoDepth_adabin:
         # Get image data as a numpy array to be passed for processing.
         img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        img = cv2.resize(img, (640, 480))
+        #img = cv2.resize(img, (640, 480))
 
         # Predict depth image
         bin_centers, true_depth = self.infer_helper.predict_pil(img)
 
-        depth = np.clip(depth_norm(true_depth.squeeze(), max_depth=MAX_DEPTH_NYU), MIN_DEPTH,
-                        MAX_DEPTH_NYU) / MAX_DEPTH_NYU  # Ligne de code a valider
+     #   depth = np.clip(depth_norm(true_depth.squeeze(), max_depth=MAX_DEPTH_NYU), MIN_DEPTH,
+     #                   MAX_DEPTH_NYU) / MAX_DEPTH_NYU  # Ligne de code a valider
 
         true_depth = true_depth.squeeze()
-        depth = np.kron(depth, np.ones((2, 2)))  # upscale the image
+       # depth = np.kron(depth, np.ones((2, 2)))  # upscale the image
 
         #true_depth_c = self.depth_correction(ranges, true_depth)
 
         # Display depth
         if self.debug:
-            cv2.imshow("Result", depth)
+            cv2.imshow("Result", true_depth)
             cv2.waitKey(1)
 
         # Publish depth image
-        depth = 255 * depth
+        #depth = 255 * depth
         #cm = plt.get_cmap('magma')
         #depth = cm(depth)
-        self.pub_image_depth.publish(
-            self.bridge.cv2_to_imgmsg(depth.astype(np.uint8), "mono8"))
 
-        # Generate Point cloud
+        # Publish the depth image
+        msg = self.bridge.cv2_to_imgmsg(
+            true_depth, "32FC1")
+        msg.header.stamp = self.stamp
+        msg.header.frame_id = "cam"
+        self.pub_image_depth.publish(msg)
+
+        # Publish the synced Camera_info topic
+        self.camera_info.header.stamp = self.stamp
+        self.pub_camera_info.publish(self.camera_info)
+
+        # Generate and publish Point cloud
         cloud_msg = self.create_pointcloud_msg(true_depth, image)
         self.pub_pointcloud.publish(cloud_msg)
+
+        # Republish the laserScan with proper time stamp
+        self.pub_laserScan.publish(scan_sync)
+
+        # Republish the decompressed Image with proper time stamp
+        image = self.bridge.cv2_to_imgmsg(image,"bgr8")
+        image.header.stamp=self.stamp
+        image.header.frame_id = "cam"
+        self.pub_image.publish(image)
 
         # Increment counter
         self.counter += 1
