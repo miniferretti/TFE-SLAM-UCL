@@ -221,6 +221,12 @@ class MonoDepth_adabin:
 
         correctedDepth = np.copy(depth)
 
+        isSameShape = (correctedDepth.shape == depth.shape)
+        isSameArrays = (correctedDepth==depth).all()
+        print("Same shape and array?")
+        print(isSameShape)
+        print(isSameArrays)
+
         u_real_previous = 345
         v_real_previous = 230
         depth_previous = depth[230, 345]
@@ -234,7 +240,7 @@ class MonoDepth_adabin:
                     u_real = self.valmap(u, 0, U, 0, image_width)
                     v_real = self.valmap(v, 0, V, 0, image_height)
 
-                    differenceDepth =  P[2, i] - depth[v_real, u_real]
+                    differenceDepth =  P[2, i] - correctedDepth[v_real, u_real]
 
                     StepWidth = u_real - u_real_previous
                     StepHeight = v_real - v_real_previous
