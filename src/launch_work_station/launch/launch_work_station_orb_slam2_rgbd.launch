@@ -56,5 +56,16 @@
 
 
     </node>
+
+
+    <node pkg="monodepth_adabin" type="monodepth_adabin.py" name="monodepth_adabin" output="screen" respawn="true">
+        <param name="topic_color" value="/raspicam_node/image/compressed" />
+        <param name="topic_depth" value="/monodepth_adabin/image/depth" />
+        <param name="topic_camera_info" value="/raspicam_node/camera_info" />
+        <param name="device" value="cuda:0" />
+        <param name="debug" value="False" />
+        <param name="queue_size" type="int" value="1" />
+        <param name="slop" type="double" value="0.5" />
+    </node>
 </launch>
   
