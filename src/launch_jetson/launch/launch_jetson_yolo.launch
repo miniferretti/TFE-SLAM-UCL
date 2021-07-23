@@ -1,0 +1,8 @@
+<launch>
+    <arg name="image" default="/raspicam_node/image" />
+    
+    <include file="$(find darknet_ros)/launch/yolo_v3.launch">
+        <arg name="image" value="$(arg image)" />
+    </include>
+
+</launch>
