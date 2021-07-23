@@ -10,7 +10,7 @@
     <param name="topic_camera_info" value="/raspicam_node/camera_info" />
     <param name="device" value="cuda:0" />
     <param name="debug" value="False" />
-    <param name="queue_size" type="int" value="2" />
+    <param name="queue_size" type="int" value="1" />
     <param name="slop" type="double" value="0.5" />
   </node>
 
