@@ -25,4 +25,4 @@ do
     sleep 1
 done
 
-roslaunch launch_work_station launch_work_station_watershed_segmentation.launch
+roslaunch launch_work_station launch_work_station_yolo.launch
