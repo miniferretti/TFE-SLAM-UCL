@@ -1,7 +1,7 @@
 #!/bin/bash
 git pull
 
-catkin_make
+catkin_make -DCMAKE_BUILD_TYPE=Release
 
 source devel/setup.bash 
 
@@ -25,4 +25,4 @@ do
     sleep 1
 done
 
-roslaunch launch_work_station launch_work_station.launch
+roslaunch launch_work_station launch_work_station_watershed_segmentation.launch
