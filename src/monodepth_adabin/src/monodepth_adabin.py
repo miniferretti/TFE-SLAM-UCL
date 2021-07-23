@@ -248,13 +248,13 @@ class MonoDepth_adabin:
                     StepDepth = P[2, i] - depth_previous
 
                     # ----      Usefull commands for printing results   ------
-                    print(" --------- new point -------- ")
-                    print("We are at the point (%s, %s)" % (v_real, u_real))
-                    print("differenceDepth = %s" %(differenceDepth))
-                    print("StepWidth = %s" %(StepWidth))
-                    print("StepHeight = %s" %(StepHeight))
-                    print("MidHeight = %s" %(MidHeight))
-                    print("StepDepth = %s" %(StepDepth))
+                    #print(" --------- new point -------- ")
+                    #print("We are at the point (%s, %s)" % (v_real, u_real))
+                    #print("differenceDepth = %s" %(differenceDepth))
+                    #print("StepWidth = %s" %(StepWidth))
+                    #print("StepHeight = %s" %(StepHeight))
+                    #print("MidHeight = %s" %(MidHeight))
+                    #print("StepDepth = %s" %(StepDepth))
                     # --------------------------------------------------------
 
                     # OLD VERSION OF 1
