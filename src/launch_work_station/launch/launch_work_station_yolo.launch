@@ -2,7 +2,7 @@
     <node type="rviz" name="rviz" pkg="rviz" args="-d $(find rplidar_ros)/rviz/rplidar.rviz" />
     <node type="rqt_graph" name="rqt_graph" pkg="rqt_graph" />
 
-    <arg name="image" default="/raspicam_node/rgb/image_raw" />
+    <arg name="image" default="/raspicam_node/image" />
     
     <include file="$(find darknet_ros)/launch/yolo_v3.launch">
         <arg name="image" value="$(arg image)" />
