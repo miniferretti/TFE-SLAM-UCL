@@ -1,6 +1,6 @@
 #!/bin/bash
 git pull
-catkin build --cmake-args -DPYTHON_VERSION=3.6
+catkin build --cmake-args -DPYTHON_VERSION=3.6 -DCMAKE_BUILD_TYPE=Release
 
 source devel/setup.bash 
 
