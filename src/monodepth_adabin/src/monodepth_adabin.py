@@ -132,7 +132,7 @@ class MonoDepth_adabin:
         printing = False
         saving = False
 
-        start_time_correction = time.time()
+        #start_time_correction = time.time()
 
         # ---------------------------------------------------------------------
         # Correcting outliers from the depths percieved by the LiDAR
@@ -440,10 +440,10 @@ class MonoDepth_adabin:
             cv2.waitKey(0)
         # ------------------------------------------------------------------------------------------------------------
 
-        end_time_correction = time.time()
+        #end_time_correction = time.time()
 
-        print("Total time taken  = {} for frame = {} in correction".format(
-            end_time_correction-start_time_correction, ))
+       # print("Total time taken  = {} for frame = {} in correction".format(
+            #end_time_correction-start_time_correction, ))
 
         #return depth
         #depth = correctedDepth.copy()
