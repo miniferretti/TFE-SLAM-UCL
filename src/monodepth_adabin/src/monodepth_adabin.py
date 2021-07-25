@@ -220,7 +220,7 @@ class MonoDepth_adabin:
         # ---------------------------------------------------------------------------------------------
         # ------    Correcting the image_depth from the data gathered by the LiDAR sensor       ------- 
         #
-        correctionMethod = 0    # Selection of the correction method employed
+        correctionMethod = 7    # Selection of the correction method employed
 
         correctedDepth = np.copy(depth)
 
@@ -356,7 +356,7 @@ class MonoDepth_adabin:
 
 
                     # Changes for LiDAR points
-                    # depth[v_real, u_real] = P[2, i]
+                    depth[v_real, u_real] = P[2, i]
 
                     print("depth[%s, %s] = %s" %( v_real, u_real, P[2, i]))
 
