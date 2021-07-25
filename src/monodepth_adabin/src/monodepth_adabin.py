@@ -285,7 +285,8 @@ class MonoDepth_adabin:
                             for inter_h in range(image_height):
                                 if ((u_real_previous - inter_u) < 640):
                                     if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u ]) <= 0.1):
-                                        correctedDepth[inter_h, u_real_previous - inter_u] = P[2, i]  
+                                        depth[inter_h, u_real_previous - inter_u] = P[2, i]
+                                        #correctedDepth[inter_h, u_real_previous - inter_u] = P[2, i] 
 
                     # Method 3 : applying the same correction for neighbouring  
                     if(correctionMethod == 3):
@@ -353,7 +354,7 @@ class MonoDepth_adabin:
 
 
                     # Changes for LiDAR points
-                    correctedDepth[v_real, u_real] = P[2, i]
+                    depth[v_real, u_real] = P[2, i]
 
                     print("depth[%s, %s] = %s" %( v_real, u_real, P[2, i]))
 
@@ -382,10 +383,10 @@ class MonoDepth_adabin:
 
         # ------        Printing the corrected depths using gray scale and color gradients       -------- 
 
-        New_max_value = np.amax(correctedDepth)
+        New_max_value = np.amax(depth)
 
-        NewDepthScaled = correctedDepth.copy()
-        NewDepthScaled[:,:] = (correctedDepth[:,:] / New_max_value)
+        NewDepthScaled = depth.copy()
+        NewDepthScaled[:,:] = (depth[:,:] / New_max_value)
 
         NewImageDepths = np.array(NewDepthScaled * 255, dtype = np.uint8)
 
@@ -400,9 +401,9 @@ class MonoDepth_adabin:
 
         # ------    Printing the diffence applied on the image_depth using gray scale and color gradients   ---------- 
 
-        differenceDepth = correctedDepth.copy()
+        differenceDepth = depth.copy()
 
-        differenceDepth = np.subtract(correctedDepth, oldDepth)
+        differenceDepth = np.subtract(depth, oldDepth)
 
         Difference_max_value = np.amax(differenceDepth)
 
@@ -422,7 +423,7 @@ class MonoDepth_adabin:
         #return depth
         #depth = correctedDepth.copy()
         #depth[:] = correctedDepth
-        return correctedDepth
+        return depth
     # ________________________________________________________________________________________________________________________________
 
 
