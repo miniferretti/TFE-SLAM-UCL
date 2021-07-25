@@ -123,7 +123,7 @@ class MonoDepth_adabin:
     #   input :   - "depth" ; image depth from Monodepth_adabin                #
     #             - "ranges" ; arrays of depths percieved by the LiDAR sensor  #
     #                                                                          #
-    #   output :  - "correctedDepth" ; ajusted image_depth                              #
+    #   output :  - "correctedDepth" ; ajusted image_depth                     #
     #                                                                          #
     ############################################################################
     def depth_correction(self, ranges, depth):
@@ -232,11 +232,11 @@ class MonoDepth_adabin:
 
         correctedDepth = np.copy(depth)
 
-        isSameShape = (correctedDepth.shape == depth.shape)
-        isSameArrays = (correctedDepth==depth).all()
-        print("Same shape and array?")
-        print(isSameShape)
-        print(isSameArrays)
+        #isSameShape = (correctedDepth.shape == depth.shape)
+        #isSameArrays = (correctedDepth==depth).all()
+        #print("Same shape and array?")
+        #print(isSameShape)
+        #print(isSameArrays)
 
         u_real_previous = 345
         v_real_previous = 230
@@ -251,7 +251,7 @@ class MonoDepth_adabin:
                     u_real = self.valmap(u, 0, U, 0, image_width)
                     v_real = self.valmap(v, 0, V, 0, image_height)
 
-                    differenceDepth =  P[2, i] - correctedDepth[v_real, u_real]
+                    differenceDepth =  P[2, i] - depth[v_real, u_real]
 
                     StepWidth = u_real - u_real_previous
                     StepHeight = v_real - v_real_previous
@@ -343,9 +343,9 @@ class MonoDepth_adabin:
                         for inter_u in range(abs(StepWidth)):
                             for inter_h in range(image_height):
                                 if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u ]) <= 0.15):
-                                    depth[inter_h, u_real_previous - inter_u] = P[2, i] + ((inter_u/StepWidth) * StepDepth)
+                                    correctedDepth[inter_h, u_real_previous - inter_u] = P[2, i] + ((inter_u/StepWidth) * StepDepth)
                                 #else :
-                                    #depth[inter_h, u_real_previous - inter_u] = max_value
+                                    #correctedDepth[inter_h, u_real_previous - inter_u] = max_value
 
                     #math.copysign(inter_u, StepWidth)
 
@@ -364,7 +364,7 @@ class MonoDepth_adabin:
 
 
                     # Changes for LiDAR points
-                    depth[v_real, u_real] = P[2, i]
+                    correctedDepth[v_real, u_real] = P[2, i]
 
                     #print("depth[%s, %s] = %s" %( v_real, u_real, P[2, i]))
 
@@ -395,10 +395,10 @@ class MonoDepth_adabin:
         # ------        Printing the corrected depths using gray scale and color gradients       -------- 
 
         if( printing == True or saving == True):
-            New_max_value = np.amax(depth)
+            New_max_value = np.amax(correctedDepth)
 
-            NewDepthScaled = depth.copy()
-            NewDepthScaled[:,:] = (depth[:,:] / New_max_value)
+            NewDepthScaled = correctedDepth.copy()
+            NewDepthScaled[:,:] = (correctedDepth[:,:] / New_max_value)
 
             NewImageDepths = np.array(NewDepthScaled * 255, dtype = np.uint8)
 
@@ -416,9 +416,9 @@ class MonoDepth_adabin:
 
         # ------    Printing the diffence applied on the image_depth using gray scale and color gradients   ---------- 
         if( printing == True or saving == True):
-            differenceDepth = depth.copy()
+            differenceDepth = correctedDepth.copy()
 
-            differenceDepth = np.subtract(depth, oldDepth)
+            differenceDepth = np.subtract(correctedDepth, oldDepth)
 
             Difference_max_value = np.amax(differenceDepth)
 
@@ -441,7 +441,7 @@ class MonoDepth_adabin:
         #return depth
         #depth = correctedDepth.copy()
         #depth[:] = correctedDepth
-        return depth
+        return correctedDepth
     # ________________________________________________________________________________________________________________________________
 
 
@@ -563,7 +563,7 @@ class MonoDepth_adabin:
             self.bridge.cv2_to_imgmsg(depth.astype(np.uint8), "mono8"))
 
         # Generate Point cloud
-        cloud_msg = self.create_pointcloud_msg(true_depth, image)
+        cloud_msg = self.create_pointcloud_msg(true_depth_c, image)
         self.pub_pointcloud.publish(cloud_msg)
 
         # Increment counter
