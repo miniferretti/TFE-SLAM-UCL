@@ -128,8 +128,13 @@ class MonoDepth_adabin:
     ############################################################################
     def depth_correction(self, ranges, depth):
 
+        # For user to collect, display and/or save data
+        printing = False
+        saving = False
+
         # ---------------------------------------------------------------------
         # Correcting outliers from the depths percieved by the LiDAR
+        
         previousCorrectlyDetectedRange = 1.0
         for i_enum in range(np.size(ranges, 1)):
             if (ranges[0, i_enum] == 25.00):
@@ -168,18 +173,21 @@ class MonoDepth_adabin:
 
         max_value = np.amax(depth)
 
-        depthScaled = depth.copy()
-        depthScaled[:,:] = (depth[:,:] / max_value)
+        if( printing == True or saving == True):
+            depthScaled = depth.copy()
+            depthScaled[:,:] = (depth[:,:] / max_value)
 
-        imageDepths = np.array(depthScaled * 255, dtype = np.uint8)
+            imageDepths = np.array(depthScaled * 255, dtype = np.uint8)
 
-        depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_JET) # advice : using either cv2.COLORMAP_JET or cv2.COLORMAP_RAINBOW
+            depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_JET) # advice : using either cv2.COLORMAP_JET or cv2.COLORMAP_RAINBOW
 
-        cv2.imshow("Received Depths", imageDepths) #depthScaled
-        cv2.imshow("Received Depths ColorGradient", depthScaledColored)
-        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Received_Depths.png', imageDepths) #depthScaled
-        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Received_Depths_ColorGradient.png',depthScaledColored)
-        cv2.waitKey(0)
+            if(printing == True):
+                cv2.imshow("Received Depths", imageDepths) #depthScaled
+                cv2.imshow("Received Depths ColorGradient", depthScaledColored)
+            if(saving == True):
+                cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Received_Depths.png', imageDepths) #depthScaled
+                cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Received_Depths_ColorGradient.png',depthScaledColored)
+            cv2.waitKey(0)
 
         oldDepth = depth.copy() # Keeping a copy of the recieved depths before corrections for further use 
         # ----------------------------------------------------------------------------------------------
@@ -386,45 +394,48 @@ class MonoDepth_adabin:
 
         # ------        Printing the corrected depths using gray scale and color gradients       -------- 
 
-        New_max_value = np.amax(depth)
+        if( printing == True or saving == True):
+            New_max_value = np.amax(depth)
 
-        NewDepthScaled = depth.copy()
-        NewDepthScaled[:,:] = (depth[:,:] / New_max_value)
+            NewDepthScaled = depth.copy()
+            NewDepthScaled[:,:] = (depth[:,:] / New_max_value)
 
-        NewImageDepths = np.array(NewDepthScaled * 255, dtype = np.uint8)
+            NewImageDepths = np.array(NewDepthScaled * 255, dtype = np.uint8)
 
-        NewDepthScaledColored = cv2.applyColorMap(NewImageDepths, cv2.COLORMAP_JET)  
-
-        cv2.imshow("Corrected Depths", NewImageDepths) #NewDepthScaled
-        cv2.imshow("Corrected Depths ColorGradient", NewDepthScaledColored)
-        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Corrected_Depths.png', NewImageDepths) #NewDepthScaled
-        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Corrected_Depths_ColorGradient.png',NewDepthScaledColored)
-        cv2.waitKey(0)
+            NewDepthScaledColored = cv2.applyColorMap(NewImageDepths, cv2.COLORMAP_JET)  
+            if( printing == True):
+                cv2.imshow("Corrected Depths", NewImageDepths) #NewDepthScaled
+                cv2.imshow("Corrected Depths ColorGradient", NewDepthScaledColored)
+            if( saving == True):
+            cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Corrected_Depths.png', NewImageDepths) #NewDepthScaled
+            cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Corrected_Depths_ColorGradient.png',NewDepthScaledColored)
+            cv2.waitKey(0)
 
         # -----------------------------------------------------------------------------------------------
 
 
         # ------    Printing the diffence applied on the image_depth using gray scale and color gradients   ---------- 
+        if( printing == True or saving == True):
+            differenceDepth = depth.copy()
 
-        differenceDepth = depth.copy()
+            differenceDepth = np.subtract(depth, oldDepth)
 
-        differenceDepth = np.subtract(depth, oldDepth)
+            Difference_max_value = np.amax(differenceDepth)
 
-        Difference_max_value = np.amax(differenceDepth)
+            differenceDepthScaled = differenceDepth.copy()
 
-        differenceDepthScaled = differenceDepth.copy()
+            differenceDepthScaled[:,:] = (differenceDepth[:,:] / Difference_max_value)
 
-        differenceDepthScaled[:,:] = (differenceDepth[:,:] / Difference_max_value)
+            ImageDifferenceDepth = np.array(differenceDepthScaled * 255, dtype = np.uint8)
 
-        ImageDifferenceDepth = np.array(differenceDepthScaled * 255, dtype = np.uint8)
-
-        DifferenceDepthScaledColored = cv2.applyColorMap(ImageDifferenceDepth, cv2.COLORMAP_JET)   
-
-        cv2.imshow("Difference Depths", ImageDifferenceDepth)  #differenceDepthScaled
-        cv2.imshow("Difference Depths ColorGradient", DifferenceDepthScaledColored)
-        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Difference_Depths.png', ImageDifferenceDepth)  #differenceDepthScaled
-        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Difference_Depths_ColorGradient.png',DifferenceDepthScaledColored)
-        cv2.waitKey(0)
+            DifferenceDepthScaledColored = cv2.applyColorMap(ImageDifferenceDepth, cv2.COLORMAP_JET)
+            if( printing == True):
+                cv2.imshow("Difference Depths", ImageDifferenceDepth)  #differenceDepthScaled
+                cv2.imshow("Difference Depths ColorGradient", DifferenceDepthScaledColored)
+            if( saving == True):
+                cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Difference_Depths.png', ImageDifferenceDepth)  #differenceDepthScaled
+                cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Difference_Depths_ColorGradient.png',DifferenceDepthScaledColored)
+            cv2.waitKey(0)
         # ------------------------------------------------------------------------------------------------------------
 
         #return depth
