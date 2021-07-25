@@ -178,6 +178,8 @@ class MonoDepth_adabin:
 
         cv2.imshow("Received Depths", depthScaled)
         cv2.imshow("Received Depths ColorGradient", depthScaledColored)
+        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Received_Depths.png',depthScaled)
+        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Received_Depths_ColorGradient.png',depthScaledColored)
         cv2.waitKey(0)
         # ----------------------------------------------------------------------------------------------
         
@@ -361,6 +363,7 @@ class MonoDepth_adabin:
                     u_real_previous = u_real
                     v_real_previous = v_real
                     depth_previous = P[2, i]
+
         # -----------------------------------------------------------------------------------------------------------
 
 
