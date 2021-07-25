@@ -407,8 +407,8 @@ class MonoDepth_adabin:
                 cv2.imshow("Corrected Depths", NewImageDepths) #NewDepthScaled
                 cv2.imshow("Corrected Depths ColorGradient", NewDepthScaledColored)
             if( saving == True):
-            cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Corrected_Depths.png', NewImageDepths) #NewDepthScaled
-            cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Corrected_Depths_ColorGradient.png',NewDepthScaledColored)
+                cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Corrected_Depths.png', NewImageDepths) #NewDepthScaled
+                cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Corrected_Depths_ColorGradient.png',NewDepthScaledColored)
             cv2.waitKey(0)
 
         # -----------------------------------------------------------------------------------------------
