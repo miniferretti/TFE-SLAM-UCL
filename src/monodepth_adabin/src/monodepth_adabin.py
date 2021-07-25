@@ -396,9 +396,9 @@ class MonoDepth_adabin:
 
         NewDepthScaledColored = cv2.applyColorMap(NewImageDepths, cv2.COLORMAP_JET)  
 
-        cv2.imshow("Corrected Depths", NewDepthScaled)
+        cv2.imshow("Corrected Depths", NewImageDepths) #NewDepthScaled
         cv2.imshow("Corrected Depths ColorGradient", NewDepthScaledColored)
-        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Corrected_Depths.png',NewDepthScaled)
+        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Corrected_Depths.png', NewImageDepths) #NewDepthScaled
         cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Corrected_Depths_ColorGradient.png',NewDepthScaledColored)
         cv2.waitKey(0)
 
@@ -421,9 +421,9 @@ class MonoDepth_adabin:
 
         DifferenceDepthScaledColored = cv2.applyColorMap(ImageDifferenceDepth, cv2.COLORMAP_JET)   
 
-        cv2.imshow("Difference Depths", differenceDepthScaled)
+        cv2.imshow("Difference Depths", ImageDifferenceDepth)  #differenceDepthScaled
         cv2.imshow("Difference Depths ColorGradient", DifferenceDepthScaledColored)
-        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Difference_Depths.png',differenceDepthScaled)
+        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Difference_Depths.png', ImageDifferenceDepth)  #differenceDepthScaled
         cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Difference_Depths_ColorGradient.png',DifferenceDepthScaledColored)
         cv2.waitKey(0)
         # ------------------------------------------------------------------------------------------------------------
