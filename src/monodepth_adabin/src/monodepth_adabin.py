@@ -132,6 +132,8 @@ class MonoDepth_adabin:
         printing = False
         saving = False
 
+        start_time_correction = time.time()
+
         # ---------------------------------------------------------------------
         # Correcting outliers from the depths percieved by the LiDAR
         
@@ -344,7 +346,7 @@ class MonoDepth_adabin:
                             for inter_h in range(image_height):
                                 if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u ]) <= 0.15):
                                     correctedDepth[inter_h, u_real_previous - inter_u] = P[2, i] + ((inter_u/StepWidth) * StepDepth)
-                                else :
+                                else:
                                     correctedDepth[inter_h, u_real_previous - inter_u] = max_value
 
                     #math.copysign(inter_u, StepWidth)
@@ -437,6 +439,11 @@ class MonoDepth_adabin:
                 cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Difference_Depths_ColorGradient.png',DifferenceDepthScaledColored)
             cv2.waitKey(0)
         # ------------------------------------------------------------------------------------------------------------
+
+        end_time_correction = time.time()
+
+        print("Total time taken  = {} for frame = {} in correction".format(
+            end_time_correction-start_time_correction, ))
 
         #return depth
         #depth = correctedDepth.copy()
