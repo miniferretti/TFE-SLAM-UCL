@@ -268,6 +268,7 @@ class MonoDepth_adabin:
                                         #depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] + interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
                                 #print("depth[MidHeight, u_real_previous + inter_u] = %s" %(depth[MidHeight, u_real_previous + inter_u]))
 
+                    # Method 1 : changing lines by lines
                     if(correctionMethod == 1):
                         for inter_u in range(abs(StepWidth)):
                             if ((u_real_previous + inter_u) < 640):
@@ -278,7 +279,7 @@ class MonoDepth_adabin:
                                         depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] - interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
                                 #print("depth[MidHeight, u_real_previous + inter_u] = %s" %(depth[MidHeight, u_real_previous + inter_u]))
 
-
+                    # Method 2 : fixing neighbouring pixels within the same estimate by monodepth_adabin  
                     if(correctionMethod == 2):
                         for inter_u in range(abs(StepWidth)):
                             for inter_h in range(image_height):
@@ -286,7 +287,7 @@ class MonoDepth_adabin:
                                     if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u ]) <= 0.1):
                                         correctedDepth[inter_h, u_real_previous - inter_u] = P[2, i]  
 
-
+                    # Method 3 : applying the same correction for neighbouring  
                     if(correctionMethod == 3):
                         for inter_u in range(abs(StepWidth)):
                             for inter_h in range(image_height):
