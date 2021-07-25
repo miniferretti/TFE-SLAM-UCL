@@ -171,14 +171,13 @@ class MonoDepth_adabin:
         depthScaled = depth.copy()
         depthScaled[:,:] = (depth[:,:] / max_value)
 
-        depthScaled = np.array(depthScaled, dtype = np.uint8)
         imageDepths = np.array(depthScaled * 255, dtype = np.uint8)
 
         depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_JET) # advice : using either cv2.COLORMAP_JET or cv2.COLORMAP_RAINBOW
 
-        cv2.imshow("Received Depths", depthScaled)
+        cv2.imshow("Received Depths", imageDepths) #depthScaled
         cv2.imshow("Received Depths ColorGradient", depthScaledColored)
-        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Received_Depths.png',depthScaled)
+        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Received_Depths.png', imageDepths) #depthScaled
         cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Received_Depths_ColorGradient.png',depthScaledColored)
         cv2.waitKey(0)
 
