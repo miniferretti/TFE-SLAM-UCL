@@ -171,16 +171,18 @@ class MonoDepth_adabin:
         depthScaled = depth.copy()
         depthScaled[:,:] = (depth[:,:] / max_value)
 
+        depthScaled = np.array(dtype = np.uint8)
         imageDepths = np.array(depthScaled * 255, dtype = np.uint8)
 
         depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_JET) # advice : using either cv2.COLORMAP_JET or cv2.COLORMAP_RAINBOW
-        oldDepth = depth.copy() # Keeping a copy of the recieved depths before corrections for further use 
 
         cv2.imshow("Received Depths", depthScaled)
         cv2.imshow("Received Depths ColorGradient", depthScaledColored)
         cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Received_Depths.png',depthScaled)
         cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Received_Depths_ColorGradient.png',depthScaledColored)
         cv2.waitKey(0)
+
+        oldDepth = depth.copy() # Keeping a copy of the recieved depths before corrections for further use 
         # ----------------------------------------------------------------------------------------------
         
 
@@ -520,6 +522,7 @@ class MonoDepth_adabin:
             cv2.waitKey(1)
 
         cv2.imshow("Image", image)
+        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/InputImage.png',image)
         cv2.waitKey(0)
 
         # Get image data as a numpy array to be passed for processing.
