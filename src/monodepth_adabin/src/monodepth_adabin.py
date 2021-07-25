@@ -128,13 +128,89 @@ class MonoDepth_adabin:
 
         return ranges
 
+    # _________________________________________________________________________________________________________
+    ############################################################################
+    ####        Function correcting the depth image with data from LiDAR    ####
+    #                                                                          #
+    #   input :   - "depth" ; image depth from Monodepth_adabin                #
+    #             - "ranges" ; arrays of depths percieved by the LiDAR sensor  #
+    #                                                                          #
+    #   output :  - "correctedDepth" ; ajusted image_depth                              #
+    #                                                                          #
+    ############################################################################
     def depth_correction(self, ranges, depth):
+
+        # For user to collect, display and/or save data
+        printing = False
+        saving = False
+
+        # ---------------------------------------------------------------------
+        # Correcting outliers from the depths percieved by the LiDAR
+
+        previousCorrectlyDetectedRange = 1.0
+        for i_enum in range(np.size(ranges, 1)):
+            if (ranges[0, i_enum] == 25.00):
+                ranges[0, i_enum] = previousCorrectlyDetectedRange
+            previousCorrectlyDetectedRange = ranges[0, i_enum]
+        # If the user wants to see the content of the corrected array of depths from the LiDAR
+        # the user uncomment the following 3 lines
+        #print("********  Depth from LiDAR  **********")
+        # for i_print in range(np.size(ranges, 1)):
+            #print("Depth[0, %s] : %s [m] at angle %s" % (i_print, ranges[0, i_print], ranges[1, i_print]))
+        # ---------------------------------------------------------------------
 
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
 
         image_height, image_width = depth.shape
 
+        # ---------------------------------------------------------------------
+        # If the user wants to see the content of the depth image from Monodepth_adabin
+        # the user uncomment the following 3 lines
+        #print("********  Depth from MonoDepth_adabin  **********")
+        # for x_print in range(image_width):
+        # for y_print in range(image_height):
+        #print(depth[y_print, x_print])
+        #print(ranges[0, i_print])
+        # ---------------------------------------------------------------------
+
+        # ---------         Usefull commands for printing results       ---------
+        # print("max_value : %s" % (max_value))
+        # print("depth[240,0] : %s" %(depth[240,0]))
+        # print("depthScaled[240,0] : %s" %(depthScaled[240,0]))
+        # -----------------------------------------------------------------------
+
+        # ------        Printing the recieved depths using gray scale and color gradients       --------
+
+        max_value = np.amax(depth)
+
+        if(printing == True or saving == True):
+            depthScaled = depth.copy()
+            depthScaled[:, :] = (depth[:, :] / max_value)
+
+            imageDepths = np.array(depthScaled * 255, dtype=np.uint8)
+
+            # advice : using either cv2.COLORMAP_JET or cv2.COLORMAP_RAINBOW
+            depthScaledColored = cv2.applyColorMap(
+                imageDepths, cv2.COLORMAP_JET)
+
+            if(printing == True):
+                cv2.imshow("Received Depths", imageDepths)  # depthScaled
+                cv2.imshow("Received Depths ColorGradient", depthScaledColored)
+            if(saving == True):
+                # depthScaled
+                cv2.imwrite(
+                    '/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Received_Depths.png', imageDepths)
+                cv2.imwrite(
+                    '/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Received_Depths_ColorGradient.png', depthScaledColored)
+            cv2.waitKey(0)
+
+        # Keeping a copy of the recieved depths before corrections for further use
+        oldDepth = depth.copy()
+        # ----------------------------------------------------------------------------------------------
+
+        # --------------------------------------------------------------------------------------------
+        # ------    Spatial matching of the data from the monocular camera and the LiDAR       -------
         Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :])),
                        np.zeros(len(ranges[0, :])),
                        np.multiply(np.cos(ranges[1, :]), ranges[0, :])], np.float32)
@@ -158,14 +234,27 @@ class MonoDepth_adabin:
         H = np.array([[a, s, u0],
                       [0, a, v0],
                       [0, 0, 1]], np.float32)
-
         P = H.dot(Pc)
         UV = np.array([np.divide(P[0, :], P[2, :]),
                        np.divide(P[1, :], P[2, :])], np.float32)
+        # --------------------------------------------------------------------------------------------
 
-        u_real_previous = 0
-        v_real_previous = 0
-        depth_previous = depth[240, 0]
+        # ---------------------------------------------------------------------------------------------
+        # ------    Correcting the image_depth from the data gathered by the LiDAR sensor       -------
+        #
+        correctionMethod = 7    # Selection of the correction method employed
+
+        correctedDepth = np.copy(depth)
+
+        isSameShape = (correctedDepth.shape == depth.shape)
+        isSameArrays = (correctedDepth == depth).all()
+        print("Same shape and array?")
+        print(isSameShape)
+        print(isSameArrays)
+
+        u_real_previous = 345
+        v_real_previous = 230
+        depth_previous = depth[230, 345]
 
         for i in range(len(UV[0, :])):
             u = UV[0, i]
@@ -176,41 +265,220 @@ class MonoDepth_adabin:
                     u_real = self.valmap(u, 0, U, 0, image_width)
                     v_real = self.valmap(v, 0, V, 0, image_height)
 
-                    differenceDepth = depth[v_real, u_real] - P[2, i]
+                    differenceDepth = P[2, i] - correctedDepth[v_real, u_real]
 
                     StepWidth = u_real - u_real_previous
                     StepHeight = v_real - v_real_previous
                     MidHeight = int((v_real + v_real_previous)/2)
                     StepDepth = P[2, i] - depth_previous
 
-                    # Changes for points without information on x
+                    # ----      Usefull commands for printing results   ------
+                    #print(" --------- new point -------- ")
+                    #print("We are at the point (%s, %s)" % (v_real, u_real))
+                    #print("differenceDepth = %s" %(differenceDepth))
+                    #print("StepWidth = %s" %(StepWidth))
+                    #print("StepHeight = %s" %(StepHeight))
+                    #print("MidHeight = %s" %(MidHeight))
+                    #print("StepDepth = %s" %(StepDepth))
+                    # --------------------------------------------------------
 
-                    for inter_u in range(StepWidth):
-                        depth[MidHeight, u_real_previous + inter_u] = depth_previous + \
-                            StepWidth * (inter_u/StepWidth) * StepDepth
-                        # for inter_h in range(image_height):
-                        #interDifferenceDepth = depth[MidHeight,u_real_previous +inter_u] - depth[inter_h, u_real_previous +inter_u]
-                        #depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] + interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
+                    # OLD VERSION OF 1
+                    # if(correctionMethod == 1):
+                    # for inter_u in range(abs(StepWidth)):
+                    # if ((u_real_previous + inter_u) < 640):
+                    #depth[MidHeight, u_real_previous + inter_u ] = depth_previous + (inter_u/StepWidth) * StepDepth
+                    # for inter_h in range(image_height):
+                    #interDifferenceDepth = depth[MidHeight,u_real_previous +inter_u] - depth[inter_h, u_real_previous +inter_u]
+                    # if (inter_h != MidHeight):
+                    #depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] + interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
+                    #print("depth[MidHeight, u_real_previous + inter_u] = %s" %(depth[MidHeight, u_real_previous + inter_u]))
+
+                    # Method 1 : changing lines by lines
+                    if(correctionMethod == 1):
+                        for inter_u in range(abs(StepWidth)):
+                            if ((u_real_previous + inter_u) < 640):
+                                depth[MidHeight, u_real_previous -
+                                      inter_u] = depth_previous + (inter_u/StepWidth) * StepDepth
+                                for inter_h in range(image_height):
+                                    interDifferenceDepth = depth[MidHeight, u_real_previous -
+                                                                 inter_u] - depth[inter_h, u_real_previous + inter_u]
+                                    if (inter_h != MidHeight):
+                                        depth[inter_h, u_real_previous + inter_u] = depth[inter_h, u_real_previous + inter_u] - \
+                                            interDifferenceDepth * \
+                                            ((image_height - abs(MidHeight -
+                                                                 inter_h))/image_height)
+                                #print("depth[MidHeight, u_real_previous + inter_u] = %s" %(depth[MidHeight, u_real_previous + inter_u]))
+
+                    # Method 2 : fixing neighbouring pixels within the same estimate by monodepth_adabin
+                    if(correctionMethod == 2):
+                        for inter_u in range(abs(StepWidth)):
+                            for inter_h in range(image_height):
+                                if ((u_real_previous - inter_u) < 640):
+                                    if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u]) <= 0.2):
+                                        depth[inter_h, u_real_previous -
+                                              inter_u] = P[2, i]
+                                        #correctedDepth[inter_h, u_real_previous - inter_u] = P[2, i]
+
+                    # Method 3 : applying the same correction for neighbouring
+                    if(correctionMethod == 3):
+                        for inter_u in range(abs(StepWidth)):
+                            for inter_h in range(image_height):
+                                if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u]) <= 0.1):
+                                    depth[inter_h, u_real_previous - inter_u] = depth[inter_h,
+                                                                                      u_real_previous - inter_u] + differenceDepth
+
+                    if(correctionMethod == 4):
+                        for inter_u in range(abs(StepWidth)):
+                            if ((u_real_previous + inter_u) < 640):
+                                interDifferenceDepth = (
+                                    P[2, i] + (inter_u/StepWidth) * StepDepth) - depth[MidHeight, u_real_previous - inter_u]
+                                #depth[MidHeight, u_real_previous - inter_u ] = depth_previous + (inter_u/StepWidth) * StepDepth
+                                for inter_h in range(image_height):
+                                    #interDifferenceDepth = depth[MidHeight,u_real_previous -inter_u] - depth[inter_h, u_real_previous +inter_u]
+                                    # if (inter_h != MidHeight):
+                                    depth[inter_h, u_real_previous - inter_u] = depth[inter_h, u_real_previous - inter_u] + \
+                                        interDifferenceDepth * \
+                                        ((image_height -
+                                          abs(MidHeight - inter_h))/image_height)
+                                #print("depth[MidHeight, u_real_previous + inter_u] = %s" %(depth[MidHeight, u_real_previous + inter_u]))
+
+                    if(correctionMethod == 5):
+                        for inter_u in range(abs(StepWidth)):
+                            for inter_h in range(image_height):
+                                # if ((u_real_previous - inter_u) < 640):
+                                if(abs((depth[v_real, u_real] - (inter_u/StepWidth) * StepDepth) - depth[inter_h, u_real_previous - inter_u]) <= 0.1):
+                                    depth[inter_h, u_real_previous - inter_u] = depth_previous - (
+                                        inter_u/StepWidth) * StepDepth
+                                else:
+                                    depth[inter_h, u_real_previous -
+                                          inter_u] = max_value
+
+                    if(correctionMethod == 6):
+                        for inter_u in range(abs(StepWidth)):
+                            for inter_h in range(image_height):
+                                if ((u_real_previous + inter_u) < 640):
+                                    if(abs(depth[v_real_previous, u_real_previous] - depth[inter_h, u_real_previous + inter_u]) <= 0.2):
+                                        print("Depth previous = %s (difference of depth = %s )" % (
+                                            depth_previous, depth[inter_h, u_real_previous - inter_u] - depth_previous))
+                                        depth[inter_h, u_real_previous -
+                                              inter_u] = depth_previous
+                                    # else :
+                                        #depth[inter_h, u_real_previous - inter_u] = max_value
+
+                    if(correctionMethod == 7):
+                        for inter_u in range(abs(StepWidth)):
+                            for inter_h in range(image_height):
+                                if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u]) <= 0.15):
+                                    depth[inter_h, u_real_previous - inter_u] = P[2,
+                                                                                  i] + ((inter_u/StepWidth) * StepDepth)
+                                # else :
+                                    #depth[inter_h, u_real_previous - inter_u] = max_value
+
+                    #math.copysign(inter_u, StepWidth)
+
+                    # for inter_u in range(StepWidth):
+                            #depth[MidHeight, u_real_previous + inter_u ] = depth_previous + (inter_u/StepWidth) * StepDepth
+                            # for inter_h in range(image_height):
+                                #interDifferenceDepth = depth[MidHeight,u_real_previous +inter_u] - depth[inter_h, u_real_previous +inter_u]
+                                # if (inter_h != MidHeight):
+                                    #depth[inter_h, u_real_previous +inter_u] = depth[inter_h, u_real_previous +inter_u] - interDifferenceDepth *((image_height - abs(MidHeight - inter_h))/image_height)
+                            #print("depth[MidHeight, u_real_previous + inter_u] = %s" %(depth[MidHeight, u_real_previous + inter_u]))
 
                     # Changes for points with information on x
-                    for hh in range(image_height):
-                        depth[hh, u_real] = depth[hh, image_height] + differenceDepth * \
-                            ((image_height - abs(v_real - hh))/image_height)
+                    # for hh in range(image_height):
+                        #depth[hh, u_real] = depth[hh, image_height] + differenceDepth * ((image_height - abs(v_real - hh))/image_height)
 
                     # Changes for LiDAR points
-                    depth[u_real, v_real] = P[2, i]
+                    depth[v_real, u_real] = P[2, i]
+
+                    #print("depth[%s, %s] = %s" %( v_real, u_real, P[2, i]))
 
                     u_real_previous = u_real
                     v_real_previous = v_real
                     depth_previous = P[2, i]
 
-        print('Difference in pixel at [ %s ; %s ] is : "%s" ' % (
-            v_real, u_real, differenceDepth))
-        print('The depth at this point', depth[v_real, u_real])
+        # -----------------------------------------------------------------------------------------------------------
 
+        # ---------         Usefull commands for printing results       ---------
+
+        # print('Difference in pixel at [ %s ; %s ] is : "%s" ' % (v_real, u_real, differenceDepth))
+        # print('The depth at this point', depth[v_real, u_real])
+
+        # print("New_max_value : %s" % (New_max_value))
+        # print("depth[240,0] : %s" %(depth[240,0]))
+        # print("NewDepthScaled[240,0] : %s" %(NewDepthScaled[240,0]))
+
+        # print("Difference_max_value : %s" % (Difference_max_value))
+        # print("differenceDepth[240,0] : %s" %(differenceDepth[240,0]))
+        # print("differenceDepthScaled[240,0] : %s" %(differenceDepthScaled[240,0]))
+
+        # -----------------------------------------------------------------------
+
+        # ------        Printing the corrected depths using gray scale and color gradients       --------
+
+        if(printing == True or saving == True):
+            New_max_value = np.amax(depth)
+
+            NewDepthScaled = depth.copy()
+            NewDepthScaled[:, :] = (depth[:, :] / New_max_value)
+
+            NewImageDepths = np.array(NewDepthScaled * 255, dtype=np.uint8)
+
+            NewDepthScaledColored = cv2.applyColorMap(
+                NewImageDepths, cv2.COLORMAP_JET)
+            if(printing == True):
+                # NewDepthScaled
+                cv2.imshow("Corrected Depths", NewImageDepths)
+                cv2.imshow("Corrected Depths ColorGradient",
+                           NewDepthScaledColored)
+            if(saving == True):
+                # NewDepthScaled
+                cv2.imwrite(
+                    '/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Corrected_Depths.png', NewImageDepths)
+                cv2.imwrite(
+                    '/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Corrected_Depths_ColorGradient.png', NewDepthScaledColored)
+            cv2.waitKey(0)
+
+        # -----------------------------------------------------------------------------------------------
+
+        # ------    Printing the diffence applied on the image_depth using gray scale and color gradients   ----------
+        if(printing == True or saving == True):
+            differenceDepth = depth.copy()
+
+            differenceDepth = np.subtract(depth, oldDepth)
+
+            Difference_max_value = np.amax(differenceDepth)
+
+            differenceDepthScaled = differenceDepth.copy()
+
+            differenceDepthScaled[:, :] = (
+                differenceDepth[:, :] / Difference_max_value)
+
+            ImageDifferenceDepth = np.array(
+                differenceDepthScaled * 255, dtype=np.uint8)
+
+            DifferenceDepthScaledColored = cv2.applyColorMap(
+                ImageDifferenceDepth, cv2.COLORMAP_JET)
+            if(printing == True):
+                # differenceDepthScaled
+                cv2.imshow("Difference Depths", ImageDifferenceDepth)
+                cv2.imshow("Difference Depths ColorGradient",
+                           DifferenceDepthScaledColored)
+            if(saving == True):
+                cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Difference_Depths.png',
+                            ImageDifferenceDepth)  # differenceDepthScaled
+                cv2.imwrite(
+                    '/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Difference_Depths_ColorGradient.png', DifferenceDepthScaledColored)
+            cv2.waitKey(0)
+        # ------------------------------------------------------------------------------------------------------------
+
+        # return depth
+        #depth = correctedDepth.copy()
+        #depth[:] = correctedDepth
         return depth
 
     # Create a sensor_msgs.PointCloud2 from the depth and color images provided
+
     def create_pointcloud_msg(self, depth, color):
 
         height, width = depth.shape
@@ -308,6 +576,7 @@ class MonoDepth_adabin:
      #                   MAX_DEPTH_NYU) / MAX_DEPTH_NYU  # Ligne de code a valider
 
         true_depth = true_depth.squeeze()
+        true_depth = self.depth_correction(ranges, true_depth)
        # depth = np.kron(depth, np.ones((2, 2)))  # upscale the image
 
         #true_depth_c = self.depth_correction(ranges, true_depth)
@@ -341,8 +610,8 @@ class MonoDepth_adabin:
         self.pub_laserScan.publish(scan_sync)
 
         # Republish the decompressed Image with proper time stamp
-        image = self.bridge.cv2_to_imgmsg(image,"bgr8")
-        image.header.stamp=self.stamp
+        image = self.bridge.cv2_to_imgmsg(image, "bgr8")
+        image.header.stamp = self.stamp
         image.header.frame_id = "cam"
         self.pub_image.publish(image)
 
