@@ -68,7 +68,7 @@
         <param name="slop" type="double" value="0.5" />
     </node>
 
-    <node pkg="emergency_stop" type="emergency_stop.py" name="emergency_stop" output="screen" respawn="true">
+    <node pkg="emergency_stop" type="emergency_script.py" name="emergency_stop" output="screen" respawn="true">
         <param name="topic_lidar_data" value="/scan" />
         <param name="emergency_topic" value="/emergency_message" />
         <param name="min_dist" type="int" value="2" />
