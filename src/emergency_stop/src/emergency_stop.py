@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 #########################################################
 # Failsafe node to avoid unseen obstacles by
 # the depth perception algorithm (Monodepth_adabin)
