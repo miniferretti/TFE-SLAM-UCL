@@ -52,7 +52,7 @@ find_package(catkin REQUIRED
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
-  EmergencyStatus.msg
+   EmergencyStatus.msg
  )
 
 ## Generate services in the 'srv' folder
