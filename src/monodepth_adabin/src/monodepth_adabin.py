@@ -235,7 +235,7 @@ class MonoDepth_adabin:
         # ---------------------------------------------------------------------------------------------
         # ------    Correcting the image_depth from the data gathered by the LiDAR sensor       ------- 
         #
-        correctionMethod = 7    # Selection of the correction method employed
+        correctionMethod = 8    # Selection of the correction method employed
 
         correctedDepth = np.copy(depth)
 
