@@ -10,6 +10,7 @@ project(emergency_stop)
 find_package(catkin REQUIRED
     rospy
     message_generation
+    std_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -69,8 +70,8 @@ find_package(catkin REQUIRED
 generate_messages(
 #   DEPENDENCIES
    std_msgs  # Or other packages containing msgs
-   geometry_msgs
-   sensor_msgs
+   #geometry_msgs
+   #sensor_msgs
  )
 
 ################################################
@@ -105,7 +106,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES monodepth_adaBin
-# CATKIN_DEPENDS message_runtime
+    CATKIN_DEPENDS message_runtime
 #  DEPENDS system_lib
 )
 
