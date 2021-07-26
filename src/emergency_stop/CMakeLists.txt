@@ -7,7 +7,10 @@ project(emergency_stop)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED)
+find_package(catkin REQUIRED
+    rospy
+    message_generation
+)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -45,7 +48,7 @@ find_package(catkin REQUIRED)
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
-  emergency_status.msg
+  EmergencyStatus.msg
  )
 
 ## Generate services in the 'srv' folder
@@ -102,7 +105,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES monodepth_adaBin
-#  CATKIN_DEPENDS other_catkin_pkg
+ CATKIN_DEPENDS message_runtime
 #  DEPENDS system_lib
 )
 
