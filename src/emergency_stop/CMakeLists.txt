@@ -10,6 +10,8 @@ project(emergency_stop)
 find_package(catkin REQUIRED
     rospy
     message_generation
+    geometry_msgs
+    sensor_msgs
     std_msgs
     roscpp
 )
