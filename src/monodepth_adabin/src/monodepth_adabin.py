@@ -347,14 +347,17 @@ class MonoDepth_adabin:
                                         #depth[inter_h, u_real_previous - inter_u] = max_value
 
                     if(correctionMethod == 7):
+                        counter = 0
                         for inter_u in range(abs(StepWidth)):
                             increment = ((inter_u/StepWidth) * StepDepth)
                             u_current = u_real_previous - inter_u
                             for inter_h in range(image_height):
                                 if(abs(depth[v_real, u_real] - depth[inter_h,  u_current]) <= 0.15):
                                     correctedDepth[inter_h, u_current] = P[2, i] + increment
-                                #else:
-                                    #correctedDepth[inter_h, u_current] = max_value
+                                    counter = counter +1
+                                else:
+                                    correctedDepth[inter_h, u_current] = max_value
+                                    counter = counter +1
 
                     #math.copysign(inter_u, StepWidth)
 
@@ -450,6 +453,7 @@ class MonoDepth_adabin:
         end_time_correction = time.time()
 
         print("Total time taken  = %s in correction" % (end_time_correction-start_time_correction))
+        print("counter = %s" %(counter))
 
         #return depth
         #depth = correctedDepth.copy()
