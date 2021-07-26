@@ -107,17 +107,26 @@ class MonoDepth_adabin:
 
         ranges = np.array([range_data, angle_data], np.float32)
 
-        #ranges[0, ranges[0, :] > range_max] = range_max
-        #ranges[0, ranges[0, :] < range_min] = range_min
+        ranges[0, ranges[0, :] > range_max] = range_max
+        ranges[0, ranges[0, :] < range_min] = range_min
 
         previousCorrectlyDetectedRange = 1.0
         for i_enum in range(np.size(ranges, 1)):
             if (ranges[0, i_enum] >= 25.00):
-                if(previousCorrectlyDetectedRange <= 20.00):
                     ranges[0, i_enum] = previousCorrectlyDetectedRange
-                else: 
-                    ranges[0, i_enum] = 25.00
             previousCorrectlyDetectedRange = ranges[0, i_enum]
+
+
+        #previousCorrectlyDetectedRange = 1.0
+        #for i_enum in range(np.size(ranges, 1)):
+            #if (ranges[0, i_enum] >= 25.00):
+                #if(previousCorrectlyDetectedRange <= 20.00):
+                    #ranges[0, i_enum] = previousCorrectlyDetectedRange
+                #else: 
+                    #ranges[0, i_enum] = 25.00
+            #previousCorrectlyDetectedRange = ranges[0, i_enum]
+
+
 
         # If the user wants to print the filtered range, uncomment the following lines
         #for i in range(len(ranges[0, :])):
