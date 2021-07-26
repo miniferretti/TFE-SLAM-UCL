@@ -359,6 +359,12 @@ class MonoDepth_adabin:
                                     #correctedDepth[inter_h, u_current] = max_value
                                     #counter = counter +1
 
+                    if(correctionMethod == 8):
+                        for inter_u in range(abs(StepWidth)):
+                            for inter_h in range(image_height):
+                                if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u]) <= 0.15):
+                                    correctedDepth[inter_h, u_real_previous - inter_u] = P[2,i] + ((inter_u/StepWidth) * StepDepth)
+
                     #math.copysign(inter_u, StepWidth)
 
                     #for inter_u in range(StepWidth):
