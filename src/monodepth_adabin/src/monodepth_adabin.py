@@ -110,6 +110,16 @@ class MonoDepth_adabin:
         #ranges[0, ranges[0, :] > range_max] = range_max
         #ranges[0, ranges[0, :] < range_min] = range_min
 
+        previousCorrectlyDetectedRange = 1.0
+        for i_enum in range(np.size(ranges, 1)):
+            if (ranges[0, i_enum] >= 25.00):
+                if(previousCorrectlyDetectedRange <= 20.00):
+                    ranges[0, i_enum] = previousCorrectlyDetectedRange
+                else: 
+                    ranges[0, i_enum] = 25.00
+            previousCorrectlyDetectedRange = ranges[0, i_enum]
+
+
         for i in range(len(ranges[0, :])):
            print((ranges[0, i], ranges[1, i]))
 
@@ -137,11 +147,6 @@ class MonoDepth_adabin:
         # ---------------------------------------------------------------------
         # Correcting outliers from the depths percieved by the LiDAR
         
-        previousCorrectlyDetectedRange = 1.0
-        for i_enum in range(np.size(ranges, 1)):
-            if (ranges[0, i_enum] == 25.00):
-                ranges[0, i_enum] = previousCorrectlyDetectedRange
-            previousCorrectlyDetectedRange = ranges[0, i_enum]
         # If the user wants to see the content of the corrected array of depths from the LiDAR
         # the user uncomment the following 3 lines
         #print("********  Depth from LiDAR  **********")
