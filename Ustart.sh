@@ -17,6 +17,11 @@ cd ..
 cd ..
 cd src/monodepth_adabin/src
 chmod +x monodepth_adabin.py
+cd ..
+cd ..
+cd ..
+cd src/emergency_stop/src
+chmod +x emergency_stop.py
 echo "Permission successfuly granted and ready to launch the nodes"
 
 for x in 1 2 3 4 
