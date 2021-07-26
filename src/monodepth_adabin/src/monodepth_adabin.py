@@ -355,9 +355,9 @@ class MonoDepth_adabin:
                                 if(abs(depth[v_real, u_real] - depth[inter_h,  u_current]) <= 0.15):
                                     correctedDepth[inter_h, u_current] = P[2, i] + increment
                                     counter = counter +1
-                                else:
-                                    correctedDepth[inter_h, u_current] = max_value
-                                    counter = counter +1
+                                #else:
+                                    #correctedDepth[inter_h, u_current] = max_value
+                                    #counter = counter +1
 
                     #math.copysign(inter_u, StepWidth)
 
