@@ -16,6 +16,7 @@ from sensor_msgs.msg import (CameraInfo, CompressedImage, Image, LaserScan,
 import rospkg
 import rospy
 import numpy as np
+import sys
 
 class Emergency_stop:
     def __init__(self):
