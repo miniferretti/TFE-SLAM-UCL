@@ -11,6 +11,7 @@ find_package(catkin REQUIRED
     rospy
     message_generation
     std_msgs
+    roscpp
 )
 
 ## System dependencies are found with CMake's conventions
@@ -68,10 +69,10 @@ find_package(catkin REQUIRED
 
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
-#   DEPENDENCIES
+   DEPENDENCIES
    std_msgs  # Or other packages containing msgs
-   #geometry_msgs
-   #sensor_msgs
+   geometry_msgs
+   sensor_msgs
  )
 
 ################################################
