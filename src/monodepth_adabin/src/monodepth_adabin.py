@@ -459,7 +459,7 @@ class MonoDepth_adabin:
         end_time_correction = time.time()
 
         print("Total time taken  = %s in correction" % (end_time_correction-start_time_correction))
-        print("counter = %s" %(counter))
+        #print("counter = %s" %(counter))
 
         #return depth
         #depth = correctedDepth.copy()
