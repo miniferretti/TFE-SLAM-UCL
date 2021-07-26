@@ -70,7 +70,7 @@ find_package(catkin REQUIRED
 generate_messages(
 #   DEPENDENCIES
    std_msgs  # Or other packages containing msgs
-   geometry_msgs
+   #geometry_msgs
    sensor_msgs
  )
 
