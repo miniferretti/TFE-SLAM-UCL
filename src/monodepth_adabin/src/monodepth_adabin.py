@@ -196,7 +196,7 @@ class MonoDepth_adabin:
                 cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Received_Depths_ColorGradient.png',depthScaledColored)
             cv2.waitKey(0)
 
-        oldDepth = depth.copy() # Keeping a copy of the recieved depths before corrections for further use 
+            oldDepth = depth.copy() # Keeping a copy of the recieved depths before corrections for further use 
         # ----------------------------------------------------------------------------------------------
         
 
@@ -235,7 +235,7 @@ class MonoDepth_adabin:
         # ---------------------------------------------------------------------------------------------
         # ------    Correcting the image_depth from the data gathered by the LiDAR sensor       ------- 
         #
-        correctionMethod = 7    # Selection of the correction method employed
+        correctionMethod = 0    # Selection of the correction method employed
 
         correctedDepth = np.copy(depth)
 
