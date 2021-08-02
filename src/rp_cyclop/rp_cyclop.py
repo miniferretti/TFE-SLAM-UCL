@@ -178,7 +178,8 @@ class image_feature:
         #Pc = R.dot(Pl)+t
         r = R.from_quat(self.rot)
         rotation = np.array(r.as_matrix())
-        Pc = rotation.dot(Pl)+self.trans
+        t = np.array([self.trans], np.float32).T
+        Pc = rotation.dot(Pl)+t
         
         a = 2714.2857  # Focal length in meters
         s = 0  # Skew constant of the camera, here 0 'cause the distortion of the camera is already corrected in the raspicam_node
