@@ -167,7 +167,7 @@ class image_feature:
 
         #Pc = R.dot(Pl)+t
         listener = tf.TransformListener()
-        (trans,rot) = listener.lookupTransform('cam', 'laser', rospy.Time(0))
+        (trans,rot) = listener.lookupTransform('/cam', '/laser', rospy.Time(0))
 
         Pc = rot.dot(Pl)+trans
         
