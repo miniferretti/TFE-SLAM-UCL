@@ -48,7 +48,7 @@ class image_feature:
            #### direct conversion to CV2 ####
         np_arr = np.frombuffer(image_sync.data, np.uint8)
         image_np = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
-        image_np = cv2.rotate(image_np, cv2.ROTATE_180)
+        #image_np = cv2.rotate(image_np, cv2.ROTATE_180)
 
         #### Feature detectors using CV2 ####
         # "","Grid","Pyramid" +
@@ -118,11 +118,14 @@ class image_feature:
 
         ranges = np.array([range_data, angle_data], np.float32)
 
+        for i in range(len(ranges[0, :])):
+           print((ranges[0, i], ranges[1, i]))
+
         ranges[0, ranges[0, :] > range_max] = range_max
         ranges[0, ranges[0, :] < range_min] = range_min
 
-       # for i in range(len(ranges[0, :])):
-       #    print((ranges[0, i], ranges[1, i]))
+        #for i in range(len(ranges[0, :])):
+           #print((ranges[0, i], ranges[1, i]))
 
         return ranges
 
