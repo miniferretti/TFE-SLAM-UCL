@@ -46,7 +46,7 @@ class image_feature:
         listener = tf.TransformListener()
         while not rospy.is_shutdown():
             try:
-                (trans,rot) = listener.lookupTransform('/cam', '/laser', rospy.Time(0))
+                (self.trans,self.rot) = listener.lookupTransform('/cam', '/laser', rospy.Time(0))
             except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
                 continue
         
