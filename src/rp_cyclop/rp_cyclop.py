@@ -40,8 +40,15 @@ class image_feature:
             print("/raspicam_node/image/compressed")
 
         #rospy.init_node('turtle_tf_listener') 
+        
+        #(self.trans,self.rot) = listener.lookupTransform('/base_link', '/base_imu', rospy.Time(0))
+
         listener = tf.TransformListener()
-        (self.trans,self.rot) = listener.lookupTransform('/base_link', '/base_imu', rospy.Time(0))
+        while not rospy.is_shutdown():
+            try:
+                (trans,rot) = listener.lookupTransform('/cam', '/laser', rospy.Time(0))
+            except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
+                continue
         
 
     def callback(self, image_sync, scan_sync):
