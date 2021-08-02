@@ -40,6 +40,8 @@ class image_feature:
             print("/raspicam_node/image/compressed")
 
         #rospy.init_node('turtle_tf_listener') 
+        listener = tf.TransformListener()
+        (self.trans,self.rot) = listener.lookupTransform('/cam', '/laser', rospy.Time(0))
         
 
     def callback(self, image_sync, scan_sync):
@@ -166,10 +168,8 @@ class image_feature:
                       #[-math.sin(rotationAngle), 0, math.cos(rotationAngle)]], np.float32)
 
         #Pc = R.dot(Pl)+t
-        listener = tf.TransformListener()
-        (trans,rot) = listener.lookupTransform('/cam', '/laser', rospy.Time(0))
 
-        Pc = rot.dot(Pl)+trans
+        Pc = self.rot.dot(Pl)+self.trans
         
         a = 2714.2857  # Focal length in meters
         s = 0  # Skew constant of the camera, here 0 'cause the distortion of the camera is already corrected in the raspicam_node
