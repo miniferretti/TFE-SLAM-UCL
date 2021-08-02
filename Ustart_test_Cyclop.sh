@@ -14,4 +14,4 @@ do
     echo "."
 done
 
-roslaunch launch_work_station_Cyclop_only.launch
+roslaunch launch_work_station launch_work_station_Cyclop_only.launch
