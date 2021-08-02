@@ -38,6 +38,9 @@ class image_feature:
         if VERBOSE:
             print("/raspicam_node/image/compressed")
 
+        #rospy.init_node('turtle_tf_listener') 
+        listener = tf.TransformListener()
+
     def callback(self, image_sync, scan_sync):
 
         if VERBOSE:
