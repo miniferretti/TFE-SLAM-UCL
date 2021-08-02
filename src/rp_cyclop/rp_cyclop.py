@@ -127,6 +127,9 @@ class image_feature:
             if (ranges[0, i_enum] >= 25.00):
                     ranges[0, i_enum] = previousCorrectlyDetectedRange
             previousCorrectlyDetectedRange = ranges[0, i_enum]
+
+        print("Number of ranges : %s" % (len(ranges[0, :]))
+        print("Number of ranges : %s" % (np.size(ranges, 1))
         #ranges[0, ranges[0, :] > range_max] = range_max
         #ranges[0, ranges[0, :] < range_min] = range_min
 
