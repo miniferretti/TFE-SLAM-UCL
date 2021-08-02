@@ -90,7 +90,7 @@ class image_feature:
         cv2.imshow('cv_img', image_np)
         #cv2.imshow('edges_img', edges)
         #cv2.createTrackbar('Canny Threshold', 'edges_img', 0, 300, self.change)
-        cv2.waitKey(2)
+        cv2.waitKey(0)
 
         #### Create CompressedIamge ####
         msg = CompressedImage()
@@ -120,6 +120,7 @@ class image_feature:
 
         for i in range(len(ranges[0, :])):
            print((ranges[0, i], ranges[1, i]))
+        
 
         ranges[0, ranges[0, :] > range_max] = range_max
         ranges[0, ranges[0, :] < range_min] = range_min
