@@ -40,7 +40,7 @@ class image_feature:
             print("/raspicam_node/image/compressed")
 
         #rospy.init_node('turtle_tf_listener') 
-        listener = tf.TransformListener()
+        
 
     def callback(self, image_sync, scan_sync):
 
@@ -166,7 +166,7 @@ class image_feature:
                       #[-math.sin(rotationAngle), 0, math.cos(rotationAngle)]], np.float32)
 
         #Pc = R.dot(Pl)+t
-
+        listener = tf.TransformListener()
         (trans,rot) = listener.lookupTransform('cam', 'laser', rospy.Time(0))
 
         Pc = rot.dot(Pl)+trans
