@@ -44,13 +44,6 @@ class image_feature:
         
         #(self.trans,self.rot) = listener.lookupTransform('/base_link', '/base_imu', rospy.Time(0))
 
-        listener = tf.TransformListener()
-        rate = rospy.Rate(10.0)
-        while not rospy.is_shutdown():
-            try:
-                (self.trans,self.rot) = listener.lookupTransform('/cam', '/laser', rospy.Time(0))
-            except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
-                continue
         
 
     def callback(self, image_sync, scan_sync):
@@ -159,6 +152,13 @@ class image_feature:
 
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
+
+        listener = tf.TransformListener()
+        while not rospy.is_shutdown():
+            try:
+                (self.trans,self.rot) = listener.lookupTransform('/cam', '/laser', rospy.Time(0))
+            except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
+                continue
 
         image_height, image_width, rgb = image_np.shape
 
