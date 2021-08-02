@@ -41,7 +41,7 @@ class image_feature:
 
         #rospy.init_node('turtle_tf_listener') 
         listener = tf.TransformListener()
-        (self.trans,self.rot) = listener.lookupTransform('/cam', '/laser', rospy.Time(0))
+        (self.trans,self.rot) = listener.lookupTransform('/base_link', '/base_imu', rospy.Time(0))
         
 
     def callback(self, image_sync, scan_sync):
