@@ -37,6 +37,8 @@ class image_feature:
             [self.image_sub, self.scan_sub], 10, 0.1)
         ts.registerCallback(self.callback)
 
+        self.listener = tf.TransformListener()
+
         if VERBOSE:
             print("/raspicam_node/image/compressed")
 
@@ -154,9 +156,9 @@ class image_feature:
         V = 2464  # Vertical number of pixels of the camera sensor
 
 
-        listener = tf.TransformListener()
-        listener.waitForTransform('/cam', '/laser', rospy.Time(0), rospy.Duration(1.0))
-        (self.trans,self.rot) = listener.lookupTransform('/cam', '/laser', rospy.Time(0))
+        
+        self.listener.waitForTransform('/cam', '/laser', rospy.Time(0), rospy.Duration(1.0))
+        (self.trans,self.rot) = self.listener.lookupTransform('/cam', '/laser', rospy.Time(0))
         
         
 
