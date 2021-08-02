@@ -157,7 +157,6 @@ class image_feature:
         try:
             (self.trans,self.rot) = listener.lookupTransform('/cam', '/laser', rospy.Time(0))
         except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
-            continue
 
         image_height, image_width, rgb = image_np.shape
 
