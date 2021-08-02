@@ -176,7 +176,7 @@ class image_feature:
                       #[-math.sin(rotationAngle), 0, math.cos(rotationAngle)]], np.float32)
 
         #Pc = R.dot(Pl)+t
-        rotation = R.from_quat(self.rot)
+        rotation = numpy.array(R.from_quat(self.rot))
 
         Pc = rotation.dot(Pl)+self.trans
         
