@@ -88,6 +88,7 @@ class image_feature:
         ################################################################
 
         cv2.imshow('cv_img', image_np)
+        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Image_LiDARpoints', ImageDifferenceDepth)  
         #cv2.imshow('edges_img', edges)
         #cv2.createTrackbar('Canny Threshold', 'edges_img', 0, 300, self.change)
         cv2.waitKey(0)
@@ -177,7 +178,7 @@ class image_feature:
                     u_real = self.valmap(u, 0, U, 0, image_width)
                     v_real = self.valmap(v, 0, V, 0, image_height)
                     cv2.circle(image_np, (int(u_real), int(v_real)),
-                               3, (0, 0, 255), -1)
+                               3, (255, 0, 0), -1)
                     # Stores the LiDar pixels kept on the image
                     P_real = np.append(P_real, P[:, i])
 
