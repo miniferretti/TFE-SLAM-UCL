@@ -11,6 +11,7 @@ from scipy.ndimage import filters
 from sensor_msgs.msg import CompressedImage, LaserScan, PointCloud2
 import math
 import tf
+from scipy.spatial.transform import Rotation as R
 
 VERBOSE = False
 threshold = 250
@@ -175,8 +176,9 @@ class image_feature:
                       #[-math.sin(rotationAngle), 0, math.cos(rotationAngle)]], np.float32)
 
         #Pc = R.dot(Pl)+t
+        rotation = R.from_quat(self.rot)
 
-        Pc = self.rot.dot(Pl)+self.trans
+        Pc = rotation.dot(Pl)+self.trans
         
         a = 2714.2857  # Focal length in meters
         s = 0  # Skew constant of the camera, here 0 'cause the distortion of the camera is already corrected in the raspicam_node
