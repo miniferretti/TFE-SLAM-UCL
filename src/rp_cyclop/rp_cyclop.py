@@ -10,6 +10,7 @@ import message_filters
 from scipy.ndimage import filters
 from sensor_msgs.msg import CompressedImage, LaserScan, PointCloud2
 import math
+import tf
 
 VERBOSE = False
 threshold = 250
