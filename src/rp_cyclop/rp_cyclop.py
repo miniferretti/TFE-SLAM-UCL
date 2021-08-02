@@ -42,9 +42,11 @@ class image_feature:
         if VERBOSE:
             print("/raspicam_node/image/compressed")
 
-        # rospy.init_node('turtle_tf_listener')
-
+        #rospy.init_node('turtle_tf_listener') 
+        
         #(self.trans,self.rot) = listener.lookupTransform('/base_link', '/base_imu', rospy.Time(0))
+
+        
 
     def callback(self, image_sync, scan_sync):
 
@@ -96,8 +98,7 @@ class image_feature:
         ################################################################
 
         cv2.imshow('cv_img', image_np)
-        cv2.imwrite(
-            '/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Image_LiDARpoints.png', image_np)
+        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Image_LiDARpoints.png', image_np)  
         #cv2.imshow('edges_img', edges)
         #cv2.createTrackbar('Canny Threshold', 'edges_img', 0, 300, self.change)
         cv2.waitKey(1)
@@ -129,22 +130,22 @@ class image_feature:
         ranges = np.array([range_data, angle_data], np.float32)
 
         for i in range(len(ranges[0, :])):
-            print((ranges[0, i], ranges[1, i]))
-
+           print((ranges[0, i], ranges[1, i]))
+        
         previousCorrectlyDetectedRange = 1.0
         for i_enum in range(np.size(ranges, 1)):
             if (ranges[0, i_enum] >= 25.00):
-                ranges[0, i_enum] = previousCorrectlyDetectedRange
+                    ranges[0, i_enum] = previousCorrectlyDetectedRange
             previousCorrectlyDetectedRange = ranges[0, i_enum]
 
         print("Number of ranges : %s" % (len(ranges[0, :])))
         print("Number of ranges : %s" % (np.size(ranges, 1)))
-
+        
         #ranges[0, ranges[0, :] > range_max] = range_max
         #ranges[0, ranges[0, :] < range_min] = range_min
 
-        # for i in range(len(ranges[0, :])):
-        #print((ranges[0, i], ranges[1, i]))
+        #for i in range(len(ranges[0, :])):
+           #print((ranges[0, i], ranges[1, i]))
 
         return ranges
 
@@ -154,11 +155,12 @@ class image_feature:
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
 
-        self.listener.waitForTransform(
-            '/cam', '/laser', rospy.Time(0), rospy.Duration(1.0))
-        (self.trans, self.rot) = self.listener.lookupTransform(
-            '/cam', '/laser', rospy.Time(0))
-
+        
+        self.listener.waitForTransform('/cam', '/laser', rospy.Time(0), rospy.Duration(1.0))
+        (self.trans,self.rot) = self.listener.lookupTransform('/cam', '/laser', rospy.Time(0))
+        (self.trans,self.rot) = self.listener.lookupTransform('/laser','/cam', rospy.Time(0))
+        
+        
         image_height, image_width, rgb = image_np.shape
 
         Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :])),
@@ -171,17 +173,16 @@ class image_feature:
         # Rotation matrix of the lidar regarding the camera position
         #rotationAngle = math.radians(3.8)
 
-        # R = np.array([[math.cos(rotationAngle), 0, math.sin(rotationAngle)],
-        #[0, 1, 0],
-        # [-math.sin(rotationAngle), 0, math.cos(rotationAngle)]], np.float32)
+        #R = np.array([[math.cos(rotationAngle), 0, math.sin(rotationAngle)],
+                      #[0, 1, 0],
+                      #[-math.sin(rotationAngle), 0, math.cos(rotationAngle)]], np.float32)
 
         #Pc = R.dot(Pl)+t
         r = R.from_quat(self.rot)
         rotation = np.array(r.as_matrix())
         t = np.array([self.trans], np.float32).T
-        print(rotation)
         Pc = rotation.dot(Pl)+t
-
+        
         a = 2714.2857  # Focal length in meters
         s = 0  # Skew constant of the camera, here 0 'cause the distortion of the camera is already corrected in the raspicam_node
         u0 = U/2  # int(len(image_np[1, :])/2)
