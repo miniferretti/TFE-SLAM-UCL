@@ -179,7 +179,7 @@ class image_feature:
         r = R.from_quat(self.rot)
         rotation = np.array(r.as_matrix())
         t = np.array([self.trans], np.float32).T
-        print(r)
+        print(rotation)
         Pc = rotation.dot(Pl)+t
 
         a = 2714.2857  # Focal length in meters
