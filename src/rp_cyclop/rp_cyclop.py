@@ -155,8 +155,9 @@ class image_feature:
 
 
         listener = tf.TransformListener()
-        (self.trans,self.rot) = listener.lookupTransform('/cam', '/laser', rospy.Time(0))
         listener.waitForTransform('/cam', '/laser', rospy.Time(0), rospy.Duration(1.0))
+        (self.trans,self.rot) = listener.lookupTransform('/cam', '/laser', rospy.Time(0))
+        
         
 
         image_height, image_width, rgb = image_np.shape
