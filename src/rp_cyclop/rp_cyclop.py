@@ -154,9 +154,7 @@ class image_feature:
         V = 2464  # Vertical number of pixels of the camera sensor
 
         listener = tf.TransformListener()
-        try:
-            (self.trans,self.rot) = listener.lookupTransform('/cam', '/laser', rospy.Time(0))
-        except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
+        (self.trans,self.rot) = listener.lookupTransform('/cam', '/laser', rospy.Time(0))
 
         image_height, image_width, rgb = image_np.shape
 
