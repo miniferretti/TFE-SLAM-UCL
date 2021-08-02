@@ -153,8 +153,11 @@ class image_feature:
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
 
+
         listener = tf.TransformListener()
         (self.trans,self.rot) = listener.lookupTransform('/cam', '/laser', rospy.Time(0))
+        listener.waitForTransform('/cam', '/laser', rospy.Time(0), rospy.Duration(1.0))
+        
 
         image_height, image_width, rgb = image_np.shape
 
