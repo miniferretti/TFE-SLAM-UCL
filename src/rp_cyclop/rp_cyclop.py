@@ -122,9 +122,13 @@ class image_feature:
         for i in range(len(ranges[0, :])):
            print((ranges[0, i], ranges[1, i]))
         
-
-        ranges[0, ranges[0, :] > range_max] = range_max
-        ranges[0, ranges[0, :] < range_min] = range_min
+        previousCorrectlyDetectedRange = 1.0
+        for i_enum in range(np.size(ranges, 1)):
+            if (ranges[0, i_enum] >= 25.00):
+                    ranges[0, i_enum] = previousCorrectlyDetectedRange
+            previousCorrectlyDetectedRange = ranges[0, i_enum]
+        #ranges[0, ranges[0, :] > range_max] = range_max
+        #ranges[0, ranges[0, :] < range_min] = range_min
 
         #for i in range(len(ranges[0, :])):
            #print((ranges[0, i], ranges[1, i]))
