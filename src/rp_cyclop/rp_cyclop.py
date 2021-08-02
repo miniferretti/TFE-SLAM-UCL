@@ -91,7 +91,7 @@ class image_feature:
         cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Image_LiDARpoints.png', image_np)  
         #cv2.imshow('edges_img', edges)
         #cv2.createTrackbar('Canny Threshold', 'edges_img', 0, 300, self.change)
-        #cv2.waitKey(0)
+        cv2.waitKey(1)
 
         #### Create CompressedIamge ####
         msg = CompressedImage()
