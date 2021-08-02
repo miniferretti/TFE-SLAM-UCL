@@ -152,16 +152,21 @@ class image_feature:
                        np.multiply(np.cos(ranges[1, :]), ranges[0, :])], np.float32)
 
         # Translation vector between the camera and the lidar (lidar --> Camera translation) everything in meters
-        t = np.array([[0, -0.048, -0.00]], np.float32).T
+        #t = np.array([[0, -0.048, -0.00]], np.float32).T
 
         # Rotation matrix of the lidar regarding the camera position
-        rotationAngle = math.radians(3.8)
+        #rotationAngle = math.radians(3.8)
 
-        R = np.array([[math.cos(rotationAngle), 0, math.sin(rotationAngle)],
-                      [0, 1, 0],
-                      [-math.sin(rotationAngle), 0, math.cos(rotationAngle)]], np.float32)
+        #R = np.array([[math.cos(rotationAngle), 0, math.sin(rotationAngle)],
+                      #[0, 1, 0],
+                      #[-math.sin(rotationAngle), 0, math.cos(rotationAngle)]], np.float32)
 
-        Pc = R.dot(Pl)+t
+        #Pc = R.dot(Pl)+t
+
+        (trans,rot) = listener.lookupTransform('cam', 'laser', rospy.Time(0))
+
+        Pc = rot.dot(Pl)+trans
+        
         a = 2714.2857  # Focal length in meters
         s = 0  # Skew constant of the camera, here 0 'cause the distortion of the camera is already corrected in the raspicam_node
         u0 = U/2  # int(len(image_np[1, :])/2)
