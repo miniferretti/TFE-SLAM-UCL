@@ -45,6 +45,7 @@ class image_feature:
         #(self.trans,self.rot) = listener.lookupTransform('/base_link', '/base_imu', rospy.Time(0))
 
         listener = tf.TransformListener()
+        rate = rospy.Rate(10.0)
         while not rospy.is_shutdown():
             try:
                 (self.trans,self.rot) = listener.lookupTransform('/cam', '/laser', rospy.Time(0))
