@@ -88,7 +88,7 @@ class image_feature:
         ################################################################
 
         cv2.imshow('cv_img', image_np)
-        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Image_LiDARpoints', ImageDifferenceDepth)  
+        cv2.imwrite('/home/desktopinma/Desktop/TFE/PicturesAndOtherRecordedData/Image_LiDARpoints', image_np)  
         #cv2.imshow('edges_img', edges)
         #cv2.createTrackbar('Canny Threshold', 'edges_img', 0, 300, self.change)
         cv2.waitKey(0)
