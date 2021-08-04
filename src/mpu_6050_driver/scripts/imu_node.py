@@ -15,11 +15,14 @@ bus = None
 IMU_FRAME = None
 
 # read_word and read_word_2c from http://blog.bitify.co.uk/2013/11/reading-data-from-mpu-6050-on-raspberry.html
+
+
 def read_word(adr):
     high = bus.read_byte_data(ADDR, adr)
     low = bus.read_byte_data(ADDR, adr+1)
     val = (high << 8) + low
     return val
+
 
 def read_word_2c(adr):
     val = read_word(adr)
@@ -27,6 +30,7 @@ def read_word_2c(adr):
         return -((65535 - val) + 1)
     else:
         return val
+
 
 def publish_temp(timer_event):
     temp_msg = Temperature()
@@ -44,7 +48,7 @@ def publish_imu(timer_event):
     accel_x = read_word_2c(ACCEL_XOUT_H) / 16384.0
     accel_y = read_word_2c(ACCEL_YOUT_H) / 16384.0
     accel_z = read_word_2c(ACCEL_ZOUT_H) / 16384.0
-    
+
     # Calculate a quaternion representing the orientation
     '''accel = accel_x, accel_y, accel_z
     ref = np.array([0, 0, 1])
@@ -57,7 +61,7 @@ def publish_imu(timer_event):
     gyro_x = read_word_2c(GYRO_XOUT_H) / 131.0
     gyro_y = read_word_2c(GYRO_YOUT_H) / 131.0
     gyro_z = read_word_2c(GYRO_ZOUT_H) / 131.0
-    
+
     # Load up the IMU message
     '''o = imu_msg.orientation
     o.x, o.y, o.z, o.w = orientation'''
@@ -90,8 +94,8 @@ if __name__ == '__main__':
 
     bus.write_byte_data(ADDR, PWR_MGMT_1, 0)
 
-    temp_pub = rospy.Publisher('temperature', Temperature,queue_size=10)
-    imu_pub = rospy.Publisher('imu/data_raw', Imu,queue_size=10)
+    temp_pub = rospy.Publisher('temperature', Temperature, queue_size=10)
+    imu_pub = rospy.Publisher('imu/data_raw', Imu, queue_size=10)
     imu_timer = rospy.Timer(rospy.Duration(0.02), publish_imu)
     temp_timer = rospy.Timer(rospy.Duration(10), publish_temp)
     rospy.spin()
