@@ -202,7 +202,9 @@ class image_feature:
 
         P_real = np.empty(shape=(3, 0))
 
-        gradientColor = True 
+        gradientColor = True # To show difference of depth and matching
+
+        showUndefinedPoints = False # To show difference of depth and matching
 
         for i in range(len(UV[0, :])):
             u = UV[0, i]
@@ -216,6 +218,11 @@ class image_feature:
                         rangeMax = 2 # TBD by the user for a given scenario or rangeMax = np.amax(ranges)
                         color =  P[2, i] * (1/rangeMax) * 255
                         cv2.circle(image_np, (int(u_real), int(v_real)), 3, (color, 0, (255-color)), -1)
+                    if(showUndefinedPoints):
+                        if(P[2, i] > 24.99):
+                            cv2.circle(image_np, (int(u_real), int(v_real)), 3, (0, 0, 0), -1)
+                        else:
+                            cv2.circle(image_np, (int(u_real), int(v_real)), 3, (30, 200, 0), -1)
                     else:
                         cv2.circle(image_np, (int(u_real), int(v_real)), 3, (255, 0, 0), -1)
                     # Stores the LiDar pixels kept on the image
