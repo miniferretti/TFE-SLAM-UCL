@@ -222,14 +222,14 @@ class image_feature:
                     if (gradientColor):
                         rangeMax = 1.7 # TBD by the user for a given scenario or rangeMax = np.amax(ranges)
                         color =  P[2, i] * (1/rangeMax) * 255
-                        cv2.circle(image_np, (int(u_real), int(v_real)), 3, (color, 0, (255-color)), -1)
+                        cv2.circle(image_np, (int(u_real), int(v_real)), 1, (color, 0, (255-color)), -1)
                     elif(showUndefinedPoints):
                         if(P[2, i] >= 24):
-                            cv2.circle(image_np, (int(u_real), int(v_real)), 3, (30, 0, 200), -1)
+                            cv2.circle(image_np, (int(u_real), int(v_real)), 1, (30, 0, 200), -1)
                         else:
-                            cv2.circle(image_np, (int(u_real), int(v_real)), 3, (30, 200, 0), -1)
+                            cv2.circle(image_np, (int(u_real), int(v_real)), 1, (30, 200, 0), -1)
                     else:
-                        cv2.circle(image_np, (int(u_real), int(v_real)), 3, (255, 0, 0), -1)
+                        cv2.circle(image_np, (int(u_real), int(v_real)), 1, (255, 0, 0), -1)
                     # Stores the LiDar pixels kept on the image
                     P_real = np.append(P_real, P[:, i])
 
