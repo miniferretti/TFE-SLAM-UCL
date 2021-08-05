@@ -33,6 +33,11 @@ class image_feature:
        # self.subscriber = rospy.Subscriber(
         #    "/raspicam_node/image/compressed", CompressedImage, self.callback,  queue_size=1)
 
+
+        ts = message_filters.ApproximateTimeSynchronizer([self.image_sub, self.scan_sub], 10, 0.1)
+        ts.registerCallback(self.callback)
+
+
         ### If the user wants to use the TF ; uncomment the following lines and the corresponding lines in the "lidar_data_to_img" function
         #ts = message_filters.ApproximateTimeSynchronizer(
             #[self.image_sub, self.scan_sub], 10, 0.1)
