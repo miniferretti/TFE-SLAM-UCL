@@ -202,9 +202,9 @@ class image_feature:
 
         P_real = np.empty(shape=(3, 0))
 
-        gradientColor = True # To show difference of depth and matching
+        gradientColor = False # To show difference of depth and matching
 
-        showUndefinedPoints = False # To show difference of depth and matching
+        showUndefinedPoints = True # To show difference of depth and matching
 
         for i in range(len(UV[0, :])):
             u = UV[0, i]
