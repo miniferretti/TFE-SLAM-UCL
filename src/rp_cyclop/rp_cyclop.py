@@ -33,11 +33,11 @@ class image_feature:
        # self.subscriber = rospy.Subscriber(
         #    "/raspicam_node/image/compressed", CompressedImage, self.callback,  queue_size=1)
 
-        ts = message_filters.ApproximateTimeSynchronizer(
-            [self.image_sub, self.scan_sub], 10, 0.1)
-        ts.registerCallback(self.callback)
-
-        self.listener = tf.TransformListener()
+        ### If the user wants to use the TF ; uncomment the following lines and the corresponding lines in the "lidar_data_to_img" function
+        #ts = message_filters.ApproximateTimeSynchronizer(
+            #[self.image_sub, self.scan_sub], 10, 0.1)
+        #ts.registerCallback(self.callback)
+        #self.listener = tf.TransformListener()
 
         if VERBOSE:
             print("/raspicam_node/image/compressed")
@@ -47,7 +47,6 @@ class image_feature:
         #(self.trans,self.rot) = listener.lookupTransform('/base_link', '/base_imu', rospy.Time(0))
 
         
-
     def callback(self, image_sync, scan_sync):
 
         if VERBOSE:
@@ -154,12 +153,6 @@ class image_feature:
 
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
-
-        
-        self.listener.waitForTransform('/cam', '/laser', rospy.Time(0), rospy.Duration(1.0))
-        (self.trans,self.rot) = self.listener.lookupTransform('/cam', '/laser', rospy.Time(0))
-        (self.trans,self.rot) = self.listener.lookupTransform('/laser','/cam', rospy.Time(0))
-        
         
         image_height, image_width, rgb = image_np.shape
 
@@ -168,20 +161,26 @@ class image_feature:
                        np.multiply(np.cos(ranges[1, :]), ranges[0, :])], np.float32)
 
         # Translation vector between the camera and the lidar (lidar --> Camera translation) everything in meters
-        #t = np.array([[0, -0.048, -0.00]], np.float32).T
+        t = np.array([[0, -0.048, -0.00]], np.float32).T
 
         # Rotation matrix of the lidar regarding the camera position
-        #rotationAngle = math.radians(3.8)
+        rotationAngle = math.radians(3.8)
 
-        #R = np.array([[math.cos(rotationAngle), 0, math.sin(rotationAngle)],
-                      #[0, 1, 0],
-                      #[-math.sin(rotationAngle), 0, math.cos(rotationAngle)]], np.float32)
+        R = np.array([[math.cos(rotationAngle), 0, math.sin(rotationAngle)],
+                      [0, 1, 0],
+                      [-math.sin(rotationAngle), 0, math.cos(rotationAngle)]], np.float32)
 
-        #Pc = R.dot(Pl)+t
-        r = R.from_quat(self.rot)
-        rotation = np.array(r.as_matrix())
-        t = np.array([self.trans], np.float32).T
-        Pc = rotation.dot(Pl)+t
+        Pc = R.dot(Pl)+t
+
+        #############         With the TF transform      #####################
+        #self.listener.waitForTransform('/cam', '/laser', rospy.Time(0), rospy.Duration(1.0))
+        #(self.trans,self.rot) = self.listener.lookupTransform('/cam', '/laser', rospy.Time(0))
+        #(self.trans,self.rot) = self.listener.lookupTransform('/laser','/cam', rospy.Time(0))
+        #r = R.from_quat(self.rot)
+        #rotation = np.array(r.as_matrix())
+        #t = np.array([self.trans], np.float32).T
+        #Pc = rotation.dot(Pl)+t
+        ######################################################################
         
         a = 2714.2857  # Focal length in meters
         s = 0  # Skew constant of the camera, here 0 'cause the distortion of the camera is already corrected in the raspicam_node
