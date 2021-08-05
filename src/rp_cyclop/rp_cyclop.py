@@ -159,6 +159,8 @@ class image_feature:
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
         
+        rangeMax = np.amax(ranges)
+
         image_height, image_width, rgb = image_np.shape
 
         Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :])),
@@ -202,6 +204,8 @@ class image_feature:
 
         P_real = np.empty(shape=(3, 0))
 
+        gradientColor = True 
+
         for i in range(len(UV[0, :])):
             u = UV[0, i]
             v = UV[1, i]
@@ -210,8 +214,11 @@ class image_feature:
                 if (u >= 0) and (v >= 0) and (P[2, i] >= 0):
                     u_real = self.valmap(u, 0, U, 0, image_width)
                     v_real = self.valmap(v, 0, V, 0, image_height)
-                    cv2.circle(image_np, (int(u_real), int(v_real)),
-                               3, (255, 0, 0), -1)
+                    if (gradientColor):
+                        color =  P[2, i] * (1/rangeMax) * 255
+                        cv2.circle(image_np, (int(u_real), int(v_real)), 3, (color, 0, (255-color)), -1)
+                    else:
+                        cv2.circle(image_np, (int(u_real), int(v_real)), 3, (255, 0, 0), -1)
                     # Stores the LiDar pixels kept on the image
                     P_real = np.append(P_real, P[:, i])
 
