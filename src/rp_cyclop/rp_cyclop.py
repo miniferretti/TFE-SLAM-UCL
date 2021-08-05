@@ -220,7 +220,7 @@ class image_feature:
                         cv2.circle(image_np, (int(u_real), int(v_real)), 3, (color, 0, (255-color)), -1)
                     if(showUndefinedPoints):
                         if(P[2, i] > 24.99):
-                            cv2.circle(image_np, (int(u_real), int(v_real)), 3, (0, 0, 0), -1)
+                            cv2.circle(image_np, (int(u_real), int(v_real)), 3, (30, 0, 200), -1)
                         else:
                             cv2.circle(image_np, (int(u_real), int(v_real)), 3, (30, 200, 0), -1)
                     else:
