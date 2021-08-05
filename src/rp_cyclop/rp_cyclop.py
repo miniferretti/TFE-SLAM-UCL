@@ -158,8 +158,6 @@ class image_feature:
 
         U = 3280  # Horizontal number of pixels
         V = 2464  # Vertical number of pixels of the camera sensor
-        
-        rangeMax = np.amax(ranges)
 
         image_height, image_width, rgb = image_np.shape
 
@@ -215,6 +213,7 @@ class image_feature:
                     u_real = self.valmap(u, 0, U, 0, image_width)
                     v_real = self.valmap(v, 0, V, 0, image_height)
                     if (gradientColor):
+                        rangeMax = 2 # TBD by the user for a given scenario or rangeMax = np.amax(ranges)
                         color =  P[2, i] * (1/rangeMax) * 255
                         cv2.circle(image_np, (int(u_real), int(v_real)), 3, (color, 0, (255-color)), -1)
                     else:
