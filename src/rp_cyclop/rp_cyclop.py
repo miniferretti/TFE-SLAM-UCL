@@ -136,21 +136,25 @@ class image_feature:
         #for i in range(len(ranges[0, :])):
            #print((ranges[0, i], ranges[1, i]))
         
-        #previousCorrectlyDetectedRange = 1.0
-        #for i_enum in range(np.size(ranges, 1)):
-            #if (ranges[0, i_enum] >= 25.00):
-                    #ranges[0, i_enum] = previousCorrectlyDetectedRange
-            #previousCorrectlyDetectedRange = ranges[0, i_enum]
+        #######      Correcting Undefined points      #########
+        previousCorrectlyDetectedRange = 1.0
+        for i_enum in range(np.size(ranges, 1)):
+            if (ranges[0, i_enum] >= 25.00):
+                    ranges[0, i_enum] = previousCorrectlyDetectedRange
+            previousCorrectlyDetectedRange = ranges[0, i_enum]
 
         #print("Number of ranges : %s" % (len(ranges[0, :])))
         #print("Number of ranges : %s" % (np.size(ranges, 1)))
+        #######################################################
         
-        ranges[0, ranges[0, :] > range_max] = range_max
-        ranges[0, ranges[0, :] < range_min] = range_min
 
-        for i in range(len(ranges[0, :])):
-           print((ranges[0, i], ranges[1, i]))
-        
+        ##########      To showUndefinedPoints      ###########
+        #ranges[0, ranges[0, :] > range_max] = range_max
+        #ranges[0, ranges[0, :] < range_min] = range_min
+
+        #for i in range(len(ranges[0, :])):
+           #print((ranges[0, i], ranges[1, i]))
+        #######################################################
 
         return ranges
 
@@ -203,9 +207,9 @@ class image_feature:
 
         P_real = np.empty(shape=(3, 0))
 
-        gradientColor = False # To show difference of depth and matching
+        gradientColor = True # To show difference of depth and matching
 
-        showUndefinedPoints = True # To show difference of depth and matching
+        showUndefinedPoints = False # To show difference of depth and matching
 
         for i in range(len(UV[0, :])):
             u = UV[0, i]
@@ -216,9 +220,9 @@ class image_feature:
                     u_real = self.valmap(u, 0, U, 0, image_width)
                     v_real = self.valmap(v, 0, V, 0, image_height)
                     if (gradientColor):
-                        rangeMax = 2 # TBD by the user for a given scenario or rangeMax = np.amax(ranges)
+                        rangeMax = 1.7 # TBD by the user for a given scenario or rangeMax = np.amax(ranges)
                         color =  P[2, i] * (1/rangeMax) * 255
-                        cv2.circle(image_np, (int(u_real), int(v_real)), 3, (color, 0, (255-color)), -1)
+                        cv2.circle(image_np, (int(u_real), int(v_real)), 3, (color-30, 0, (255-color)), -1)
                     if(showUndefinedPoints):
                         if(P[2, i] >= 24):
                             cv2.circle(image_np, (int(u_real), int(v_real)), 3, (30, 0, 200), -1)
