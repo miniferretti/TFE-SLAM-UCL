@@ -133,8 +133,8 @@ class image_feature:
 
         ranges = np.array([range_data, angle_data], np.float32)
 
-        for i in range(len(ranges[0, :])):
-           print((ranges[0, i], ranges[1, i]))
+        #for i in range(len(ranges[0, :])):
+           #print((ranges[0, i], ranges[1, i]))
         
         #previousCorrectlyDetectedRange = 1.0
         #for i_enum in range(np.size(ranges, 1)):
@@ -148,8 +148,8 @@ class image_feature:
         ranges[0, ranges[0, :] > range_max] = range_max
         ranges[0, ranges[0, :] < range_min] = range_min
 
-        #for i in range(len(ranges[0, :])):
-           #print((ranges[0, i], ranges[1, i]))
+        for i in range(len(ranges[0, :])):
+           print((ranges[0, i], ranges[1, i]))
         
 
         return ranges
