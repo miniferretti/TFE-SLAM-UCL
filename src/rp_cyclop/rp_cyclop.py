@@ -222,7 +222,7 @@ class image_feature:
                     if (gradientColor):
                         rangeMax = 1.7 # TBD by the user for a given scenario or rangeMax = np.amax(ranges)
                         color =  P[2, i] * (1/rangeMax) * 255
-                        cv2.circle(image_np, (int(u_real)-10, int(v_real)), 2, (color, 0, (255-color)), -1)
+                        cv2.circle(image_np, (int(u_real)-9, int(v_real)), 2, (color-30, 0, (255-color)), -1)
                     elif(showUndefinedPoints):
                         if(P[2, i] >= 24):
                             cv2.circle(image_np, (int(u_real), int(v_real)), 2, (30, 0, 200), -1)
