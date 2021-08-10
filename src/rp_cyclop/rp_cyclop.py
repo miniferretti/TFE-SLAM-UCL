@@ -225,9 +225,9 @@ class image_feature:
                         cv2.circle(image_np, (int(u_real)-11, int(v_real)), 2, (color-50, 0, (255-color)), -1)
                     elif(showUndefinedPoints):
                         if(P[2, i] >= 24):
-                            cv2.circle(image_np, (int(u_real), int(v_real)), 2, (30, 0, 200), -1)
+                            cv2.circle(image_np, (int(u_real)-11, int(v_real)), 2, (30, 0, 200), -1)
                         else:
-                            cv2.circle(image_np, (int(u_real), int(v_real)), 2, (30, 200, 0), -1)
+                            cv2.circle(image_np, (int(u_real)-11, int(v_real)), 2, (30, 200, 0), -1)
                     else:
                         cv2.circle(image_np, (int(u_real), int(v_real)), 2, (255, 0, 0), -1)
                     # Stores the LiDar pixels kept on the image
