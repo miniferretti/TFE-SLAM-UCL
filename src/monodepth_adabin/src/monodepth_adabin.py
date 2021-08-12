@@ -576,7 +576,7 @@ class MonoDepth_adabin:
      #                   MAX_DEPTH_NYU) / MAX_DEPTH_NYU  # Ligne de code a valider
 
         true_depth = true_depth.squeeze()
-      #  true_depth = self.depth_correction(ranges, true_depth)
+        true_depth = self.depth_correction(ranges, true_depth)
        # depth = np.kron(depth, np.ones((2, 2)))  # upscale the image
 
         #true_depth_c = self.depth_correction(ranges, true_depth)
