@@ -30,4 +30,4 @@ do
     sleep 1
 done
 
-roslaunch launch_work_station launch_work_station_no_ada_bin.launch
+roslaunch launch_work_station launch_work_station_orb_slam2.launch
