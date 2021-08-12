@@ -1,3 +1,5 @@
+#This File is not currently used by the node. This is an implementation, not yet working of the clustering algorithm
+# used for processing pointclouds
 """
 Processing of Scan data
 """
