@@ -142,7 +142,7 @@ class MonoDepth_adabin:
 
         # For user to collect, display and/or save data
         printing = False
-        saving = True
+        saving = False
 
         # ---------------------------------------------------------------------
         # Correcting outliers from the depths percieved by the LiDAR
@@ -586,15 +586,15 @@ class MonoDepth_adabin:
             cv2.imshow("Result", true_depth)
             cv2.waitKey(1)
 
-        # Publish depth image
-        #depth = 255 * depth
+        # Publish depth image 
+        #depth = 255 * depth 
         #cm = plt.get_cmap('magma')
-        #depth = cm(depth)
+        #depth = cm(depth) 
 
         # Publish the depth image
-        msg = self.bridge.cv2_to_imgmsg(
+        msg = self.bridge.cv2_to_imgmsg( 
             true_depth, "32FC1")
-        msg.header.stamp = self.stamp
+        msg.header.stamp = self.stamp 
         msg.header.frame_id = "cam"
         self.pub_image_depth.publish(msg)
 
@@ -611,7 +611,7 @@ class MonoDepth_adabin:
 
         # Republish the decompressed Image with proper time stamp
         image = self.bridge.cv2_to_imgmsg(image, "bgr8")
-        image.header.stamp = self.stamp
+        image.header.stamp = self.stamp 
         image.header.frame_id = "cam"
         self.pub_image.publish(image)
 
