@@ -30,4 +30,4 @@ do
     sleep 1
 done
 
-roslaunch launch_work_station launch_work_station_orb_slam2.launch
+roslaunch launch_work_station launch_work_station_orb_slam2_rgbd.launch
