@@ -1,4 +1,5 @@
 <launch>
+    <node type="rqt_tf_tree" name="rqt_tf_tree" pkg="rqt_tf_tree" />
     <node name="orb_slam2_rgbd" pkg="orb_slam2_ros" type="orb_slam2_ros_rgbd">
 
         <remap from="/camera/rgb/image_raw" to="/monodepth_adabin/image/rgb" />
