@@ -576,8 +576,7 @@ class MonoDepth_adabin:
      #                   MAX_DEPTH_NYU) / MAX_DEPTH_NYU  # Ligne de code a valider
 
         true_depth = true_depth.squeeze()
-        true_depth = self.depth_correction(ranges, true_depth)
-        true_depth = (true_depth/max(true_depth))*MAX_DEPTH_NYU
+      #  true_depth = self.depth_correction(ranges, true_depth)
        # depth = np.kron(depth, np.ones((2, 2)))  # upscale the image
 
         #true_depth_c = self.depth_correction(ranges, true_depth)
@@ -587,15 +586,15 @@ class MonoDepth_adabin:
             cv2.imshow("Result", true_depth)
             cv2.waitKey(1)
 
-        # Publish depth image
-        #depth = 255 * depth
+        # Publish depth image 
+        #depth = 255 * depth 
         #cm = plt.get_cmap('magma')
-        #depth = cm(depth)
+        #depth = cm(depth) 
 
         # Publish the depth image
-        msg = self.bridge.cv2_to_imgmsg(
+        msg = self.bridge.cv2_to_imgmsg( 
             true_depth, "32FC1")
-        msg.header.stamp = self.stamp
+        msg.header.stamp = self.stamp 
         msg.header.frame_id = "cam"
         self.pub_image_depth.publish(msg)
 
@@ -612,7 +611,7 @@ class MonoDepth_adabin:
 
         # Republish the decompressed Image with proper time stamp
         image = self.bridge.cv2_to_imgmsg(image, "bgr8")
-        image.header.stamp = self.stamp
+        image.header.stamp = self.stamp 
         image.header.frame_id = "cam"
         self.pub_image.publish(image)
 
