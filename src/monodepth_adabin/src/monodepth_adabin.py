@@ -142,7 +142,7 @@ class MonoDepth_adabin:
 
         # For user to collect, display and/or save data
         printing = False
-        saving = True
+        saving = False
 
         # ---------------------------------------------------------------------
         # Correcting outliers from the depths percieved by the LiDAR

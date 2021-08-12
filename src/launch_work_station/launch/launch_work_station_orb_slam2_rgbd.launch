@@ -41,10 +41,10 @@
         <param name="load_calibration_from_cam" type="bool" value="false" />
 
         <!-- Camera calibration and distortion parameters (OpenCV) -->
-        <param name="camera_fx" type="double" value="615.6707153320312" />
-        <param name="camera_fy" type="double" value="615.962158203125" />
-        <param name="camera_cx" type="double" value="328.0010681152344" />
-        <param name="camera_cy" type="double" value="241.31031799316406" />
+        <param name="camera_fx" type="double" value="553.607" />
+        <param name="camera_fy" type="double" value="554.02946" />
+        <param name="camera_cx" type="double" value="336.76269" />
+        <param name="camera_cy" type="double" value="224.92086" />
         <!-- Camera calibration and distortion parameters (OpenCV) -->
         <param name="camera_k1" type="double" value="0.0" />
         <param name="camera_k2" type="double" value="0.0" />
@@ -52,7 +52,7 @@
         <param name="camera_p2" type="double" value="0.0" />
         <param name="camera_k3" type="double" value="0.0" />
         <!-- IR projector baseline times fx (aprox.) -->
-        <param name="camera_baseline" type="double" value="9.052" />
+        <param name="camera_baseline" type="double" value="27.65" />
 
 
     </node>
@@ -62,18 +62,18 @@
         <param name="topic_color" value="/raspicam_node/image/compressed" />
         <param name="topic_depth" value="/monodepth_adabin/image/depth" />
         <param name="topic_camera_info" value="/raspicam_node/camera_info" />
-        <param name="device" value="cuda:0" />
+        <param name="device" value="cpu" />
         <param name="debug" value="False" />
         <param name="queue_size" type="int" value="1" />
         <param name="slop" type="double" value="0.5" />
     </node>
 
-    <node pkg="emergency_stop" type="emergency_script.py" name="emergency_stop" output="screen" respawn="true">
+    <!--<node pkg="emergency_stop" type="emergency_script.py" name="emergency_stop" output="screen" respawn="true">
         <param name="topic_lidar_data" value="/scan" />
         <param name="emergency_topic" value="/emergency_message" />
         <param name="min_dist" type="int" value="2" />
         <param name="threshold" type="double" value="0.1" />
         <param name="queue_size" type="int" value="1" />
-    </node>
+    </node> -->
 </launch>
   
