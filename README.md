@@ -1,5 +1,5 @@
 # Desktop branch
-This branch summerize the list of ROS packages and dependencies to install for the desktop computer part of our work. 
+This branch summerize the list of ROS packages and dependencies to install for the desktop computer part of our work. This is a catkin workspace. 
 
 ## ROS Packages overview
 ---
@@ -20,3 +20,7 @@ This branch summerize the list of ROS packages and dependencies to install for t
 - darknet_ros: ROS implementation of YoloV2 and V1, this node was used for image segmentation and object recognition. Originally taken from [leggedrobotics](https://github.com/leggedrobotics/darknet_ros).
 
 - rp_cyclop: Node written in Python3 to project LiDAR scans on a video camera image. Used for LiDAR-Camera calibration. 
+
+- emergency_stop: Node written in Python3 used to prevent the mobile platform from colliding with an obstacle. Takes as input scans from a LiDAR and outputs an emergency message when it detects abstacles that are passed an arbitrary threshold.  Used for demonstration purpose of the advantages of having a LiDAR on a mobile robot. 
+
+- hector_slam: 
