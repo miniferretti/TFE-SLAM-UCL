@@ -183,7 +183,7 @@ class MonoDepth_adabin:
         ax.set_title('Normal')
 
         plt.imshow(depth, cmap='gray')
-        plt.imshow(im, cmap='plasma'
+        plt.imshow(im, cmap='plasma')
         plt.colorbar()       
 
         if( printing == True or saving == True):
