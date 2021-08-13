@@ -229,7 +229,7 @@ class MonoDepth_adabin:
         # ---------------------------------------------------------------------------------------------
         # ------    Correcting the image_depth from the data gathered by the LiDAR sensor       ------- 
         #
-        correctionMethod = 7    # Selection of the correction method employed
+        correctionMethod = 9    # Selection of the correction method employed
 
         correctedDepth = np.copy(depth)
 
@@ -359,6 +359,21 @@ class MonoDepth_adabin:
                             for inter_h in range(image_height):
                                 if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u]) <= 0.15):
                                     correctedDepth[inter_h, u_real_previous - inter_u] = P[2,i] + ((inter_u/StepWidth) * StepDepth)
+
+                    if(correctionMethod == 9):
+                        #counter = 0
+                        for inter_u in range(abs(StepWidth)):
+                            increment = ((inter_u/StepWidth) * StepDepth)
+                            u_current = u_real_previous - inter_u
+                            for inter_h in range(image_height):
+                                if (((u_real_previous - inter_u) < 640) and ((u_real_previous - inter_u) >= 0)):
+                                    if(abs(depth[v_real, u_real] - depth[inter_h,  u_current]) <= 0.15):
+                                        correctedDepth[inter_h, u_current] = P[2, i] + increment
+                                        #counter = counter +1
+                                    #else:
+                                        #correctedDepth[inter_h, u_current] = max_value
+                                        #counter = counter +1
+                    
 
                     #math.copysign(inter_u, StepWidth)
 
