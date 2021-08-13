@@ -148,8 +148,8 @@ class MonoDepth_adabin:
             #print("Depth[0, %s] : %s [m] at angle %s" % (i_print, ranges[0, i_print], ranges[1, i_print]))
         # ---------------------------------------------------------------------
 
-        U = 3280  # Horizontal number of pixels
-        V = 2464  # Vertical number of pixels of the camera sensor
+        U = 640  # Horizontal number of pixels
+        V = 480  # Vertical number of pixels of the camera sensor
 
         image_height, image_width = depth.shape
 

@@ -207,7 +207,7 @@ class image_feature:
         UV = np.array([np.divide(P[0, :], P[2, :]),
                        np.divide(P[1, :], P[2, :])], np.float32)
 
-        P_real = np.empty(shape=(3, 0))
+        #P_real = np.empty(shape=(3, 0))
 
         gradientColor = True # To show difference of depth and matching
 
@@ -224,6 +224,7 @@ class image_feature:
                     if (gradientColor):
                         rangeMax = 1.7 # TBD by the user for a given scenario or rangeMax = np.amax(ranges)
                         color =  P[2, i] * (1/rangeMax) * 255
+                        print("Depth at [%s, %s] : %s" % (u_real, v_real,P[2, i]))
                         cv2.circle(image_np, (int(u_real)-11, int(v_real)), 2, (color-50, 0, (255-color)), -1)
                     elif(showUndefinedPoints):
                         if(P[2, i] >= 24):
