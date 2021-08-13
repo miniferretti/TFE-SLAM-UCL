@@ -137,11 +137,13 @@ class image_feature:
            #print((ranges[0, i], ranges[1, i]))
         
         #######      Correcting Undefined points      #########
-        #previousCorrectlyDetectedRange = 1.0
-        #for i_enum in range(np.size(ranges, 1)):
-            #if (ranges[0, i_enum] >= 25.00):
-                    #ranges[0, i_enum] = previousCorrectlyDetectedRange
-            #previousCorrectlyDetectedRange = ranges[0, i_enum]
+        previousCorrectlyDetectedRange = 1.0
+        for i_enum in range(np.size(ranges, 1)):
+            if (ranges[0, i_enum] >= range_max):
+                    ranges[0, i_enum] = previousCorrectlyDetectedRange
+            previousCorrectlyDetectedRange = ranges[0, i_enum]
+        
+        ranges[0, ranges[0, :] < range_min] = range_min
 
         #print("Number of ranges : %s" % (len(ranges[0, :])))
         #print("Number of ranges : %s" % (np.size(ranges, 1)))
@@ -149,8 +151,8 @@ class image_feature:
         
 
         ##########      To showUndefinedPoints      ###########
-        ranges[0, ranges[0, :] > range_max] = range_max
-        ranges[0, ranges[0, :] < range_min] = range_min
+        #ranges[0, ranges[0, :] > range_max] = range_max
+        #ranges[0, ranges[0, :] < range_min] = range_min
 
         #for i in range(len(ranges[0, :])):
            #print((ranges[0, i], ranges[1, i]))
@@ -207,9 +209,9 @@ class image_feature:
 
         P_real = np.empty(shape=(3, 0))
 
-        gradientColor = False # To show difference of depth and matching
+        gradientColor = True # To show difference of depth and matching
 
-        showUndefinedPoints = True # To show difference of depth and matching
+        showUndefinedPoints = False # To show difference of depth and matching
 
         for i in range(len(UV[0, :])):
             u = UV[0, i]
