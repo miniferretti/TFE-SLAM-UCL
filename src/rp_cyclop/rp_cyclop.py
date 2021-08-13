@@ -163,10 +163,12 @@ class image_feature:
     # Converts lidar range data to XYZ coordinates and then projects it to the camera image plane
     def lidar_data_to_img(self, ranges, image_np):
 
-        U = 640 #3280  # Horizontal number of pixels
-        V = 480 #2464  # Vertical number of pixels of the camera sensor
+        U = 3280  # Horizontal number of pixels
+        V = 2464  # Vertical number of pixels of the camera sensor
 
         image_height, image_width, rgb = image_np.shape
+
+        print(image_np.shape)
 
         Pl = np.array([(np.multiply(-np.sin(ranges[1, :]), ranges[0, :])),
                        np.zeros(len(ranges[0, :])),
@@ -224,7 +226,7 @@ class image_feature:
                     if (gradientColor):
                         rangeMax = 1.7 # TBD by the user for a given scenario or rangeMax = np.amax(ranges)
                         color =  P[2, i] * (1/rangeMax) * 255
-                        print("Depth at [%s, %s] : %s" % (u_real, v_real,P[2, i]))
+                        #print("Depth at [%s, %s] : %s" % (u_real, v_real,P[2, i]))
                         cv2.circle(image_np, (int(u_real)-11, int(v_real)), 2, (color-50, 0, (255-color)), -1)
                     elif(showUndefinedPoints):
                         if(P[2, i] >= 24):
