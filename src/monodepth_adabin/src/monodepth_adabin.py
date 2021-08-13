@@ -148,8 +148,8 @@ class MonoDepth_adabin:
             #print("Depth[0, %s] : %s [m] at angle %s" % (i_print, ranges[0, i_print], ranges[1, i_print]))
         # ---------------------------------------------------------------------
 
-        U = 640  # Horizontal number of pixels
-        V = 480  # Vertical number of pixels of the camera sensor
+        U = 3280  # Horizontal number of pixels  #3280
+        V = 2464  # Vertical number of pixels of the camera sensor  #2464
 
         image_height, image_width = depth.shape
 
@@ -229,7 +229,7 @@ class MonoDepth_adabin:
         # ---------------------------------------------------------------------------------------------
         # ------    Correcting the image_depth from the data gathered by the LiDAR sensor       ------- 
         #
-        correctionMethod = 2    # Selection of the correction method employed
+        correctionMethod = 0    # Selection of the correction method employed
 
         correctedDepth = np.copy(depth)
 
@@ -249,7 +249,7 @@ class MonoDepth_adabin:
 
             if (u <= U) and (v <= V):
                 if (u >= 0) and (v >= 0) and (P[2, i] >= 0):
-                    u_real = int (self.valmap(u, 0, U, 0, image_width) -11)
+                    u_real = int (self.valmap(u, 0, U, 0, image_width))
                     v_real = int (self.valmap(v, 0, V, 0, image_height))
 
                     differenceDepth =  P[2, i] - depth[v_real, u_real]
