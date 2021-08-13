@@ -86,10 +86,7 @@ class MonoDepth_adabin:
 
         self.camera_info = None
 
-      #  int xpixel
-      #  int ypixel
-
-        print("Hello world")
+        print("Hello from AdaBin")
 
     # Filters impossible ranges and combines it with angle data
     def range_filter(self, scan_sync):
