@@ -134,8 +134,8 @@ class MonoDepth_adabin:
     def depth_correction(self, ranges, depth):
 
         # For user to collect, display and/or save data
-        printing = False
-        saving = False
+        printing = True
+        saving = True
 
         start_time_correction = time.time()
 
@@ -175,21 +175,8 @@ class MonoDepth_adabin:
 
         max_value = np.amax(depth)
 
-        ####################################################
-        Figure1 = plt.figure()
-        Figure1.suptitle('Received Depths')
-        plt.imshow(depth, cmap='gray')
-        plt.colorbar()    
-        plt.show()   
-
-        Figure2 = plt.figure()
-        Figure2.suptitle('Received Depths')
-        plt.imshow(depth, cmap='plasma')
-        plt.colorbar()    
-        plt.show() 
-        ####################################################
-
         if( printing == True or saving == True):
+
             depthScaled = depth.copy()
             depthScaled[:,:] = (depth[:,:] / max_value)
 
@@ -198,7 +185,17 @@ class MonoDepth_adabin:
             depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_JET) # advice : using either cv2.COLORMAP_JET or cv2.COLORMAP_RAINBOW
 
             ####################################################
+            Figure1 = plt.figure()
+            Figure1.suptitle('Received Depths')
+            plt.imshow(depth, cmap='gray')
+            plt.colorbar()    
+            plt.show()   
 
+            Figure2 = plt.figure()
+            Figure2.suptitle('Received Depths')
+            plt.imshow(depth, cmap='plasma')
+            plt.colorbar()    
+            plt.show() 
             ####################################################
             if(printing == True):
                 cv2.imshow("Received Depths", imageDepths) #depthScaled
@@ -451,6 +448,8 @@ class MonoDepth_adabin:
 
         # ------        Printing the corrected depths using gray scale and color gradients       -------- 
 
+
+
         if( printing == True or saving == True):
             New_max_value = np.amax(correctedDepth)
 
@@ -458,6 +457,18 @@ class MonoDepth_adabin:
             NewDepthScaled[:,:] = (correctedDepth[:,:] / New_max_value)
 
             NewImageDepths = np.array(NewDepthScaled * 255, dtype = np.uint8)
+
+            Figure3 = plt.figure()
+            Figure3.suptitle('Corrected Depths')
+            plt.imshow(correctedDepth, cmap='gray')
+            plt.colorbar()    
+            plt.show()   
+
+            Figure4 = plt.figure()
+            Figure4.suptitle('Corrected Depths')
+            plt.imshow(correctedDepth, cmap='plasma')
+            plt.colorbar()    
+            plt.show() 
 
             NewDepthScaledColored = cv2.applyColorMap(NewImageDepths, cv2.COLORMAP_JET)  
             if( printing == True):
@@ -471,6 +482,8 @@ class MonoDepth_adabin:
         # -----------------------------------------------------------------------------------------------
 
 
+        
+
         # ------    Printing the diffence applied on the image_depth using gray scale and color gradients   ---------- 
         if( printing == True or saving == True):
             differenceDepth = correctedDepth.copy()
@@ -478,6 +491,18 @@ class MonoDepth_adabin:
             differenceDepth = np.subtract(correctedDepth, oldDepth)
 
             Difference_max_value = np.amax(differenceDepth)
+
+            Figure5 = plt.figure()
+            Figure5.suptitle('Difference Depths')
+            plt.imshow(differenceDepth, cmap='gray')
+            plt.colorbar()    
+            plt.show()   
+
+            Figure6 = plt.figure()
+            Figure6.suptitle('Difference Depths')
+            plt.imshow(differenceDepth, cmap='plasma')
+            plt.colorbar()    
+            plt.show() 
 
             differenceDepthScaled = differenceDepth.copy()
 
