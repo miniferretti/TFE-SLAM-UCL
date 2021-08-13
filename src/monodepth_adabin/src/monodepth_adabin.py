@@ -249,8 +249,8 @@ class MonoDepth_adabin:
 
             if (u <= U) and (v <= V):
                 if (u >= 0) and (v >= 0) and (P[2, i] >= 0):
-                    u_real = int (self.valmap(u, 0, U, 0, image_width) - 11)
-                    v_real = int (self.valmap(v, 0, V, 0, image_height) - 11)
+                    u_real = int (self.valmap(u, 0, U, 0, image_width))
+                    v_real = int (self.valmap(v, 0, V, 0, image_height))
 
                     differenceDepth =  P[2, i] - depth[v_real, u_real]
 
