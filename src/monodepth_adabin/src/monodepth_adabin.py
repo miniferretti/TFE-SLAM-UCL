@@ -195,7 +195,14 @@ class MonoDepth_adabin:
             Figure2.suptitle('Received Depths')
             plt.imshow(depth, cmap='plasma')
             plt.colorbar()    
-            plt.show() 
+            plt.show()
+
+            Figure7 = plt.figure()
+            Figure7.suptitle('Received Depths')
+            plt.imshow(depth, cmap='gist_rainbow')
+            plt.colorbar()    
+            plt.show()
+             
             ####################################################
             if(printing == True):
                 cv2.imshow("Received Depths", imageDepths) #depthScaled
@@ -469,6 +476,12 @@ class MonoDepth_adabin:
             plt.imshow(correctedDepth, cmap='plasma')
             plt.colorbar()    
             plt.show() 
+            
+            Figure8 = plt.figure()
+            Figure8.suptitle('Corrected Depths')
+            plt.imshow(correctedDepth, cmap='gist_rainbow')
+            plt.colorbar()    
+            plt.show() 
 
             NewDepthScaledColored = cv2.applyColorMap(NewImageDepths, cv2.COLORMAP_JET)  
             if( printing == True):
@@ -501,6 +514,12 @@ class MonoDepth_adabin:
             Figure6 = plt.figure()
             Figure6.suptitle('Difference Depths')
             plt.imshow(differenceDepth, cmap='plasma')
+            plt.colorbar()    
+            plt.show() 
+            
+            Figure9 = plt.figure()
+            Figure9.suptitle('Difference Depths')
+            plt.imshow(differenceDepth, cmap='gist_rainbow')
             plt.colorbar()    
             plt.show() 
 
