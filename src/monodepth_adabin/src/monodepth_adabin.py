@@ -295,7 +295,7 @@ class MonoDepth_adabin:
                     if(correctionMethod == 2):
                         for inter_u in range(abs(StepWidth)):
                             for inter_h in range(image_height):
-                                if ((u_real_previous - inter_u) < 640):
+                                if (((u_real_previous - inter_u) < 640) AND ((u_real_previous - inter_u) >= 0)):
                                     if(abs(depth[v_real, u_real] - depth[inter_h, u_real_previous - inter_u ]) <= 0.2):
                                         depth[inter_h, u_real_previous - inter_u] = P[2, i]
                                         #correctedDepth[inter_h, u_real_previous - inter_u] = P[2, i] 
