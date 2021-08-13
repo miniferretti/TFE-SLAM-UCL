@@ -207,7 +207,7 @@ class image_feature:
         UV = np.array([np.divide(P[0, :], P[2, :]),
                        np.divide(P[1, :], P[2, :])], np.float32)
 
-        #P_real = np.empty(shape=(3, 0))
+        P_real = np.empty(shape=(3, 0))
 
         gradientColor = True # To show difference of depth and matching
 
