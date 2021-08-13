@@ -163,8 +163,8 @@ class image_feature:
     # Converts lidar range data to XYZ coordinates and then projects it to the camera image plane
     def lidar_data_to_img(self, ranges, image_np):
 
-        U = 3280  # Horizontal number of pixels
-        V = 2464  # Vertical number of pixels of the camera sensor
+        U = 640 #3280  # Horizontal number of pixels
+        V = 480 #2464  # Vertical number of pixels of the camera sensor
 
         image_height, image_width, rgb = image_np.shape
 
