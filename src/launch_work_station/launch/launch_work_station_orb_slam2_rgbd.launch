@@ -53,7 +53,7 @@
         <param name="camera_p2" type="double" value="0.0" />
         <param name="camera_k3" type="double" value="0.0" />
         <!-- IR projector baseline times fx (aprox.) -->
-        <param name="camera_baseline" type="double" value="27.65" />
+        <param name="camera_baseline" type="double" value="44.28" />
 
 
     </node>
