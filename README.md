@@ -23,4 +23,26 @@ This branch summerize the list of ROS packages and dependencies to install for t
 
 - emergency_stop: Node written in Python3 used to prevent the mobile platform from colliding with an obstacle. Takes as input scans from a LiDAR and outputs an emergency message when it detects abstacles that are passed an arbitrary threshold.  Used for demonstration purpose of the advantages of having a LiDAR on a mobile robot. 
 
-- hector_slam: 
+- hector_slam: Node used by rtabmap_ros to generate odometry when ICP is turned off. Directly taken from [tu-darmstadt-ros-pkg](https://github.com/tu-darmstadt-ros-pkg/hector_slam)
+
+## Installation
+---
+
+### ROS environement
+- You need on your machine Ubuntu 20.04 LTS.
+
+- Install ROS Neotic by following the [user guide](http://wiki.ros.org/noetic/Installation/Ubuntu)
+
+- After ROS installation, create a ROS directory, clone the repo in it, select branch MAtteo and build the environement with:
+    
+    >$ catkin_make
+
+### Python3 environement
+All the nodes are compiled with python 3.8. Make sure to install the python packages according to your version.
+
+### RTABMap
+RTABMap was built from source and requires the user to follow the [install guide](https://github.com/introlab/rtabmap_ros). Make sure to build openCV from source with the non free modules. 
+
+
+
+
