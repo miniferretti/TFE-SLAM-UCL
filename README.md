@@ -19,4 +19,4 @@ This branch summerize the list of ROS packages and dependencies to install for t
 
 - darknet_ros: ROS implementation of YoloV2 and V1, this node was used for image segmentation and object recognition. Originally taken from [leggedrobotics](https://github.com/leggedrobotics/darknet_ros).
 
-- 
+- rp_cyclop: Node written in Python3 to project LiDAR scans on a video camera image. Used for LiDAR-Camera calibration. 
