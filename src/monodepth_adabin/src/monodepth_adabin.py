@@ -184,7 +184,8 @@ class MonoDepth_adabin:
 
         plt.imshow(depth, cmap='gray')
         plt.imshow(depth, cmap='plasma')
-        plt.colorbar()       
+        plt.colorbar()    
+        plt.show()   
 
         if( printing == True or saving == True):
             depthScaled = depth.copy()
