@@ -104,26 +104,14 @@ class MonoDepth_adabin:
 
         ranges = np.array([range_data, angle_data], np.float32)
 
-        ranges[0, ranges[0, :] > range_max] = range_max
         ranges[0, ranges[0, :] < range_min] = range_min
-
+        #######      Correcting Undefined points      #########
         previousCorrectlyDetectedRange = 1.0
         for i_enum in range(np.size(ranges, 1)):
-            if (ranges[0, i_enum] >= 25.00):
+            if (ranges[0, i_enum] >= range_max):
                     ranges[0, i_enum] = previousCorrectlyDetectedRange
             previousCorrectlyDetectedRange = ranges[0, i_enum]
-
-
-        #previousCorrectlyDetectedRange = 1.0
-        #for i_enum in range(np.size(ranges, 1)):
-            #if (ranges[0, i_enum] >= 25.00):
-                #if(previousCorrectlyDetectedRange <= 20.00):
-                    #ranges[0, i_enum] = previousCorrectlyDetectedRange
-                #else: 
-                    #ranges[0, i_enum] = 25.00
-            #previousCorrectlyDetectedRange = ranges[0, i_enum]
-
-
+    
 
         # If the user wants to print the filtered range, uncomment the following lines
         #for i in range(len(ranges[0, :])):
@@ -241,7 +229,7 @@ class MonoDepth_adabin:
         # ---------------------------------------------------------------------------------------------
         # ------    Correcting the image_depth from the data gathered by the LiDAR sensor       ------- 
         #
-        correctionMethod = 8    # Selection of the correction method employed
+        correctionMethod = 7    # Selection of the correction method employed
 
         correctedDepth = np.copy(depth)
 
@@ -261,8 +249,8 @@ class MonoDepth_adabin:
 
             if (u <= U) and (v <= V):
                 if (u >= 0) and (v >= 0) and (P[2, i] >= 0):
-                    u_real = self.valmap(u, 0, U, 0, image_width)
-                    v_real = self.valmap(v, 0, V, 0, image_height)
+                    u_real = int (self.valmap(u, 0, U, 0, image_width) - 11)
+                    v_real = int (self.valmap(v, 0, V, 0, image_height) - 11)
 
                     differenceDepth =  P[2, i] - depth[v_real, u_real]
 
@@ -353,14 +341,14 @@ class MonoDepth_adabin:
                                         #depth[inter_h, u_real_previous - inter_u] = max_value
 
                     if(correctionMethod == 7):
-                        counter = 0
+                        #counter = 0
                         for inter_u in range(abs(StepWidth)):
                             increment = ((inter_u/StepWidth) * StepDepth)
                             u_current = u_real_previous - inter_u
                             for inter_h in range(image_height):
                                 if(abs(depth[v_real, u_real] - depth[inter_h,  u_current]) <= 0.15):
                                     correctedDepth[inter_h, u_current] = P[2, i] + increment
-                                    counter = counter +1
+                                    #counter = counter +1
                                 #else:
                                     #correctedDepth[inter_h, u_current] = max_value
                                     #counter = counter +1
