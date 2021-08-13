@@ -175,17 +175,19 @@ class MonoDepth_adabin:
 
         max_value = np.amax(depth)
 
-        #n += 1
+        ####################################################
         Figure1 = plt.figure()
-        Figure1.suptitle('Normal')
-
-        #ax = Figure1.add_subplot(image_width, image_height,1)
-        #ax.set_title('Normal')
-
+        Figure1.suptitle('Received Depths')
         plt.imshow(depth, cmap='gray')
-        plt.imshow(depth, cmap='plasma')
         plt.colorbar()    
         plt.show()   
+
+        Figure2 = plt.figure()
+        Figure2.suptitle('Received Depths')
+        plt.imshow(depth, cmap='plasma')
+        plt.colorbar()    
+        plt.show() 
+        ####################################################
 
         if( printing == True or saving == True):
             depthScaled = depth.copy()
