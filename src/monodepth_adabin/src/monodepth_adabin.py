@@ -4,6 +4,7 @@ import math
 import struct
 import sys
 import time
+from matplotlib import pyplot as plt
 
 import cv2
 import matplotlib.pyplot as plt
@@ -174,6 +175,17 @@ class MonoDepth_adabin:
 
         max_value = np.amax(depth)
 
+        #n += 1
+        Figure1 = plt.figure()
+        Figure1.suptitle('Normal')
+
+        ax = Figure1.add_subplot(image_width, image_height)
+        ax.set_title('Normal')
+
+        plt.imshow(depth, cmap='gray')
+        plt.imshow(im, cmap='plasma'
+        plt.colorbar()       
+
         if( printing == True or saving == True):
             depthScaled = depth.copy()
             depthScaled[:,:] = (depth[:,:] / max_value)
@@ -182,6 +194,9 @@ class MonoDepth_adabin:
 
             depthScaledColored = cv2.applyColorMap(imageDepths, cv2.COLORMAP_JET) # advice : using either cv2.COLORMAP_JET or cv2.COLORMAP_RAINBOW
 
+            ####################################################
+
+            ####################################################
             if(printing == True):
                 cv2.imshow("Received Depths", imageDepths) #depthScaled
                 cv2.imshow("Received Depths ColorGradient", depthScaledColored)
