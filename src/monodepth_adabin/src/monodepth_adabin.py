@@ -179,7 +179,7 @@ class MonoDepth_adabin:
         Figure1 = plt.figure()
         Figure1.suptitle('Normal')
 
-        ax = Figure1.add_subplot(image_width, image_height)
+        ax = Figure1.add_subplot(image_width, image_height,1)
         ax.set_title('Normal')
 
         plt.imshow(depth, cmap='gray')
