@@ -425,7 +425,7 @@ class MonoDepth_adabin:
 
 
                     # Changes for LiDAR points
-                    correctedDepth[v_real, u_real] = P[2, i]
+                    #correctedDepth[v_real, u_real] = P[2, i]
 
                     #print("depth[%s, %s] = %s" %( v_real, u_real, P[2, i]))
 
