@@ -389,7 +389,7 @@ class MonoDepth_adabin:
                             u_current = u_real_previous - inter_u
                             for inter_h in range(image_height):
                                 if (((u_real_previous - inter_u) < 640) and ((u_real_previous - inter_u) >= 0)):
-                                    if(abs(depth[v_real, u_real] - depth[inter_h,  u_current]) <= 0.1):
+                                    if(abs(depth[v_real, u_real] - depth[inter_h,  u_current]) <= 0.15):
                                         correctedDepth[inter_h, u_current] = P[2, i] + increment 
                                         #counter = counter +1
                                     #else:
@@ -402,7 +402,7 @@ class MonoDepth_adabin:
                             u_current = u_real_previous - inter_u
                             for inter_h in range(image_height):
                                 if (((u_real_previous - inter_u) < 640) and ((u_real_previous - inter_u) >= 0)):
-                                    if(abs(depth[v_real, u_real] - depth[inter_h,  u_current]) <= 0.1):
+                                    if(abs(depth[v_real, u_real] - depth[inter_h,  u_current]) <= 0.15):
                                         correctedDepth[inter_h, u_current] = depth[inter_h, u_current] + increment + differenceDepth
                                     #else:
                                         #correctedDepth[inter_h, u_current] = max_value
