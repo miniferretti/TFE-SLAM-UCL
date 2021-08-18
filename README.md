@@ -1,4 +1,4 @@
-# Desktop branch
+# WorkStation branch
 This branch summarize the list of ROS packages and dependencies to install for the desktop computer part of our work. This is a catkin workspace. 
 
 ## ROS Packages overview
