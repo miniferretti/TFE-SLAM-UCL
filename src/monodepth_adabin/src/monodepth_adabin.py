@@ -548,12 +548,8 @@ class MonoDepth_adabin:
         self.stamp = scan_sync.header.stamp
 
         print("New frame processed of type {}".format(image_sync.format))
+        
         # Convert message to opencv image
-       # try:
-        #    image = self.bridge.imgmsg_to_cv2(image_sync, "bgr8")
-        # except CvBridgeError as e:
-        #    print(e)
-
         np_arr = np.frombuffer(image_sync.data, np.uint8)
         image = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
 
@@ -567,29 +563,18 @@ class MonoDepth_adabin:
         # Get image data as a numpy array to be passed for processing.
         img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        #img = cv2.resize(img, (640, 480))
 
         # Predict depth image
         bin_centers, true_depth = self.infer_helper.predict_pil(img)
 
-     #   depth = np.clip(depth_norm(true_depth.squeeze(), max_depth=MAX_DEPTH_NYU), MIN_DEPTH,
-     #                   MAX_DEPTH_NYU) / MAX_DEPTH_NYU  # Ligne de code a valider
-
         true_depth = true_depth.squeeze()
         true_depth = self.depth_correction(ranges, true_depth)
-       # depth = np.kron(depth, np.ones((2, 2)))  # upscale the image
 
-        #true_depth_c = self.depth_correction(ranges, true_depth)
 
         # Display depth
         if self.debug:
             cv2.imshow("Result", true_depth)
             cv2.waitKey(1)
-
-        # Publish depth image 
-        #depth = 255 * depth 
-        #cm = plt.get_cmap('magma')
-        #depth = cm(depth) 
 
         # Publish the depth image
         msg = self.bridge.cv2_to_imgmsg( 

@@ -203,8 +203,6 @@ class MonoDepth:
         depth = result.reshape(result.shape[1], result.shape[2], 1)
         # Display depth
         if self.debug:
-           #depthc = depth*255
-            #depthc = cv2.applyColorMap(depthc.astype(int), cv2.COLORMAP_PLASMA)
             cv2.imshow("Result", depth)
             cv2.waitKey(1)
 
@@ -216,11 +214,6 @@ class MonoDepth:
         # Generate Point cloud
         cloud_msg = self.create_pointcloud_msg(depth, image)
         self.pub_pointcloud.publish(cloud_msg)
-
-        # Publishes the related camera_info for the creation of the PointCloud2 node
-       # self.pub_camera_info.publish(camera_info)
-      #  self.pub_color_image.publish(
-       #     self.bridge.cv2_to_imgmsg(img.astype(np.uint8), "bgr8"))
 
         # Increment counter
         self.counter += 1
