@@ -4,7 +4,7 @@
 
 ### Branches dispatching and explanation
 ---
-The Git is divided into multiple branches but only are usefully. Namely: 
+The Git is divided into multiple branches but only two are usefully. Namely: 
 - WorkStation: Branch containing the code that has to run on a desktop computer.
 - Raspberry: Branch containing the code that has to run on a Raspberry Pi. 
 
