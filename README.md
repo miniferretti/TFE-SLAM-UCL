@@ -4,6 +4,7 @@
  - A custom mobile platform: ![alt text](https://github.com/miniferretti/TFE-SLAM-UCL/blob/main/images/mobilePlat_crop.jpg)
  - CAD model: ![alt text](https://github.com/miniferretti/TFE-SLAM-UCL/blob/main/images/Vue-cavali%C3%A8re.png)
  - ROS implementation diagram: ![alt text](https://github.com/miniferretti/TFE-SLAM-UCL/blob/main/images/ROSFlowChart.png)
+ - Working example (One of the nodes)
 
 ### Branches dispatching and explanation
 ---
