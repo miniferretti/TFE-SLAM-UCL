@@ -1,6 +1,6 @@
 # TFE-SLAM-UCL
 ---
- Git repo associated to the Master Thesis "LIDAR - Camera fusion for SLAM of autonomous robot or drones" by Matteo Ferretti di Castelferretto et Bruno Nicoletta.
+ Git repo associated to the Master Thesis "LIDAR - Camera fusion for SLAM of autonomous robot or drones" by Matteo Ferretti di Castelferretto et Bruno Nicoletta. This repo is the source of all our work and contains a ROS workspace dedicated to the exploration of different technics of integrating a 2D LiDAR to a drone. 
 
 ### Branches dispatching and explanation
 ---
