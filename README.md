@@ -33,7 +33,7 @@ This branch summarize the list of ROS packages and dependencies to install for t
 
 - Install ROS Neotic by following the [user guide](http://wiki.ros.org/noetic/Installation/Ubuntu)
 
-- After ROS installation, create a ROS directory, clone the repo in it, select branch Matteo and build the environement with:
+- After ROS installation, create a ROS directory, clone the repo in it, select branch WorkStation and build the environement with:
     
     >$ catkin_make
 
