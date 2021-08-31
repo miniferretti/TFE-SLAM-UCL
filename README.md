@@ -4,7 +4,7 @@
  - A custom mobile platform: ![alt text](https://github.com/miniferretti/TFE-SLAM-UCL/blob/main/images/mobilePlat_crop.jpg)
  - CAD model: ![alt text](https://github.com/miniferretti/TFE-SLAM-UCL/blob/main/images/Vue-cavali%C3%A8re.png)
  - ROS implementation diagram: ![alt text](https://github.com/miniferretti/TFE-SLAM-UCL/blob/main/images/ROSFlowChart.png)
- - Working example (One of the nodes)
+ - Working example (rp_cyclop node, projection of lidar data on the video stream): ![alt text](https://github.com/miniferretti/TFE-SLAM-UCL/blob/main/LiDAR_Camera_Matching%20videos/cyclop.gif)
 
 ### Branches dispatching and explanation
 ---
