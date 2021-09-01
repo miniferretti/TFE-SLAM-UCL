@@ -51,7 +51,10 @@ def handle_imu_pose(msg):
         0-average(x), 0-average(y), 0-average(z))  # Correction of the initial offset of the values of the IMU
 
    # q_or = [msg.orientation.x, msg.orientation.y, msg.orientation.z, msg.orientation.w]
-    q_or = quaternion_from_euler(0, eu_or[1], 0)
+    q_or = quaternion_from_euler(0, 
+    #eu_or[1]
+    0
+    , 0)
 
     q_f = quaternion_multiply(q_rot, q_or)
 
