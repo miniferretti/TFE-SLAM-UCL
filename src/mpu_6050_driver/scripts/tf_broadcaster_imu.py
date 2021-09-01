@@ -52,8 +52,7 @@ def handle_imu_pose(msg):
 
    # q_or = [msg.orientation.x, msg.orientation.y, msg.orientation.z, msg.orientation.w]
     q_or = quaternion_from_euler(0, 
-    #eu_or[1]
-    0
+    eu_or[1]
     , 0)
 
     q_f = quaternion_multiply(q_rot, q_or)
